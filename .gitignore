@@ -1,0 +1,56 @@
+# ──────────────────────────────────────────────
+#  Kalitusi Nature Resort — .gitignore
+# ──────────────────────────────────────────────
+
+# Local development environment file — NEVER commit this
+.env.local
+
+# Production env — contains live credentials, do not commit
+# (Keep .env.example committed as a template instead)
+.env
+
+# PHP error log
+/logs/
+*.log
+
+# Cache files
+/cache/*.cache
+
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Uploaded user files — don't version-control uploads
+/uploads/profiles/*
+/uploads/sliders/*
+/uploads/documents/*
+/assets/uploads/*
+
+# Keep the folder structure but not the files
+!uploads/profiles/.htaccess
+!uploads/sliders/.htaccess
+!assets/uploads/.gitignore
+!assets/uploads/README.md
+
+# Archive / temp files — never deploy these
+resort.zip
+*.zip
+
+# Never publish live production credentials or private database exports
+/includes/config.production.php
+/database/*.sql
+
+# Local diagnostic endpoints expose account, password, or session details
+/debug-*.php
+/analyze-login-issue.php
+/check-sliders-structure.php
+/production-login-test.php
+/test-login-*.php
+/test-slider-*.php
+/test-css.html
+/test.php
+
+# Confidential agreement
+/NDA.md

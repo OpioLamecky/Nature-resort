@@ -1,0 +1,56 @@
+DEFAULT AVATAR IMAGE INSTRUCTIONS
+==================================
+
+The file "default-avatar.png" has been created as an empty placeholder.
+
+TO ADD A PROPER DEFAULT AVATAR:
+
+Option 1: Use a Simple Avatar Generator
+----------------------------------------
+1. Visit: https://ui-avatars.com/
+2. Generate a simple avatar with initials "KR" (Kalitusi Resort)
+3. Download as PNG
+4. Replace default-avatar.png
+
+URL Example:
+https://ui-avatars.com/api/?name=Kalitusi+Resort&size=400&background=1C2D2A&color=BABA9E&bold=true
+
+Option 2: Use Dicebear (Free Avatar API)
+-----------------------------------------
+1. Visit: https://www.dicebear.com/
+2. Choose a style (identicon, bottts, avataaars, etc.)
+3. Download 400x400px PNG
+4. Replace default-avatar.png
+
+Option 3: Create Custom Avatar
+-------------------------------
+1. Open Photoshop, GIMP, or Figma
+2. Create 400x400px square image
+3. Add resort logo or simple icon
+4. Use Carva colors (#1C2D2A, #BABA9E)
+5. Export as PNG
+6. Replace default-avatar.png
+
+Option 4: Use Free Icon Pack
+-----------------------------
+1. Visit: https://www.flaticon.com/
+2. Search "user avatar" or "profile"
+3. Download 512px PNG
+4. Resize to 400x400px
+5. Replace default-avatar.png
+
+RECOMMENDED SPECIFICATIONS:
+---------------------------
+- Size: 400x400px (square)
+- Format: PNG with transparency
+- Colors: Match Carva palette
+- Simple, recognizable design
+- Professional appearance
+
+QUICK FIX (Temporary):
+----------------------
+If you need something immediately, the system will still work
+with the empty file. The image might not display correctly,
+but the functionality remains intact.
+
+For production, replace with a proper image as soon as possible.

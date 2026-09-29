@@ -1,0 +1,44 @@
+/* Emergency slider visibility fix */
+.hero-slider {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: 500px !important;
+    min-height: 400px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.hero-slide {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: 500px !important;
+    min-height: 400px !important;
+    position: relative !important;
+}
+
+.hero-slide__bg {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background-size: cover !important;
+    background-position: center !important;
+}
+
+.carousel-inner {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: 500px !important;
+}
+
+.carousel-item {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: 500px !important;
+    position: relative !important;
+}

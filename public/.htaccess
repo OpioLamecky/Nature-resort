@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Pretty URLs for news: /news/{slug}-{id}
+# Example: /public/news/mountain-adventure-42
+RewriteRule ^news/([a-z0-9-]+)-(\d+)$ news-view.php?id=$2 [QSA,NC,L]
+
+# If directory or file exists, use it
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule . - [L]

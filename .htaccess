@@ -1,0 +1,148 @@
+# Kalitusi Nature Resort - Apache Configuration
+# For use with InfinityFree and other Apache-based hosting
+
+# Enable mod_rewrite for clean URLs
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Remove index.php from URLs (if needed)
+    # Uncomment if you want clean URLs without index.php
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    # Prevent MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+    
+    # Prevent clickjacking attacks
+    Header set X-Frame-Options "DENY"
+    
+    # Referrer Policy
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # XSS Protection
+    Header set X-XSS-Protection "1; mode=block"
+    
+    # HSTS — only send when actually on HTTPS (not on localhost / HTTP)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+    
+    # Permissions Policy
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=()"
+    
+    # Content Security Policy (updated for local development - more permissive)
+    # For local development, you can temporarily disable CSP by commenting out the line below
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com fonts.googleapis.com; font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' cdn.jsdelivr.net; frame-src 'self' https://*.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+    # Alternative: Completely disable CSP for local development (uncomment below and comment above)
+    # Header unset Content-Security-Policy
+</IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Protect sensitive files and directories (env files, SQL dumps, docs)
+<FilesMatch "(\.env|\.env\.local|\.env\.example|config\.php|\.sql|\.md|\.git)">
+    Require all denied
+</FilesMatch>
+
+# Enable GZIP compression for faster loading
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    
+    # Don't compress images and other binary files
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|ico|zip|gz)$ no-gzip dont-vary
+</IfModule>
+
+# Browser caching for static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 2 days"
+    
+    # Images
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # CSS and JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    
+    # Fonts
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    
+    # HTML (don't cache - always fresh)
+    ExpiresByType text/html "access plus 0 days"
+</IfModule>
+
+# Add cache control headers
+<IfModule mod_headers.c>
+    # Cache images for 1 year
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|ico|svg)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+    
+    # Cache CSS and JS for 1 month
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+    
+    # Cache fonts for 1 year
+    <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+    
+    # Don't cache HTML
+    <FilesMatch "\.html?$">
+        Header set Cache-Control "max-age=0, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# Prevent access to PHP files in assets directory
+<FilesMatch "^assets/.*\.php$">
+    Require all denied
+</FilesMatch>
+
+# Set proper MIME types
+<IfModule mod_mime.c>
+    AddType application/javascript js
+    AddType text/css css
+    AddType image/webp webp
+    AddType font/woff2 woff2
+    AddType application/json json
+</IfModule>
+
+# Redirect HTTP to HTTPS — only on the live server, NOT on localhost/WAMP
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Skip redirect for localhost and 127.0.0.1 (development)
+    RewriteCond %{HTTP_HOST} !^localhost [NC]
+    RewriteCond %{HTTP_HOST} !^127\.0\.0\.1 [NC]
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Prevent hotlinking of images (optional)
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTP_REFERER} !^$
+#     RewriteCond %{HTTP_REFERER} !^https?://yourdomain\.com [NC]
+#     RewriteRule \.(jpg|jpeg|png|gif|webp)$ - [NC,F,L]
+# </IfModule>
