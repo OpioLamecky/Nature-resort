@@ -14,6 +14,48 @@ $title = 'Book Your Stay | Kalitusi Nature Resort';
 
 // Get room type from URL if specified
 $selectedRoom = $_GET['room'] ?? '';
+$roomTypeLabels = [
+  'standard' => 'Standard Room',
+  'deluxe' => 'Deluxe Room',
+  'suite' => 'Suite',
+  'chalet' => 'Chalet',
+  'glamping' => 'Glamping Tent',
+];
+$roomTypeKeys = array_flip($roomTypeLabels);
+$bookingRoomTypes = [];
+$roomRatesByType = [];
+try {
+  $roomTypeStmt = $pdo->query(
+    "SELECT room_type, MIN(price_per_night) AS price_per_night
+     FROM accommodations
+     WHERE status = 'active' AND availability_status = 'available'
+     GROUP BY room_type ORDER BY room_type"
+  );
+  foreach ($roomTypeStmt->fetchAll() as $roomTypeRow) {
+    $roomTypeKey = $roomTypeKeys[$roomTypeRow['room_type']] ?? null;
+    if ($roomTypeKey !== null) {
+      $roomRatesByType[$roomTypeKey] = (float)$roomTypeRow['price_per_night'];
+      $bookingRoomTypes[] = [
+        'key' => $roomTypeKey,
+        'label' => $roomTypeRow['room_type'],
+        'price' => (float)$roomTypeRow['price_per_night'],
+      ];
+    }
+  }
+  if (ctype_digit((string)$selectedRoom)) {
+    $selectedRoomStmt = $pdo->prepare(
+      "SELECT room_type FROM accommodations
+       WHERE accommodation_id = ? AND status = 'active' AND availability_status = 'available'"
+    );
+    $selectedRoomStmt->execute([(int)$selectedRoom]);
+    $selectedType = $selectedRoomStmt->fetchColumn();
+    $selectedRoom = $roomTypeKeys[$selectedType] ?? '';
+  }
+} catch (PDOException $e) {
+  error_log('Booking accommodation lookup failed: ' . $e->getMessage());
+  $bookingRoomTypes = [];
+  $roomRatesByType = [];
+}
 
 // Handle form submission
 $errors = [];
@@ -49,16 +91,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $checkOutDate = new DateTime($cleanData['check_out']);
             $nights = $checkInDate->diff($checkOutDate)->days;
 
-            // Room rates (should come from database)
-            $rates = [
-                'standard' => 150000,
-                'deluxe' => 250000,
-                'suite' => 400000,
-                'chalet' => 350000,
-                'glamping' => 200000
-            ];
-
-            $roomRate = $rates[$cleanData['room_type']] ?? 150000;
+            $roomTypeLabel = $roomTypeLabels[$cleanData['room_type']] ?? null;
+            if ($roomTypeLabel === null) {
+              throw new RuntimeException('Please choose an available accommodation type.');
+            }
+            $rateStmt = $pdo->prepare(
+              "SELECT MIN(price_per_night) FROM accommodations
+               WHERE room_type = ? AND status = 'active' AND availability_status = 'available'"
+            );
+            $rateStmt->execute([$roomTypeLabel]);
+            $currentRate = $rateStmt->fetchColumn();
+            if ($currentRate === false || $currentRate === null) {
+              throw new RuntimeException('That accommodation type is no longer available. Please choose another.');
+            }
+            $roomRate = (float)$currentRate;
             $totalAmount = $roomRate * $nights;
             $depositAmount = $totalAmount * 0.5; // 50% deposit
 
@@ -334,21 +380,11 @@ include __DIR__ . '/../includes/layout_header.php';
                   <label for="room_type" class="form-label">Room Type *</label>
                   <select class="form-select" id="room_type" name="room_type" required>
                     <option value="">Select Room Type</option>
-                    <option value="standard" <?= ($selectedRoom == 'standard' || ($_POST['room_type'] ?? '') == 'standard') ? 'selected' : '' ?>>
-                      Standard Room - UGX 150K/night
-                    </option>
-                    <option value="deluxe" <?= ($selectedRoom == 'deluxe' || ($_POST['room_type'] ?? '') == 'deluxe') ? 'selected' : '' ?>>
-                      Deluxe Room - UGX 250K/night
-                    </option>
-                    <option value="suite" <?= ($selectedRoom == 'suite' || ($_POST['room_type'] ?? '') == 'suite') ? 'selected' : '' ?>>
-                      Rwenzori Suite - UGX 400K/night
-                    </option>
-                    <option value="chalet" <?= ($selectedRoom == 'chalet' || ($_POST['room_type'] ?? '') == 'chalet') ? 'selected' : '' ?>>
-                      Forest Chalet - UGX 350K/night
-                    </option>
-                    <option value="glamping" <?= ($selectedRoom == 'glamping' || ($_POST['room_type'] ?? '') == 'glamping') ? 'selected' : '' ?>>
-                      Luxury Glamping - UGX 200K/night
-                    </option>
+                    <?php foreach ($bookingRoomTypes as $roomOption): ?>
+                      <option value="<?= sanitize($roomOption['key']) ?>" data-rate="<?= (float)$roomOption['price'] ?>" <?= ($selectedRoom === $roomOption['key'] || ($_POST['room_type'] ?? '') === $roomOption['key']) ? 'selected' : '' ?>>
+                        <?= sanitize($roomOption['label']) ?> - UGX <?= number_format($roomOption['price']) ?>/night
+                      </option>
+                    <?php endforeach; ?>
                   </select>
                 </div>
               </div>
@@ -478,13 +514,7 @@ function calculateEstimate() {
     const date2 = new Date(checkOut);
     const nights = Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24));
     
-    const rates = {
-      standard: 150000,
-      deluxe: 250000,
-      suite: 400000,
-      chalet: 350000,
-      glamping: 200000
-    };
+    const rates = <?= json_encode($roomRatesByType, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
     
     if (nights > 0 && rates[roomType]) {
       const total = nights * rates[roomType];

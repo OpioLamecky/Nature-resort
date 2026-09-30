@@ -1,4 +1,18 @@
 /* Custom Styles for Room Cards */
+.resort-image-card {
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #e4e8df;
+  border-radius: 6px;
+}
+
+.resort-image-card > .card-img-top {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
 .room-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

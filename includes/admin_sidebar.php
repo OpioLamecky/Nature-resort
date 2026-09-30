@@ -77,13 +77,23 @@ $navItems = [
         'icon' => 'fas fa-file-alt',
         'url' => '#',
         'permission' => 'content.view',
-        'active' => in_array($currentPage, ['posts.php', 'pages-home.php', 'pages-services.php']),
+        'active' => in_array($currentPage, ['site-content.php', 'posts.php', 'pages-home.php', 'pages-services.php', 'about-content.php']),
         'submenu' => [
+            ['title' => 'Public Page Content', 'url' => 'site-content.php', 'icon' => 'fas fa-edit'],
             ['title' => 'Blog Posts', 'url' => 'posts.php', 'icon' => 'fas fa-newspaper'],
             ['title' => 'Home Page', 'url' => 'pages-home.php', 'icon' => 'fas fa-home'],
             ['title' => 'Services', 'url' => 'pages-services.php', 'icon' => 'fas fa-concierge-bell'],
             ['title' => 'About Content', 'url' => 'about-content.php', 'icon' => 'fas fa-info-circle']
         ]
+    ],
+    [
+        'title' => 'Gift Shop',
+        'icon' => 'fas fa-store',
+        'url' => 'admin_shop.php',
+        'path' => base_url('admin_shop.php'),
+        'permission' => null,
+        'roles' => ['Super Admin'],
+        'active' => $currentPage === 'admin_shop.php'
     ],
     [
         'title' => 'Categories',
@@ -144,12 +154,15 @@ $navItems = [
             <?php foreach ($navItems as $item): ?>
                 <?php 
                 // Check permissions
+                if (!empty($item['roles']) && !in_array($user['role'] ?? '', $item['roles'], true)) {
+                    continue;
+                }
                 if ($item['permission'] && !has_permission($item['permission'])) {
                     continue;
                 }
                 ?>
                 <li class="nav-item <?= $item['active'] ? 'active' : '' ?> <?= !empty($item['submenu']) ? 'has-submenu' : '' ?>">
-                    <a href="<?= !empty($item['submenu']) ? '#' : base_url('admin/' . $item['url']) ?>" 
+                    <a href="<?= !empty($item['submenu']) ? '#' : ($item['path'] ?? base_url('admin/' . $item['url'])) ?>"
                        class="nav-link <?= !empty($item['submenu']) ? 'submenu-toggle' : '' ?>"
                        data-tooltip="<?= sanitize($item['title']) ?>">
                         <i class="<?= $item['icon'] ?>"></i>
@@ -166,7 +179,7 @@ $navItems = [
                         <ul class="submenu <?= $item['active'] ? 'show' : '' ?>">
                             <?php foreach ($item['submenu'] as $subitem): ?>
                                 <li class="submenu-item">
-                                    <a href="<?= base_url('admin/' . $subitem['url']) ?>" class="submenu-link">
+                                    <a href="<?= $subitem['path'] ?? base_url('admin/' . $subitem['url']) ?>" class="submenu-link">
                                         <i class="<?= $subitem['icon'] ?>"></i>
                                         <span><?= $subitem['title'] ?></span>
                                     </a>

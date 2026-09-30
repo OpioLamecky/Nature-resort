@@ -391,36 +391,55 @@ include __DIR__ . '/../includes/admin_layout_header.php';
     </div>
   </div>
 
-  <!-- Quick Access -->
+  <!-- Website Content -->
   <div class="row g-4 mb-4">
-    <div class="col-md-12">
-      <div class="card quick-nav-card">
-        <div class="card-header">
-          <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Access</h5>
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-end mb-2">
+        <div><h2 class="h4 mb-1">Website Content</h2><p class="text-muted mb-0">Edit public pages, media, and published information.</p></div>
+        <a class="btn btn-sm btn-outline-secondary" href="<?= base_url('public/') ?>" target="_blank" rel="noopener">View public site</a>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-header bg-white"><h3 class="h6 mb-0"><i class="fas fa-file-alt me-2 text-success"></i>Pages</h3></div>
+        <div class="card-body d-grid gap-2">
+          <?php if (has_permission('content.view')): ?>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=home') ?>">Home page copy</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=about') ?>">About page copy</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=legal') ?>">Policy page headings</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/pages-home.php') ?>">Home slides and quick links</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/about-content.php') ?>">About story and team</a>
+          <?php endif; ?>
         </div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-lg-3 col-md-6">
-              <a href="<?= base_url('admin/announcements.php') ?>" class="btn btn-outline-secondary w-100 py-2">
-                <i class="fas fa-bullhorn me-2"></i>Announcements
-              </a>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <a href="<?= base_url('admin/pages-services.php') ?>" class="btn btn-outline-secondary w-100 py-2">
-                <i class="fas fa-concierge-bell me-2"></i>Services
-              </a>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <a href="<?= base_url('public/') ?>" target="_blank" class="btn btn-outline-secondary w-100 py-2">
-                <i class="fas fa-external-link-alt me-2"></i>View Website
-              </a>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <a href="<?= base_url('admin/profile.php') ?>" class="btn btn-outline-primary w-100 py-2">
-                <i class="fas fa-user-cog me-2"></i>My Profile
-              </a>
-            </div>
-          </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-header bg-white"><h3 class="h6 mb-0"><i class="fas fa-images me-2 text-success"></i>Resort Content</h3></div>
+        <div class="card-body d-grid gap-2">
+          <?php if (has_permission('accommodations.view')): ?><a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/accommodations-manage.php') ?>">Accommodations and rates</a><?php endif; ?>
+          <?php if (has_permission('content.view')): ?>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=activities') ?>">Activities and images</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=dining') ?>">Dining page content</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=gallery') ?>">Gallery page copy</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/pages-services.php') ?>">Service blocks</a>
+          <?php endif; ?>
+          <?php if (($currentUser['role'] ?? '') === 'Super Admin'): ?><a class="btn btn-outline-secondary text-start" href="<?= base_url('admin_shop.php') ?>">Gift shop products</a><?php endif; ?>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-header bg-white"><h3 class="h6 mb-0"><i class="fas fa-bullhorn me-2 text-success"></i>Publishing</h3></div>
+        <div class="card-body d-grid gap-2">
+          <?php if (has_permission('content.view')): ?>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/posts.php') ?>">News and blog posts</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/downloads.php') ?>">Brochures and downloads</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/announcements.php') ?>">Announcements</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=contact') ?>">Contact and social details</a>
+            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/pages-footer.php?tab=settings') ?>">Contact and site settings</a>
+          <?php endif; ?>
+          <a class="btn btn-outline-primary text-start" href="<?= base_url('admin/profile.php') ?>">My profile</a>
         </div>
       </div>
     </div>

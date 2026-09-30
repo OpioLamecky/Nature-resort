@@ -39,12 +39,12 @@ include __DIR__ . '/../includes/layout_header.php';
 <div id="aboutHero" class="carousel slide hero-slider mb-0" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item hero-slide active">
-      <div class="hero-slide__bg" style="background-image: url('<?= asset_url('images/view.webp') ?>');"></div>
+      <div class="hero-slide__bg" style="background-image: url('<?= sanitize(site_content_image('about', 'hero_image', 'images/view.webp')) ?>');"></div>
       <div class="hero-slide__overlay"></div>
       <div class="hero-slide__content container">
         <div class="hero-slide__text">
-          <h2 class="hero-slide__title">About Kalitusi Nature Resort</h2>
-          <p class="hero-slide__subtitle">Your Gateway to Nature in Fort Portal Tourism City</p>
+          <h2 class="hero-slide__title"><?= sanitize(site_content('about', 'hero_title', 'About Kalitusi Nature Resort')) ?></h2>
+          <p class="hero-slide__subtitle"><?= sanitize(site_content('about', 'hero_subtitle', 'Your Gateway to Nature in Fort Portal Tourism City')) ?></p>
         </div>
       </div>
     </div>
@@ -88,8 +88,8 @@ include __DIR__ . '/../includes/layout_header.php';
 
   <!-- Core Values Section -->
   <div class="mb-5">
-    <h2 class="h3 text-center mb-2">Our Core Values</h2>
-    <p class="text-center text-muted mb-4">Guiding principles that define our operations</p>
+    <h2 class="h3 text-center mb-2"><?= sanitize(site_content('about', 'values_title', 'Our Core Values')) ?></h2>
+    <p class="text-center text-muted mb-4"><?= sanitize(site_content('about', 'values_subtitle', 'Guiding principles that define our operations')) ?></p>
     <div class="row g-4">
       <div class="col-lg-3 col-md-6">
         <div class="card h-100 text-center border-0 shadow-sm">
@@ -169,18 +169,14 @@ include __DIR__ . '/../includes/layout_header.php';
 
   <!-- Resort Services Section -->
   <div class="mb-5">
-    <h2 class="h3 text-center mb-4">Our Services</h2>
+    <h2 class="h3 text-center mb-4"><?= sanitize(site_content('about', 'services_title', 'Our Services')) ?></h2>
     <div class="row g-4">
       <div class="col-lg-4">
         <div class="card h-100 border-0 shadow-sm">
           <div class="card-body p-4">
-            <h4 class="h5 mb-3"><i class="bi bi-house-heart text-success me-2"></i> Accommodation</h4>
+            <h4 class="h5 mb-3"><i class="bi bi-house-heart text-success me-2"></i><?= sanitize(site_content('about', 'service_stays_title', 'Accommodation')) ?></h4>
             <ul class="list-unstyled">
-              <li class="py-2 border-bottom">✓ Luxury Suites</li>
-              <li class="py-2 border-bottom">✓ Standard Rooms</li>
-              <li class="py-2 border-bottom">✓ Family Cottages</li>
-              <li class="py-2 border-bottom">✓ Eco-Friendly Lodges</li>
-              <li class="py-2">✓ Conference Facilities</li>
+              <?php foreach (site_content_rows('about', 'service_stays_items', "Luxury Suites\nStandard Rooms\nFamily Cottages\nEco-Friendly Lodges\nConference Facilities", "\n") as $service): ?><li class="py-2 border-bottom"><i class="fas fa-check text-success me-2"></i><?= sanitize($service[0] ?? '') ?></li><?php endforeach; ?>
             </ul>
           </div>
         </div>
@@ -188,13 +184,9 @@ include __DIR__ . '/../includes/layout_header.php';
       <div class="col-lg-4">
         <div class="card h-100 border-0 shadow-sm">
           <div class="card-body p-4">
-            <h4 class="h5 mb-3"><i class="bi bi-tree text-primary me-2"></i> Nature Activities</h4>
+            <h4 class="h5 mb-3"><i class="bi bi-tree text-primary me-2"></i><?= sanitize(site_content('about', 'service_activities_title', 'Nature Activities')) ?></h4>
             <ul class="list-unstyled">
-              <li class="py-2 border-bottom">✓ Guided Nature Walks</li>
-              <li class="py-2 border-bottom">✓ Bird Watching Tours</li>
-              <li class="py-2 border-bottom">✓ Wildlife Photography</li>
-              <li class="py-2 border-bottom">✓ Hiking Adventures</li>
-              <li class="py-2">✓ Cultural Experiences</li>
+              <?php foreach (site_content_rows('about', 'service_activities_items', "Guided Nature Walks\nBird Watching Tours\nWildlife Photography\nHiking Adventures\nCultural Experiences", "\n") as $service): ?><li class="py-2 border-bottom"><i class="fas fa-check text-success me-2"></i><?= sanitize($service[0] ?? '') ?></li><?php endforeach; ?>
             </ul>
           </div>
         </div>
@@ -202,13 +194,9 @@ include __DIR__ . '/../includes/layout_header.php';
       <div class="col-lg-4">
         <div class="card h-100 border-0 shadow-sm">
           <div class="card-body p-4">
-            <h4 class="h5 mb-3"><i class="bi bi-heart-pulse text-danger me-2"></i> Wellness & Dining</h4>
+            <h4 class="h5 mb-3"><i class="bi bi-heart-pulse text-danger me-2"></i><?= sanitize(site_content('about', 'service_wellness_title', 'Wellness & Dining')) ?></h4>
             <ul class="list-unstyled">
-              <li class="py-2 border-bottom">✓ Spa Services</li>
-              <li class="py-2 border-bottom">✓ Local Cuisine Restaurant</li>
-              <li class="py-2 border-bottom">✓ Fitness Center</li>
-              <li class="py-2 border-bottom">✓ Swimming Pool</li>
-              <li class="py-2">✓ Event Planning</li>
+              <?php foreach (site_content_rows('about', 'service_wellness_items', "Spa Services\nLocal Cuisine Restaurant\nFitness Center\nSwimming Pool\nEvent Planning", "\n") as $service): ?><li class="py-2 border-bottom"><i class="fas fa-check text-success me-2"></i><?= sanitize($service[0] ?? '') ?></li><?php endforeach; ?>
             </ul>
           </div>
         </div>
@@ -218,7 +206,7 @@ include __DIR__ . '/../includes/layout_header.php';
 
   <!-- Leadership Section -->
   <div class="mb-5">
-    <h2 class="h3 text-center mb-4">Our Leadership</h2>
+    <h2 class="h3 text-center mb-4"><?= sanitize(site_content('about', 'leaders_title', 'Our Leadership')) ?></h2>
     <div class="row g-4">
       <?php if ($leaders): foreach ($leaders as $leader): ?>
         <div class="col-lg-4">
@@ -250,7 +238,7 @@ include __DIR__ . '/../includes/layout_header.php';
 
   <!-- Achievements Section -->
   <div class="mb-5">
-    <h2 class="h3 text-center mb-4">Key Achievements</h2>
+    <h2 class="h3 text-center mb-4"><?= sanitize(site_content('about', 'achievements_title', 'Key Achievements')) ?></h2>
     <div class="row g-4 text-center">
       <?php if ($achievements): foreach ($achievements as $ach): ?>
         <div class="col-lg-3 col-md-6">
@@ -275,10 +263,10 @@ include __DIR__ . '/../includes/layout_header.php';
   <!-- Contact CTA Section -->
   <div class="card bg-dark text-white mb-4">
     <div class="card-body p-5 text-center">
-      <h2 class="h3 mb-3">Visit Kalitusi Nature Resort</h2>
-      <p class="lead mb-4">We're here to make your stay unforgettable. Contact us for bookings or inquiries.</p>
-      <a href="<?= base_url('public/contact.php') ?>" class="btn btn-primary btn-lg me-2">Contact Us</a>
-      <a href="<?= base_url('public/booking.php') ?>" class="btn btn-outline-light btn-lg">Book Your Stay</a>
+      <h2 class="h3 mb-3"><?= sanitize(site_content('about', 'cta_title', 'Visit Kalitusi Nature Resort')) ?></h2>
+      <p class="lead mb-4"><?= sanitize(site_content('about', 'cta_copy', "We're here to make your stay unforgettable. Contact us for bookings or inquiries.")) ?></p>
+      <a href="<?= base_url('public/contact.php') ?>" class="btn btn-primary btn-lg me-2"><?= sanitize(site_content('about', 'cta_contact_label', 'Contact Us')) ?></a>
+      <a href="<?= base_url('public/booking.php') ?>" class="btn btn-outline-light btn-lg"><?= sanitize(site_content('about', 'cta_booking_label', 'Book Your Stay')) ?></a>
     </div>
   </div>
 </div>

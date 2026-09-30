@@ -13,6 +13,75 @@ function asset_url(string $path): string {
     return base_url('assets/' . ltrim($path, '/'));
 }
 
+function site_content(string $page, string $field, string $default = ''): string {
+    global $pdo;
+    static $values = null;
+
+    if ($values === null) {
+        $values = [];
+        try {
+            if (isset($pdo)) {
+                $stmt = $pdo->query('SELECT setting_key, setting_value FROM site_settings');
+                foreach ($stmt->fetchAll() as $row) {
+                    $values[$row['setting_key']] = (string)($row['setting_value'] ?? '');
+                }
+            }
+        } catch (Throwable $e) {
+            $values = [];
+        }
+    }
+
+    $key = 'public_' . $page . '_' . $field;
+    if (array_key_exists($key, $values)) {
+        return $values[$key];
+    }
+    if ($page === 'contact' && array_key_exists($field, $values)) {
+        return $values[$field];
+    }
+    return $default;
+}
+
+function site_content_image(string $page, string $field, string $default): string {
+    $path = site_content($page, $field, $default);
+    return cms_image_url($path) ?: (cms_image_url($default) ?? asset_url('images/rooms.webp'));
+}
+
+function site_content_rows(string $page, string $field, string $default, string $delimiter = '|'): array {
+    $lines = preg_split('/\R/u', site_content($page, $field, $default)) ?: [];
+    $rows = [];
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line !== '') {
+            $rows[] = array_map('trim', explode($delimiter, $line));
+        }
+    }
+    return $rows;
+}
+
+function site_content_markup(string $page, string $field, string $default): string {
+    $lines = preg_split('/\R/u', trim(site_content($page, $field, $default))) ?: [];
+    $html = '';
+    $inList = false;
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if (preg_match('/^(#{2,3})\s+(.+)$/u', $line, $heading)) {
+            if ($inList) { $html .= '</ul>'; $inList = false; }
+            $tag = strlen($heading[1]) === 2 ? 'h4' : 'h5';
+            $html .= '<' . $tag . ' class="mt-3">' . sanitize($heading[2]) . '</' . $tag . '>';
+        } elseif (str_starts_with($line, '- ')) {
+            if (!$inList) { $html .= '<ul>'; $inList = true; }
+            $html .= '<li>' . sanitize(substr($line, 2)) . '</li>';
+        } else {
+            if ($inList) { $html .= '</ul>'; $inList = false; }
+            if ($line !== '') {
+                $html .= '<p>' . sanitize($line) . '</p>';
+            }
+        }
+    }
+    if ($inList) { $html .= '</ul>'; }
+    return $html;
+}
+
 /**
  * Flash message helper — stores a message + severity in the session.
  *

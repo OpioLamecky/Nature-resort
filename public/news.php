@@ -73,8 +73,8 @@ include __DIR__ . '/../includes/layout_header.php';
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-8">
-        <h1 class="display-5 fw-bold mb-2">News & Blog</h1>
-        <p class="lead mb-0">Stay updated with the latest news, events, and stories from Kalitusi Nature Resort</p>
+        <h1 class="display-5 fw-bold mb-2"><?= sanitize(site_content('news', 'title', 'News & Blog')) ?></h1>
+        <p class="lead mb-0"><?= sanitize(site_content('news', 'intro', 'Stay updated with the latest news, events, and stories from Kalitusi Nature Resort')) ?></p>
       </div>
       <div class="col-lg-4 text-lg-end">
         <i class="fas fa-newspaper fa-5x opacity-25"></i>
@@ -156,10 +156,10 @@ include __DIR__ . '/../includes/layout_header.php';
       <div class="row g-4 mb-4">
         <?php foreach ($posts as $post): ?>
           <div class="col-md-6">
-            <article class="card h-100 border-0 shadow-sm hover-lift">
+                 <article class="card h-100 shadow-sm hover-lift resort-image-card">
               <img src="<?= $post['featured_image'] ?: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop' ?>" 
-                   class="card-img-top" 
-                   style="height: 200px; object-fit: cover;"
+                   class="card-img-top"
+                   loading="lazy"
                    alt="<?= sanitize($post['title']) ?>">
               <div class="card-body d-flex flex-column">
                 <div class="mb-2">

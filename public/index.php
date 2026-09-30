@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/bootstrap.php';
+require_once __DIR__ . '/../includes/accommodation_images.php';
 $title = 'Kalitusi Nature Resort | Fort Portal, Uganda - Luxury Eco-Resort';
 
 // Announcement ticker (published and within date range if set)
@@ -128,9 +129,9 @@ include __DIR__ . '/../includes/layout_header.php';
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-6 mb-4 mb-lg-0 slide-up">
-        <h2 class="display-5 mb-4">Experience Fort Portal's Premier <span class="text-primary">Nature Resort</span></h2>
-        <p class="lead text-muted mb-4">Nestled in the heart of Fort Portal Tourism City, Kalitusi Nature Resort offers an unparalleled blend of luxury, comfort, and natural beauty.</p>
-        <p class="mb-4">Our eco-friendly resort is surrounded by pristine wilderness, offering breathtaking views, abundant wildlife, and a tranquil atmosphere perfect for relaxation and adventure.</p>
+        <h2 class="display-5 mb-4"><?= sanitize(site_content('home', 'intro_title', "Experience Fort Portal's Premier Nature Resort")) ?></h2>
+        <p class="lead text-muted mb-4"><?= sanitize(site_content('home', 'intro_lead', 'Nestled in the heart of Fort Portal Tourism City, Kalitusi Nature Resort offers an unparalleled blend of luxury, comfort, and natural beauty.')) ?></p>
+        <p class="mb-4"><?= sanitize(site_content('home', 'intro_body', 'Our eco-friendly resort is surrounded by pristine wilderness, offering breathtaking views, abundant wildlife, and a tranquil atmosphere perfect for relaxation and adventure.')) ?></p>
         <div class="row g-3 mb-4">
           <div class="col-6">
             <div class="d-flex align-items-center">
@@ -160,7 +161,7 @@ include __DIR__ . '/../includes/layout_header.php';
         <a href="<?= base_url('public/about.php') ?>" class="btn btn-primary">Learn More About Us</a>
       </div>
       <div class="col-lg-6 fade-in">
-        <img src="<?= asset_url('images/picnic.webp') ?>" alt="Resort View" class="img-fluid rounded shadow-lg">
+        <img src="<?= sanitize(site_content_image('home', 'intro_image', 'images/picnic.webp')) ?>" alt="Resort View" class="img-fluid rounded shadow-lg">
       </div>
     </div>
   </div>
@@ -170,8 +171,8 @@ include __DIR__ . '/../includes/layout_header.php';
 <section class="bg-soft-mint py-5">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="display-6">Why Choose Kalitusi?</h2>
-      <p class="lead text-muted">Experience the perfect blend of nature and luxury</p>
+      <h2 class="display-6"><?= sanitize(site_content('home', 'features_title', 'Why Choose Kalitusi?')) ?></h2>
+      <p class="lead text-muted"><?= sanitize(site_content('home', 'features_lead', 'Experience the perfect blend of nature and luxury')) ?></p>
     </div>
     <div class="row g-4">
       <div class="col-md-6 col-lg-3 fade-in">
@@ -179,8 +180,8 @@ include __DIR__ . '/../includes/layout_header.php';
           <div class="feature-icon">
             <i class="fas fa-leaf"></i>
           </div>
-          <h5 class="mb-3">Eco-Friendly</h5>
-          <p class="text-muted">Sustainable practices and respect for nature</p>
+          <h5 class="mb-3"><?= sanitize(site_content('home', 'feature_eco_title', 'Eco-Friendly')) ?></h5>
+          <p class="text-muted"><?= sanitize(site_content('home', 'feature_eco_copy', 'Sustainable practices and respect for nature')) ?></p>
         </div>
       </div>
       <div class="col-md-6 col-lg-3 fade-in">
@@ -188,8 +189,8 @@ include __DIR__ . '/../includes/layout_header.php';
           <div class="feature-icon">
             <i class="fas fa-map-marked-alt"></i>
           </div>
-          <h5 class="mb-3">Prime Location</h5>
-          <p class="text-muted">Heart of Fort Portal Tourism City</p>
+          <h5 class="mb-3"><?= sanitize(site_content('home', 'feature_location_title', 'Prime Location')) ?></h5>
+          <p class="text-muted"><?= sanitize(site_content('home', 'feature_location_copy', 'Heart of Fort Portal Tourism City')) ?></p>
         </div>
       </div>
       <div class="col-md-6 col-lg-3 fade-in">
@@ -197,8 +198,8 @@ include __DIR__ . '/../includes/layout_header.php';
           <div class="feature-icon">
             <i class="fas fa-binoculars"></i>
           </div>
-          <h5 class="mb-3">Bird Watching</h5>
-          <p class="text-muted">300+ species of birds to discover</p>
+          <h5 class="mb-3"><?= sanitize(site_content('home', 'feature_birds_title', 'Bird Watching')) ?></h5>
+          <p class="text-muted"><?= sanitize(site_content('home', 'feature_birds_copy', '300+ species of birds to discover')) ?></p>
         </div>
       </div>
       <div class="col-md-6 col-lg-3 fade-in">
@@ -206,8 +207,8 @@ include __DIR__ . '/../includes/layout_header.php';
           <div class="feature-icon">
             <i class="fas fa-concierge-bell"></i>
           </div>
-          <h5 class="mb-3">Premium Service</h5>
-          <p class="text-muted">Attentive staff and personalized experiences</p>
+          <h5 class="mb-3"><?= sanitize(site_content('home', 'feature_service_title', 'Premium Service')) ?></h5>
+          <p class="text-muted"><?= sanitize(site_content('home', 'feature_service_copy', 'Attentive staff and personalized experiences')) ?></p>
         </div>
       </div>
     </div>
@@ -218,8 +219,8 @@ include __DIR__ . '/../includes/layout_header.php';
 <section class="bg-white py-5">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="display-6">Our Accommodations</h2>
-      <p class="lead text-muted">From cozy cabins to luxury glamping tents</p>
+      <h2 class="display-6"><?= sanitize(site_content('home', 'stays_title', 'Our Accommodations')) ?></h2>
+      <p class="lead text-muted"><?= sanitize(site_content('home', 'stays_lead', 'From cozy cabins to luxury glamping tents')) ?></p>
     </div>
     <div class="row g-4">
         <?php
@@ -238,10 +239,10 @@ include __DIR__ . '/../includes/layout_header.php';
         <div class="col-lg-4 col-md-6">
             <div class="card room-card h-100 overflow-hidden shadow-lg border-0">
                 <?php 
-                  $roomImages = json_decode($room['images'] ?? '[]', true);
-                  $imagePath = !empty($roomImages) ? $roomImages[0] : 'images/rooms.webp';
+                  $roomImageEntries = resort_accommodation_images($room);
+                  $roomImage = $roomImageEntries[0]['url'] ?? asset_url('images/rooms.webp');
                 ?>
-                <img src="<?= asset_url($imagePath) ?>" class="img-fluid" alt="<?= sanitize($room['name']) ?>" style="height: 250px; object-fit: cover;">
+                <img src="<?= sanitize($roomImage) ?>" class="img-fluid" alt="<?= sanitize($room['name']) ?>" style="height: 250px; object-fit: cover;">
                 <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between align-items-start">
                         <h3 class="card-title h5 mb-1 text-dark-green"><?= sanitize($room['name']) ?></h3>

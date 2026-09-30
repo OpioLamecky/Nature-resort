@@ -21,17 +21,17 @@ include __DIR__ . '/../includes/layout_header.php';
 <div id="dlHero" class="carousel slide hero-slider mb-3" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="<?= asset_url('images/hero-brochures-1.jpg') ?>" alt="Brochures" onerror="this.src='https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=1600&h=360&fit=crop'">
+      <img src="<?= sanitize(site_content_image('brochures', 'hero_image', 'images/rooms.webp')) ?>" alt="Brochures">
       <div class="carousel-caption text-start hero-caption">
-        <h2 class="h3 mb-1">Resort Brochures & Menus</h2>
-        <p>Download our guides, menus and informational materials</p>
+        <h2 class="h3 mb-1"><?= sanitize(site_content('brochures', 'title', 'Resort Brochures & Menus')) ?></h2>
+        <p><?= sanitize(site_content('brochures', 'subtitle', 'Explore our resort information, experiences, and dining menus')) ?></p>
       </div>
     </div>
     <div class="carousel-item">
-      <img src="<?= asset_url('images/hero-brochures-2.jpg') ?>" alt="Information" onerror="this.src='https://images.unsplash.com/photo-1517842645767-c639042777db?w=1600&h=360&fit=crop'">
+      <img src="<?= sanitize(site_content_image('brochures', 'secondary_image', 'images/cabin.webp')) ?>" alt="Information">
       <div class="carousel-caption text-start hero-caption">
-        <h2 class="h3 mb-1">Guest Information</h2>
-        <p>Everything you need to plan your perfect stay</p>
+        <h2 class="h3 mb-1"><?= sanitize(site_content('brochures', 'secondary_title', 'Guest Information')) ?></h2>
+        <p><?= sanitize(site_content('brochures', 'secondary_subtitle', 'Everything you need to plan your perfect stay')) ?></p>
       </div>
     </div>
   </div>
@@ -39,7 +39,7 @@ include __DIR__ . '/../includes/layout_header.php';
   <button class="carousel-control-next" type="button" data-bs-target="#dlHero" data-bs-slide="next"><span class="carousel-control-next-icon"></span><span class="visually-hidden">Next</span></button>
 </div>
 
-<h1 class="h3 mb-3">Brochures & Resources</h1>
+<h1 class="h3 mb-3"><?= sanitize(site_content('brochures', 'section_title', 'Brochures & Resources')) ?></h1>
 
 <?php
 // Group by category in PHP for simple rendering

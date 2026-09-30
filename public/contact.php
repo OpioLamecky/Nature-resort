@@ -42,11 +42,11 @@ include __DIR__ . '/../includes/layout_header.php';
         <div class="card h-100"><div class="card-body">
           <h2 class="h6 border-bottom pb-2">Get in Touch</h2>
           <ul class="list-unstyled mb-0 small">
-            <li class="mb-2"><i class="fas fa-envelope text-primary"></i> <strong>Email</strong><br><a href="mailto:<?= sanitize($settings['contact_email'] ?? 'info@kalitusiresort.com') ?>"><?= sanitize($settings['contact_email'] ?? 'info@kalitusiresort.com') ?></a></li>
-            <li class="mb-2"><i class="fab fa-whatsapp text-success"></i> <strong>WhatsApp</strong><br><a href="https://wa.me/256772957573">+256 772 957 573</a></li>
-            <li class="mb-2"><i class="fab fa-facebook text-primary"></i> <strong>Facebook</strong><br><a href="#" target="_blank" rel="noopener">@KalitusiResort</a></li>
-            <li class="mb-2"><i class="fab fa-instagram text-danger"></i> <strong>Instagram</strong><br><a href="#" target="_blank" rel="noopener">@kalitusiresort</a></li>
-            <li class="mb-2"><i class="fab fa-twitter text-info"></i> <strong>Twitter</strong><br><a href="#" target="_blank" rel="noopener">@KalitusiResort</a></li>
+            <li class="mb-2"><i class="fas fa-envelope text-primary"></i> <strong>Email</strong><br><a href="mailto:<?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusiresort.com')) ?>"><?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusiresort.com')) ?></a></li>
+            <li class="mb-2"><i class="fab fa-whatsapp text-success"></i> <strong>WhatsApp</strong><br><a href="<?= sanitize(site_content('contact', 'whatsapp_link', 'https://wa.me/256772957573')) ?>"><?= sanitize(site_content('contact', 'phone', '+256 772 957 573')) ?></a></li>
+            <li class="mb-2"><i class="fab fa-facebook text-primary"></i> <strong>Facebook</strong><br><a href="<?= sanitize(site_content('contact', 'facebook_url', '#')) ?>" target="_blank" rel="noopener">@KalitusiResort</a></li>
+            <li class="mb-2"><i class="fab fa-instagram text-danger"></i> <strong>Instagram</strong><br><a href="<?= sanitize(site_content('contact', 'instagram_url', '#')) ?>" target="_blank" rel="noopener">@kalitusiresort</a></li>
+            <li class="mb-2"><i class="fab fa-twitter text-info"></i> <strong>X / Twitter</strong><br><a href="<?= sanitize(site_content('contact', 'twitter_url', '#')) ?>" target="_blank" rel="noopener">@KalitusiResort</a></li>
           </ul>
         </div></div>
       </div>
@@ -56,8 +56,8 @@ include __DIR__ . '/../includes/layout_header.php';
         <div class="card h-100"><div class="card-body">
           <h2 class="h6 border-bottom pb-2">Call Us</h2>
           <ul class="list-unstyled mb-0 small">
-            <li class="mb-2"><i class="fas fa-phone text-primary"></i> <strong>Main Line</strong><br>+256 772 957 573</li>
-            <li class="mb-2">📞 <strong>Non Toll-free</strong><br>0323444602 / 0323444603<br>Or: 0417444602 / 0417444603</li>
+            <li class="mb-2"><i class="fas fa-phone text-primary"></i> <strong>Main Line</strong><br><?= sanitize(site_content('contact', 'phone', '+256 772 957 573')) ?></li>
+            <li class="mb-2">📞 <strong>Non Toll-free</strong><br><?= nl2br(sanitize(str_replace(';', "\nOr: ", site_content('contact', 'non_tollfree_phone', '0323444602 / 0323444603; 0417444602 / 0417444603')))) ?></li>
           </ul>
         </div></div>
       </div>
@@ -67,8 +67,8 @@ include __DIR__ . '/../includes/layout_header.php';
         <div class="card h-100"><div class="card-body">
           <h2 class="h6 border-bottom pb-2">Call us to report/whistleblow</h2>
           <ul class="list-unstyled mb-0 small">
-            <li class="mb-2">📞 <strong>Tax Evasion</strong><br>0323442055</li>
-            <li class="mb-2">📞 <strong>Report Staff</strong><br>0323443033</li>
+            <li class="mb-2">📞 <strong>Tax Evasion</strong><br><?= sanitize(site_content('contact', 'tax_evasion_phone', '0323442055')) ?></li>
+            <li class="mb-2">📞 <strong>Report Staff</strong><br><?= sanitize(site_content('contact', 'staff_report_phone', '0323443033')) ?></li>
           </ul>
         </div></div>
       </div>
@@ -89,7 +89,7 @@ include __DIR__ . '/../includes/layout_header.php';
         <div class="col-md-6">
           <div class="small">Resort Address</div>
           <div class="small">
-            <?= $settings['address_html'] ?? 'Kalitusi Nature Resort<br>Fort Portal Tourism City<br>Western Uganda' ?>
+            <?= nl2br(sanitize(str_ireplace(['<br>', '<br/>', '<br />'], "\n", site_content('contact', 'address', $settings['address_html'] ?? "Kalitusi Nature Resort\nFort Portal Tourism City\nWestern Uganda")))) ?>
           </div>
         </div>
         <div class="col-md-6">

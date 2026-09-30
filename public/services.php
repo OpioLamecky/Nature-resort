@@ -24,22 +24,22 @@ include __DIR__ . '/../includes/layout_header.php';
 <div id="svcHero" class="carousel slide hero-slider mb-3" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item hero-slide active">
-      <div class="hero-slide__bg" style="background-image: url('<?= asset_url('images/view.webp') ?>');"></div>
+      <div class="hero-slide__bg" style="background-image: url('<?= sanitize(site_content_image('services', 'hero_image', 'images/view.webp')) ?>');"></div>
       <div class="hero-slide__overlay"></div>
       <div class="hero-slide__content container">
         <div class="hero-slide__text">
-          <h2 class="hero-slide__title">Resort Services & Amenities</h2>
-          <p class="hero-slide__subtitle">Everything you need for a perfect stay</p>
+          <h2 class="hero-slide__title"><?= sanitize(site_content('services', 'title', 'Resort Services & Amenities')) ?></h2>
+          <p class="hero-slide__subtitle"><?= sanitize(site_content('services', 'subtitle', 'Everything you need for a perfect stay')) ?></p>
         </div>
       </div>
     </div>
     <div class="carousel-item hero-slide">
-      <div class="hero-slide__bg" style="background-image: url('<?= asset_url('images/campfire.webp') ?>');"></div>
+      <div class="hero-slide__bg" style="background-image: url('<?= sanitize(site_content_image('services', 'secondary_image', 'images/campfire.webp')) ?>');"></div>
       <div class="hero-slide__overlay"></div>
       <div class="hero-slide__content container">
         <div class="hero-slide__text">
-          <h2 class="hero-slide__title">Premium Guest Services</h2>
-          <p class="hero-slide__subtitle">Concierge, spa, activities and more</p>
+          <h2 class="hero-slide__title"><?= sanitize(site_content('services', 'secondary_title', 'Premium Guest Services')) ?></h2>
+          <p class="hero-slide__subtitle"><?= sanitize(site_content('services', 'secondary_subtitle', 'Concierge, spa, activities and more')) ?></p>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@ include __DIR__ . '/../includes/layout_header.php';
   <button class="carousel-control-next" type="button" data-bs-target="#svcHero" data-bs-slide="next"><span class="carousel-control-next-icon"></span><span class="visually-hidden">Next</span></button>
 </div>
 
-<h1 class="h3 mb-3">Services & Amenities</h1>
+<h1 class="h3 mb-3"><?= sanitize(site_content('services', 'section_title', 'Services & Amenities')) ?></h1>
 <div class="row g-3">
   <?php if ($blocks): ?>
     <?php foreach ($blocks as $b): ?>

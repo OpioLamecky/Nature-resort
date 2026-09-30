@@ -22,7 +22,7 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="<?= asset_url('css/style.css') ?>">
-  <link rel="stylesheet" href="<?= asset_url('css/custom-styles.css') ?>">
+  <link rel="stylesheet" href="<?= asset_url('css/custom-styles.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/custom-styles.css') ?>">
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="<?= asset_url('images/kalitusi-logo.png') ?>">
@@ -42,15 +42,15 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="d-flex gap-3 small">
-            <a href="tel:+256772957573"><i class="fas fa-phone"></i> +256 772 957 573</a>
-            <a href="mailto:info@kalitusiresort.com"><i class="fas fa-envelope"></i> info@kalitusiresort.com</a>
+            <a href="tel:<?= sanitize(preg_replace('/[^0-9+]/', '', site_content('contact', 'phone', '+256 772 957 573'))) ?>"><i class="fas fa-phone"></i> <?= sanitize(site_content('contact', 'phone', '+256 772 957 573')) ?></a>
+            <a href="mailto:<?= sanitize(site_content('contact', 'email', 'info@kalitusiresort.com')) ?>"><i class="fas fa-envelope"></i> <?= sanitize(site_content('contact', 'email', 'info@kalitusiresort.com')) ?></a>
           </div>
         </div>
         <div class="col-md-6 text-end">
           <div class="d-flex gap-2 justify-content-end small">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="<?= sanitize(site_content('contact', 'facebook_url', '#')) ?>" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="<?= sanitize(site_content('contact', 'instagram_url', '#')) ?>" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="<?= sanitize(site_content('contact', 'twitter_url', '#')) ?>" aria-label="X or Twitter"><i class="fab fa-twitter"></i></a>
             <?php if (!empty($_SESSION['user'])): ?>
               <span class="ms-3">|</span>
               <a href="<?= base_url('public/logout.php') ?>" class="ms-2">Logout</a>
@@ -87,6 +87,7 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
           </li>
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/activities.php') ?>">Activities</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/dining.php') ?>">Dining</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?= base_url('eshop.php') ?>">E-shop</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/gallery.php') ?>">Gallery</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/news.php') ?>">Blog</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/contact.php') ?>">Contact</a></li>
@@ -100,6 +101,10 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
                 <li><a class="dropdown-item" href="<?= base_url('admin/bookings.php') ?>">Bookings</a></li>
                 <li><a class="dropdown-item" href="<?= base_url('admin/posts.php') ?>">Blog Posts</a></li>
                 <li><a class="dropdown-item" href="<?= base_url('admin/gallery.php') ?>">Gallery</a></li>
+                <?php if (($_SESSION['user']['role'] ?? '') === 'Super Admin'): ?>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="<?= base_url('admin_shop.php') ?>">Manage E-shop</a></li>
+                <?php endif; ?>
               </ul>
             </li>
           <?php endif; ?>

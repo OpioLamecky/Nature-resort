@@ -22,16 +22,18 @@
           <h6 class="fw-bold mb-3">Contact Us</h6>
           <?php
             // WhatsApp link for contact section
-            $waNum = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '256772957573');
+            $waLink = site_content('contact', 'whatsapp_link', 'https://wa.me/' . preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '256772957573'));
             $waMsg = urlencode('Hello Kalitusi Resort, I would like to inquire about...');
-            $waLink = 'https://wa.me/' . $waNum . '?text=' . $waMsg;
+            if (!str_contains($waLink, '?')) {
+              $waLink .= '?text=' . $waMsg;
+            }
           ?>
           <ul class="list-unstyled mb-0 footer-list">
-            <li><i class="fas fa-phone me-2"></i>Phone: <?= sanitize($settings['contact_phone'] ?? '+256 772 957 573') ?></li>
-            <li><i class="fas fa-envelope me-2"></i>Email: <a href="mailto:<?= sanitize($settings['contact_email'] ?? 'info@kalitusiresort.com') ?>"><?= sanitize($settings['contact_email'] ?? 'info@kalitusiresort.com') ?></a></li>
-            <li><i class="fab fa-whatsapp me-2"></i>WhatsApp: <a href="<?= sanitize($waLink) ?>" target="_blank" rel="noopener">+256 772 957 573</a></li>
+            <li><i class="fas fa-phone me-2"></i>Phone: <?= sanitize(site_content('contact', 'phone', $settings['contact_phone'] ?? '+256 772 957 573')) ?></li>
+            <li><i class="fas fa-envelope me-2"></i>Email: <a href="mailto:<?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusiresort.com')) ?>"><?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusiresort.com')) ?></a></li>
+            <li><i class="fab fa-whatsapp me-2"></i>WhatsApp: <a href="<?= sanitize($waLink) ?>" target="_blank" rel="noopener"><?= sanitize(site_content('contact', 'phone', '+256 772 957 573')) ?></a></li>
             <li class="mt-2"><i class="fas fa-map-marker-alt me-2"></i>Address:</li>
-            <li><?= $settings['address_html'] ?? 'Kalitusi Nature Resort<br>Fort Portal Tourism City<br>Western Uganda' ?></li>
+            <li><?= nl2br(sanitize(str_ireplace(['<br>', '<br/>', '<br />'], "\n", site_content('contact', 'address', $settings['address_html'] ?? "Kalitusi Nature Resort\nFort Portal Tourism City\nWestern Uganda")))) ?></li>
           </ul>
         </div>
 
@@ -55,9 +57,9 @@
         <div class="col-12 col-lg-4">
           <h6 class="fw-bold mb-3">Follow Us</h6>
           <ul class="list-unstyled footer-list">
-            <li><a href="#" target="_blank" rel="noopener"><i class="fab fa-facebook me-2"></i>Facebook</a></li>
-            <li><a href="#" target="_blank" rel="noopener"><i class="fab fa-instagram me-2"></i>Instagram</a></li>
-            <li><a href="#" target="_blank" rel="noopener"><i class="fab fa-twitter me-2"></i>Twitter</a></li>
+            <li><a href="<?= sanitize(site_content('contact', 'facebook_url', '#')) ?>" target="_blank" rel="noopener"><i class="fab fa-facebook me-2"></i>Facebook</a></li>
+            <li><a href="<?= sanitize(site_content('contact', 'instagram_url', '#')) ?>" target="_blank" rel="noopener"><i class="fab fa-instagram me-2"></i>Instagram</a></li>
+            <li><a href="<?= sanitize(site_content('contact', 'twitter_url', '#')) ?>" target="_blank" rel="noopener"><i class="fab fa-twitter me-2"></i>X / Twitter</a></li>
             <li class="mt-3">
               <p class="mb-2">Subscribe to our newsletter:</p>
               <form id="newsletterForm" class="d-flex gap-2">
@@ -83,7 +85,7 @@
     // WhatsApp number from settings or default (remove spaces and dashes for wa.me link)
     $whatsappNumber = preg_replace('/[^0-9]/', '', $settings['whatsapp_number'] ?? '256772957573');
     $whatsappMessage = urlencode('Hello Kalitusi Resort, I would like to inquire about...');
-    $whatsappLink = 'https://wa.me/' . $whatsappNumber . '?text=' . $whatsappMessage;
+    $whatsappLink = site_content('contact', 'whatsapp_link', 'https://wa.me/' . $whatsappNumber . '?text=' . $whatsappMessage);
   ?>
   <div class="footer-accent position-relative py-2">
     <div class="container text-center small fw-semibold">&copy;<?= date('Y') ?> Kalitusi Nature Resort - Fort Portal, Uganda. All rights reserved.</div>
