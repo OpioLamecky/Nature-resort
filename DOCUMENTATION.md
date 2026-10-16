@@ -734,7 +734,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **README.md:** Quick start guide
 
 ### Contact Information
-- **Email:** info@kalitusiresort.com
+- **Email:** info@kalitusi.com
 - **Phone:** +256 772 123 456
 - **Website:** [kalitusiresort.com](https://kalitusiresort.com)
 

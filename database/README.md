@@ -133,6 +133,10 @@ SELECT * FROM active_sliders;
 SELECT * FROM published_posts LIMIT 10;
 ```
 
+## Meal Reservations Upgrade
+
+Existing installations should import `database/meal_reservations_migration.sql` once to create the Meal Reservations table. The migration is safe to re-run and links reservations to bookings when a matching booking exists.
+
 ### Search Posts:
 ```sql
 SELECT * FROM posts 

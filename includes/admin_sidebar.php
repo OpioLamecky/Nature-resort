@@ -122,6 +122,33 @@ $navItems = [
         ]
     ]
 ];
+
+$sectionByTitle = [
+    'Dashboard' => 'Overview',
+    'Bookings' => 'Guest Operations',
+    'Meal Reservations' => 'Guest Operations',
+    'Accommodations' => 'Property',
+    'Staff Management' => 'People',
+    'Reviews' => 'People',
+    'Newsletter' => 'Communications',
+    'Analytics' => 'Insights',
+    'Content' => 'Website',
+    'Gift Shop' => 'Website',
+    'Categories' => 'Website',
+    'Announcements' => 'Website',
+    'Settings' => 'Account',
+];
+$visibleNavItems = [];
+foreach ($navItems as $item) {
+    if (!empty($item['roles']) && !in_array($user['role'] ?? '', $item['roles'], true)) {
+        continue;
+    }
+    if (!empty($item['permission']) && !has_permission($item['permission'])) {
+        continue;
+    }
+    $item['section'] = $sectionByTitle[$item['title']] ?? 'Other';
+    $visibleNavItems[] = $item;
+}
 ?>
 
 <!-- Modern Admin Sidebar -->
@@ -132,7 +159,7 @@ $navItems = [
             <img src="<?= asset_url('images/kalitusi-logo.png') ?>" alt="Logo" class="sidebar-logo">
             <span class="brand-text">Kalitusi Admin</span>
         </div>
-        <button class="sidebar-toggle" id="sidebarToggle">
+        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Collapse sidebar" aria-expanded="true">
             <i class="fas fa-bars"></i>
         </button>
     </div>
@@ -149,22 +176,18 @@ $navItems = [
     </div>
 
     <!-- Navigation Menu -->
-    <nav class="sidebar-nav">
+    <nav class="sidebar-nav" aria-label="Admin navigation">
         <ul class="nav-list">
-            <?php foreach ($navItems as $item): ?>
-                <?php 
-                // Check permissions
-                if (!empty($item['roles']) && !in_array($user['role'] ?? '', $item['roles'], true)) {
-                    continue;
-                }
-                if ($item['permission'] && !has_permission($item['permission'])) {
-                    continue;
-                }
-                ?>
-                <li class="nav-item <?= $item['active'] ? 'active' : '' ?> <?= !empty($item['submenu']) ? 'has-submenu' : '' ?>">
+            <?php $currentSection = null; foreach ($visibleNavItems as $item): ?>
+                <?php if ($currentSection !== $item['section']): $currentSection = $item['section']; ?>
+                    <li class="nav-section-label"><?= sanitize($currentSection) ?></li>
+                <?php endif; ?>
+                <?php $submenuId = 'submenu-' . strtolower(str_replace(' ', '-', $item['title'])); ?>
+                <li class="nav-item <?= $item['active'] ? 'active' : '' ?> <?= !empty($item['submenu']) ? 'has-submenu' . ($item['active'] ? ' submenu-open' : '') : '' ?>">
                     <a href="<?= !empty($item['submenu']) ? '#' : ($item['path'] ?? base_url('admin/' . $item['url'])) ?>"
                        class="nav-link <?= !empty($item['submenu']) ? 'submenu-toggle' : '' ?>"
-                       data-tooltip="<?= sanitize($item['title']) ?>">
+                       data-tooltip="<?= sanitize($item['title']) ?>"
+                       <?= !empty($item['submenu']) ? 'aria-expanded="' . ($item['active'] ? 'true' : 'false') . '" aria-controls="' . $submenuId . '"' : '' ?>>
                         <i class="<?= $item['icon'] ?>"></i>
                         <span class="nav-text"><?= $item['title'] ?></span>
                         <?php if (!empty($item['badge']) && $item['badge'] > 0): ?>
@@ -176,7 +199,7 @@ $navItems = [
                     </a>
                     
                     <?php if (!empty($item['submenu'])): ?>
-                        <ul class="submenu <?= $item['active'] ? 'show' : '' ?>">
+                        <ul class="submenu <?= $item['active'] ? 'show' : '' ?>" id="<?= $submenuId ?>">
                             <?php foreach ($item['submenu'] as $subitem): ?>
                                 <li class="submenu-item">
                                     <a href="<?= $subitem['path'] ?? base_url('admin/' . $subitem['url']) ?>" class="submenu-link">

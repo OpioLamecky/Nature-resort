@@ -51,7 +51,7 @@ return [
             'title' => ['label' => 'Page heading', 'type' => 'text', 'default' => 'Our Accommodations'],
             'intro' => ['label' => 'Introduction', 'type' => 'textarea', 'default' => "From cozy rooms to luxury suites, find the perfect retreat for your stay in Fort Portal's most beautiful setting."],
             'child_policy_title' => ['label' => 'Child policy heading', 'type' => 'text', 'default' => 'Child Pricing Policy'],
-            'hero_image' => ['label' => 'Hero image', 'type' => 'image', 'default' => 'images/rooms.webp'],
+            'hero_image' => ['label' => 'Hero image', 'type' => 'image', 'default' => 'images/cabin.webp'],
             'child_10_14_title' => ['label' => 'Age group heading', 'type' => 'text', 'default' => 'Children 10-14 years'],
             'child_10_14_copy' => ['label' => 'Age group policy', 'type' => 'text', 'default' => 'Pay 50% of the adult rate for any room type'],
             'child_4_10_title' => ['label' => 'Age group heading', 'type' => 'text', 'default' => 'Children 4-10 years'],
@@ -207,7 +207,7 @@ return [
         'label' => 'Contact and Site Details', 'preview' => 'public/contact.php',
         'fields' => [
             'phone' => ['label' => 'Main phone number', 'type' => 'text', 'default' => '+256 772 957 573'],
-            'email' => ['label' => 'Contact email', 'type' => 'text', 'default' => 'info@kalitusiresort.com'],
+            'email' => ['label' => 'Contact email', 'type' => 'text', 'default' => 'info@kalitusi.com'],
             'whatsapp_link' => ['label' => 'WhatsApp link', 'type' => 'text', 'default' => 'https://wa.me/256772957573'],
             'facebook_url' => ['label' => 'Facebook page URL', 'type' => 'text', 'default' => '#'],
             'instagram_url' => ['label' => 'Instagram page URL', 'type' => 'text', 'default' => '#'],

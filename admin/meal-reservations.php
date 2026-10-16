@@ -43,7 +43,8 @@ try {
     $stmt->execute($params);
     $rows = $stmt->fetchAll();
 } catch (Throwable $e) {
-    $errorMsg = 'Meal reservations table not found. Please create the meal_reservations table in the database.';
+  error_log('Meal reservations could not be loaded: ' . $e->getMessage());
+  $errorMsg = 'Meal reservations are not available because the database setup is incomplete. Ask your database administrator to apply the meal reservations migration, then refresh this page.';
 }
 
 include __DIR__ . '/../includes/admin_layout_header.php';
@@ -57,11 +58,7 @@ include __DIR__ . '/../includes/admin_layout_header.php';
   </div>
 
   <?php if ($errorMsg): ?>
-    <div class="alert alert-warning">
-      <?= sanitize($errorMsg) ?><br>
-      <small>You can create it in phpMyAdmin using SQL similar to:<br>
-      <code>CREATE TABLE meal_reservations (meal_reservation_id INT AUTO_INCREMENT PRIMARY KEY, booking_id INT NULL, guest_name VARCHAR(255), guest_email VARCHAR(255), guest_phone VARCHAR(100), meal_type VARCHAR(50), meal_date DATE NULL, meal_time TIME NULL, guests INT DEFAULT 0, special_requests TEXT NULL, status VARCHAR(50) DEFAULT 'pending', source VARCHAR(50) DEFAULT 'website', created_at DATETIME DEFAULT CURRENT_TIMESTAMP);</code></small>
-    </div>
+    <div class="alert alert-warning" role="alert"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i><?= sanitize($errorMsg) ?></div>
   <?php else: ?>
 
   <div class="card mb-4">

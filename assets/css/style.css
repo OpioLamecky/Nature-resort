@@ -546,78 +546,91 @@ p {
 
 /* Cards */
 .card {
-    border: 1px solid rgba(143, 139, 132, 0.2);
-    border-radius: 18px;
+    border: 1px solid rgba(38, 48, 40, 0.08);
+    border-radius: 14px;
     overflow: hidden;
-    background: var(--cream);
-    box-shadow: var(--shadow-sm);
-    transition: box-shadow 0.3s ease;
+    background: #fff;
+    box-shadow: 0 8px 26px rgba(24, 32, 27, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(24, 32, 27, 0.13);
 }
 
-.card img {
-    transition: transform 0.5s;
+.card > img,
+.card .card-img-top {
+    transition: transform 0.5s ease;
 }
 
-.card:hover img {
+.card:hover > img,
+.card:hover .card-img-top {
     transform: scale(1.03);
 }
 
 .card-title {
-    color: var(--forest-green);
-    font-family: 'Big Caslon', 'Times New Roman', serif;
-    font-weight: 600;
+    color: #202721;
+    font-family: inherit;
+    font-weight: 650;
 }
 
 /* Room Cards */
 .room-card {
-    border-radius: 20px;
+    border-radius: 14px;
     overflow: hidden;
     position: relative;
 }
 
 .room-card img {
-    height: 280px;
+    height: 220px;
     object-fit: cover;
 }
 
 .room-card .price {
-    color: var(--forest-green);
-    font-size: 1.75rem;
+    color: #202721;
+    font-size: 1.35rem;
     font-weight: 600;
-    font-family: 'Big Caslon', 'Times New Roman', serif;
+    font-family: inherit;
+}
+
+.room-card .btn,
+.stay-card .btn,
+.resort-image-card .btn {
+    border: 0;
+    border-radius: 999px;
+    background: #171917;
+    color: #fff;
+    font-weight: 600;
+}
+
+.room-card .btn:hover,
+.stay-card .btn:hover,
+.resort-image-card .btn:hover {
+    background: #303630;
+    color: #fff;
 }
 
 /* Feature Cards - Mix of Carva colors */
 .feature-card {
-    background: linear-gradient(135deg, var(--white) 0%, var(--soft-mint) 100%);
-    border-radius: 18px;
-    padding: 2rem;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 26px rgba(24, 32, 27, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border: 1px solid rgba(38, 48, 40, 0.08);
     position: relative;
     overflow: hidden;
 }
 
 .feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 100%;
-    background: linear-gradient(180deg, var(--pine-dark), var(--olive-muted), var(--moss-light));
+    content: none;
 }
 
 .feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--moss-light);
-    background: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(24, 32, 27, 0.13);
+    border-color: rgba(38, 48, 40, 0.08);
 }
 
 .feature-card .feature-icon {

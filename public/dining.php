@@ -12,16 +12,16 @@ include __DIR__ . '/../includes/layout_header.php';
 </nav>
 
 <!-- Hero Section -->
-<section class="bg-soft-mint py-5 rounded mb-4">
+<section class="page-intro-hero bg-soft-mint">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-8">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-lg-7">
         <h1 class="display-4 mb-3"><?= sanitize(site_content('dining', 'title', 'Dining & Cuisine')) ?></h1>
         <p class="lead mb-4"><?= sanitize(site_content('dining', 'intro', 'Experience authentic Ugandan flavors and international cuisine in our scenic restaurant overlooking the mountains.')) ?></p>
         <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg">Make a Reservation</a>
       </div>
-      <div class="col-lg-4 d-none d-lg-block">
-        <img src="<?= sanitize(site_content_image('dining', 'hero_image', 'images/food1.webp')) ?>" alt="Dining at Kalitusi" class="img-fluid rounded shadow">
+      <div class="col-lg-5">
+        <img src="<?= sanitize(site_content_image('dining', 'hero_image', 'images/food1.webp')) ?>" alt="Dining at Kalitusi">
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@ include __DIR__ . '/../includes/layout_header.php';
   <section class="mb-5">
     <div class="row align-items-center">
       <div class="col-md-6">
-        <img src="<?= sanitize(site_content_image('dining', 'restaurant_image', 'images/food2.webp')) ?>" alt="<?= sanitize(site_content('dining', 'restaurant_title', 'The Mountain View Restaurant')) ?>" class="img-fluid rounded shadow">
+        <img src="<?= sanitize(site_content_image('dining', 'restaurant_image', 'images/food2.webp')) ?>" alt="<?= sanitize(site_content('dining', 'restaurant_title', 'The Mountain View Restaurant')) ?>" class="dining-feature-image">
       </div>
       <div class="col-md-6">
         <h2 class="h3 mb-3"><i class="fas fa-utensils text-primary me-2"></i><?= sanitize(site_content('dining', 'restaurant_title', 'The Mountain View Restaurant')) ?></h2>
@@ -217,7 +217,7 @@ include __DIR__ . '/../includes/layout_header.php';
   <section class="mb-5">
     <div class="row align-items-center">
       <div class="col-md-6 order-md-2">
-        <img src="<?= sanitize(site_content_image('dining', 'bar_image', 'images/food3.webp')) ?>" alt="<?= sanitize(site_content('dining', 'bar_title', 'The Sunset Bar')) ?>" class="img-fluid rounded shadow">
+        <img src="<?= sanitize(site_content_image('dining', 'bar_image', 'images/food3.webp')) ?>" alt="<?= sanitize(site_content('dining', 'bar_title', 'The Sunset Bar')) ?>" class="dining-feature-image">
       </div>
       <div class="col-md-6 order-md-1">
         <h2 class="h3 mb-3"><i class="fas fa-glass-martini-alt text-primary me-2"></i><?= sanitize(site_content('dining', 'bar_title', 'The Sunset Bar')) ?></h2>

@@ -137,12 +137,12 @@ include __DIR__ . '/../includes/admin_layout_header.php';
 
   
   <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="booking-page-heading d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
     <div>
       <h1 class="h3 mb-1">Manage Bookings</h1>
       <p class="text-muted mb-0">View and manage all resort bookings</p>
     </div>
-    <div>
+    <div class="booking-page-actions">
       <?php if (has_permission('bookings.create')): ?>
         <a href="<?= base_url('admin/booking-create.php') ?>" class="btn btn-primary">
           <i class="fas fa-plus me-2"></i>New Booking
@@ -248,8 +248,8 @@ include __DIR__ . '/../includes/admin_layout_header.php';
   <!-- Bookings Table -->
   <div class="card">
     <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
+      <div class="table-responsive booking-table-wrap">
+        <table class="table table-hover mb-0 booking-list-table">
           <thead class="table-light">
             <tr>
               <th>Reference</th>
@@ -275,18 +275,18 @@ include __DIR__ . '/../includes/admin_layout_header.php';
             <?php else: ?>
               <?php foreach ($bookings as $booking): ?>
                 <tr>
-                  <td>
+                  <td data-label="Reference">
                     <strong><?= sanitize($booking['booking_reference']) ?></strong><br>
                     <small class="text-muted"><?= date('M j, g:i A', strtotime($booking['created_at'])) ?></small>
                   </td>
-                  <td>
+                  <td data-label="Guest">
                     <?= sanitize($booking['guest_name']) ?><br>
                     <small class="text-muted"><?= sanitize($booking['guest_email']) ?></small>
                     <?php if ($booking['guest_phone']): ?>
                       <br><small class="text-muted"><i class="fas fa-phone me-1"></i><?= sanitize($booking['guest_phone']) ?></small>
                     <?php endif; ?>
                   </td>
-                  <td>
+                  <td data-label="Room">
                     <?php if ($booking['room_name']): ?>
                       <strong><?= sanitize($booking['room_type']) ?></strong><br>
                       <small class="text-muted"><?= sanitize($booking['room_name']) ?></small>
@@ -294,17 +294,17 @@ include __DIR__ . '/../includes/admin_layout_header.php';
                       <span class="text-muted">Not assigned</span>
                     <?php endif; ?>
                   </td>
-                  <td><?= date('M j, Y', strtotime($booking['check_in'])) ?></td>
-                  <td>
+                  <td data-label="Check-in"><?= date('M j, Y', strtotime($booking['check_in'])) ?></td>
+                  <td data-label="Check-out">
                     <?= date('M j, Y', strtotime($booking['check_out'])) ?><br>
                     <small class="text-muted"><?= $booking['nights'] ?> nights</small>
                   </td>
-                  <td><?= $booking['adults'] + $booking['children'] ?></td>
-                  <td>
+                  <td data-label="Guests"><?= $booking['adults'] + $booking['children'] ?></td>
+                  <td data-label="Amount">
                     <strong>UGX <?= number_format($booking['total_amount'] ?? 0) ?></strong><br>
                     <small class="text-muted">Deposit: UGX <?= number_format($booking['deposit_amount'] ?? 0) ?></small>
                   </td>
-                  <td>
+                  <td data-label="Payment">
                     <?php
                     $paymentColors = [
                         'unpaid' => 'danger',
@@ -318,7 +318,7 @@ include __DIR__ . '/../includes/admin_layout_header.php';
                       <?= ucwords(str_replace('_', ' ', $booking['payment_status'])) ?>
                     </span>
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <?php
                     $statusColors = [
                         'pending' => 'warning',
@@ -333,7 +333,7 @@ include __DIR__ . '/../includes/admin_layout_header.php';
                       <?= ucfirst($booking['status']) ?>
                     </span>
                   </td>
-                  <td>
+                  <td data-label="Actions">
                     <div class="btn-group btn-group-sm">
                       <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="fas fa-cog"></i>

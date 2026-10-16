@@ -14,7 +14,7 @@ include __DIR__ . '/../includes/layout_header.php';
 </nav>
 
 <!-- Hero Section -->
-<section class="bg-soft-mint py-5 rounded mb-4">
+<section class="page-intro-hero bg-soft-mint">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-7">
@@ -23,7 +23,7 @@ include __DIR__ . '/../includes/layout_header.php';
         <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg"><?= sanitize(site_content('activities', 'booking_label', 'Book Your Experience')) ?></a>
       </div>
       <div class="col-lg-5">
-        <img src="<?= sanitize(site_content_image('activities', 'hero_image', 'images/view.webp')) ?>" alt="Nature Activities" class="img-fluid rounded shadow">
+        <img src="<?= sanitize(site_content_image('activities', 'hero_image', 'images/view.webp')) ?>" alt="Nature Activities">
       </div>
     </div>
   </div>

@@ -368,7 +368,7 @@ ANNUAL RECURRING COSTS (Year 2+):      36,875,000 UGX
 ## 14. CONTACT & SUPPORT
 
 **Kalitusi Nature Resort**
-- Email: info@kalitusiresort.com
+- Email: info@kalitusi.com
 - Phone: +256 772 123 456
 - Website: https://kalitusiresort.infinityfreeapp.com
 

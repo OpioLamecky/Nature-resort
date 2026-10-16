@@ -69,19 +69,19 @@ include __DIR__ . '/../includes/layout_header.php';
 ?>
 
 <!-- Page Header -->
-<div class="bg-primary text-white py-5 mb-4">
+<section class="page-intro-hero page-news-hero">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-8">
-        <h1 class="display-5 fw-bold mb-2"><?= sanitize(site_content('news', 'title', 'News & Blog')) ?></h1>
+    <div class="row g-4 g-lg-5 align-items-center">
+      <div class="col-md-7">
+        <h1 class="display-5 mb-3"><?= sanitize(site_content('news', 'title', 'News & Blog')) ?></h1>
         <p class="lead mb-0"><?= sanitize(site_content('news', 'intro', 'Stay updated with the latest news, events, and stories from Kalitusi Nature Resort')) ?></p>
       </div>
-      <div class="col-lg-4 text-lg-end">
-        <i class="fas fa-newspaper fa-5x opacity-25"></i>
+      <div class="col-md-5">
+        <img src="<?= asset_url('images/cabin.webp') ?>" alt="Kalitusi Nature Resort cottages">
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- Featured Post -->
 <?php if ($featuredPost && $page === 1 && !$q && !$categoryId): ?>

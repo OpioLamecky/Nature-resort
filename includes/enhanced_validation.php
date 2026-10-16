@@ -230,7 +230,7 @@ function validate_booking_form(array $data): array {
     $validator->addRule('children', 'numeric');
     
     $validator->addRule('room_type', 'required')
-              ->addRule('room_type', 'in', ['options' => ['standard', 'deluxe', 'suite', 'chalet', 'glamping']]);
+              ->addRule('room_type', 'in', ['options' => ['standard', 'deluxe', 'suite', 'chalet', 'glamping', 'ginger', 'rocket']]);
     
     // Validate date logic
     if (!empty($data['check_in']) && !empty($data['check_out'])) {

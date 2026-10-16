@@ -24,6 +24,7 @@ $roomTypeLabels = [
 $roomTypeKeys = array_flip($roomTypeLabels);
 $bookingRoomTypes = [];
 $roomRatesByType = [];
+$bookingDorms = [];
 try {
   $roomTypeStmt = $pdo->query(
     "SELECT room_type, MIN(price_per_night) AS price_per_night
@@ -42,19 +43,40 @@ try {
       ];
     }
   }
+  $dormStmt = $pdo->query(
+    "SELECT accommodation_id, name FROM accommodations
+     WHERE LOWER(TRIM(name)) IN ('ginger', 'rocket')
+       AND status = 'active' AND availability_status = 'available'"
+  );
+  foreach ($dormStmt->fetchAll() as $dormRow) {
+    $dormKey = strtolower(trim($dormRow['name']));
+    $bookingDorms[$dormKey] = [
+      'accommodation_id' => (int)$dormRow['accommodation_id'],
+      'label' => strtoupper($dormKey),
+    ];
+    $roomRatesByType[$dormKey] = 60000;
+  }
   if (ctype_digit((string)$selectedRoom)) {
     $selectedRoomStmt = $pdo->prepare(
-      "SELECT room_type FROM accommodations
+      "SELECT room_type, name FROM accommodations
        WHERE accommodation_id = ? AND status = 'active' AND availability_status = 'available'"
     );
     $selectedRoomStmt->execute([(int)$selectedRoom]);
-    $selectedType = $selectedRoomStmt->fetchColumn();
-    $selectedRoom = $roomTypeKeys[$selectedType] ?? '';
+    $selectedAccommodation = $selectedRoomStmt->fetch();
+    if ($selectedAccommodation) {
+      $selectedName = strtolower(trim($selectedAccommodation['name']));
+      $selectedRoom = isset($bookingDorms[$selectedName])
+        ? $selectedName
+        : ($roomTypeKeys[$selectedAccommodation['room_type']] ?? '');
+    } else {
+      $selectedRoom = '';
+    }
   }
 } catch (PDOException $e) {
   error_log('Booking accommodation lookup failed: ' . $e->getMessage());
   $bookingRoomTypes = [];
   $roomRatesByType = [];
+  $bookingDorms = [];
 }
 
 // Handle form submission
@@ -78,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Use enhanced validation
     $validation = validate_booking_form($_POST);
     if (!$validation['valid']) {
-        $errors = $validation['errors'];
-    } else {
+      $errors = array_merge($errors, $validation['errors']);
+    } elseif (empty($errors)) {
         $cleanData = $validation['clean_data'];
         
         try {
@@ -91,20 +113,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $checkOutDate = new DateTime($cleanData['check_out']);
             $nights = $checkInDate->diff($checkOutDate)->days;
 
-            $roomTypeLabel = $roomTypeLabels[$cleanData['room_type']] ?? null;
-            if ($roomTypeLabel === null) {
-              throw new RuntimeException('Please choose an available accommodation type.');
+            $roomTypeKey = $cleanData['room_type'];
+            $roomTypeLabel = $roomTypeLabels[$roomTypeKey] ?? null;
+            $accommodationId = null;
+            $specialRequests = trim($cleanData['special_requests'] ?? '');
+
+            if (in_array($roomTypeKey, ['ginger', 'rocket'], true)) {
+              $dormStmt = $pdo->prepare(
+                "SELECT accommodation_id, name FROM accommodations
+                 WHERE LOWER(TRIM(name)) = ? AND status = 'active'
+                   AND availability_status = 'available' LIMIT 1"
+              );
+              $dormStmt->execute([$roomTypeKey]);
+              $dorm = $dormStmt->fetch();
+              if (!$dorm) {
+                throw new RuntimeException('That dormitory is no longer available. Please choose another.');
+              }
+
+              $dormBookingType = $_POST['dorm_booking_type'] ?? '';
+              if (!in_array($dormBookingType, ['per_bed', 'whole_dorm'], true)) {
+                throw new RuntimeException('Choose individual beds or the whole dormitory.');
+              }
+              if (($_POST['dorm_occupants_confirmed'] ?? '') !== 'yes') {
+                $eligibleGroup = $roomTypeKey === 'ginger' ? 'women and girls' : 'men and boys';
+                throw new RuntimeException('Confirm that every dorm guest is ' . $eligibleGroup . '.');
+              }
+
+              $dormBeds = $dormBookingType === 'whole_dorm' ? 6 : filter_var(
+                $_POST['dorm_beds'] ?? null,
+                FILTER_VALIDATE_INT,
+                ['options' => ['min_range' => 1, 'max_range' => 6]]
+              );
+              if ($dormBeds === false) {
+                throw new RuntimeException('Choose between 1 and 6 dorm beds.');
+              }
+
+              $adultCount = filter_var($cleanData['adults'], FILTER_VALIDATE_INT);
+              $childCount = filter_var($cleanData['children'] ?? 0, FILTER_VALIDATE_INT);
+              if ($adultCount === false || $childCount === false || $childCount < 0) {
+                throw new RuntimeException('Enter a valid whole-number guest count.');
+              }
+              $guestCount = $adultCount + $childCount;
+              if ($guestCount < 1 || $guestCount > 6 || $guestCount > $dormBeds) {
+                throw new RuntimeException('The guest count must fit within the number of dorm beds selected (maximum 6).');
+              }
+
+              $overlapStmt = $pdo->prepare(
+                "SELECT adults, children, special_requests FROM bookings
+                 WHERE accommodation_id = ? AND status IN ('pending', 'confirmed', 'checked_in')
+                   AND check_in < ? AND check_out > ?"
+              );
+              $overlapStmt->execute([
+                (int)$dorm['accommodation_id'],
+                $cleanData['check_out'],
+                $cleanData['check_in'],
+              ]);
+              $occupiedBeds = 0;
+              foreach ($overlapStmt->fetchAll() as $overlappingBooking) {
+                $isWholeDorm = str_contains((string)$overlappingBooking['special_requests'], '[WHOLE_DORM]');
+                $occupiedBeds += $isWholeDorm
+                  ? 6
+                  : max(0, (int)$overlappingBooking['adults'] + (int)$overlappingBooking['children']);
+              }
+              if ($occupiedBeds + $dormBeds > 6) {
+                throw new RuntimeException('Not enough beds are available for those dates. Please select fewer beds or different dates.');
+              }
+
+              $accommodationId = (int)$dorm['accommodation_id'];
+              $roomRate = $dormBookingType === 'whole_dorm' ? 360000 : 60000 * $dormBeds;
+              $bookingLabel = $dormBookingType === 'whole_dorm'
+                ? 'whole dormitory (6 beds)'
+                : $dormBeds . ' bed' . ($dormBeds === 1 ? '' : 's');
+              $genderGroup = $roomTypeKey === 'ginger' ? 'women and girls' : 'men and boys';
+              $dormRequest = '[DORM:' . strtoupper($roomTypeKey) . ':' . strtoupper($dormBookingType) . ']' .
+                ($dormBookingType === 'whole_dorm' ? '[WHOLE_DORM]' : '') .
+                ' ' . strtoupper($dorm['name']) . ': ' . $bookingLabel .
+                '; all occupants confirmed as ' . $genderGroup . '.';
+              $specialRequests = trim($dormRequest . ($specialRequests !== '' ? "\n" . $specialRequests : ''));
+            } else {
+              if ($roomTypeLabel === null) {
+                throw new RuntimeException('Please choose an available accommodation type.');
+              }
+              $rateStmt = $pdo->prepare(
+                "SELECT MIN(price_per_night) FROM accommodations
+                 WHERE room_type = ? AND status = 'active' AND availability_status = 'available'"
+              );
+              $rateStmt->execute([$roomTypeLabel]);
+              $currentRate = $rateStmt->fetchColumn();
+              if ($currentRate === false || $currentRate === null) {
+                throw new RuntimeException('That accommodation type is no longer available. Please choose another.');
+              }
+              $roomRate = (float)$currentRate;
             }
-            $rateStmt = $pdo->prepare(
-              "SELECT MIN(price_per_night) FROM accommodations
-               WHERE room_type = ? AND status = 'active' AND availability_status = 'available'"
-            );
-            $rateStmt->execute([$roomTypeLabel]);
-            $currentRate = $rateStmt->fetchColumn();
-            if ($currentRate === false || $currentRate === null) {
-              throw new RuntimeException('That accommodation type is no longer available. Please choose another.');
-            }
-            $roomRate = (float)$currentRate;
             $totalAmount = $roomRate * $nights;
             $depositAmount = $totalAmount * 0.5; // 50% deposit
 
@@ -112,9 +212,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("
                 INSERT INTO bookings (
                     booking_reference, guest_name, guest_email, guest_phone,
-                    check_in, check_out, adults, children, room_rate, total_amount,
+                    guest_country, accommodation_id, check_in, check_out, adults, children, room_rate, total_amount,
                     deposit_amount, special_requests, status, payment_status, source, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'unpaid', 'website', NOW())
+                  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'unpaid', 'website', NOW())
             ");
 
             $stmt->execute([
@@ -122,6 +222,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cleanData['guest_name'], 
                 $cleanData['guest_email'], 
                 $cleanData['guest_phone'],
+                trim($_POST['guest_country'] ?? ''),
+                $accommodationId,
                 $cleanData['check_in'], 
                 $cleanData['check_out'], 
                 $cleanData['adults'], 
@@ -129,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $roomRate,
                 $totalAmount, 
                 $depositAmount, 
-                $cleanData['special_requests'] ?? ''
+                $specialRequests
             ]);
 
             $success = true;
@@ -380,14 +482,54 @@ include __DIR__ . '/../includes/layout_header.php';
                   <label for="room_type" class="form-label">Room Type *</label>
                   <select class="form-select" id="room_type" name="room_type" required>
                     <option value="">Select Room Type</option>
-                    <?php foreach ($bookingRoomTypes as $roomOption): ?>
-                      <option value="<?= sanitize($roomOption['key']) ?>" data-rate="<?= (float)$roomOption['price'] ?>" <?= ($selectedRoom === $roomOption['key'] || ($_POST['room_type'] ?? '') === $roomOption['key']) ? 'selected' : '' ?>>
-                        <?= sanitize($roomOption['label']) ?> - UGX <?= number_format($roomOption['price']) ?>/night
-                      </option>
-                    <?php endforeach; ?>
+                    <optgroup label="Rooms and suites">
+                      <?php foreach ($bookingRoomTypes as $roomOption): ?>
+                        <option value="<?= sanitize($roomOption['key']) ?>" data-rate="<?= (float)$roomOption['price'] ?>" <?= ($selectedRoom === $roomOption['key'] || ($_POST['room_type'] ?? '') === $roomOption['key']) ? 'selected' : '' ?>>
+                          <?= sanitize($roomOption['label']) ?> - UGX <?= number_format($roomOption['price']) ?>/night
+                        </option>
+                      <?php endforeach; ?>
+                    </optgroup>
+                    <?php if ($bookingDorms): ?>
+                    <optgroup label="Dormitories">
+                      <?php foreach ($bookingDorms as $dormKey => $dormOption): ?>
+                        <option value="<?= sanitize($dormKey) ?>" data-rate="60000" <?= ($selectedRoom === $dormKey || ($_POST['room_type'] ?? '') === $dormKey) ? 'selected' : '' ?>>
+                          <?= sanitize($dormOption['label']) ?> Dormitory - UGX 60,000 per bed/night
+                        </option>
+                      <?php endforeach; ?>
+                    </optgroup>
+                    <?php endif; ?>
                   </select>
                 </div>
+                <div class="col-12 d-none" id="dorm-options">
+                  <div class="rounded border p-3 bg-light">
+                    <p class="mb-2" id="dorm-policy"></p>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label for="dorm_booking_type" class="form-label">Dorm booking</label>
+                        <select class="form-select" id="dorm_booking_type" name="dorm_booking_type">
+                          <option value="per_bed" <?= ($_POST['dorm_booking_type'] ?? '') === 'per_bed' ? 'selected' : '' ?>>Book individual beds</option>
+                          <option value="whole_dorm" <?= ($_POST['dorm_booking_type'] ?? '') === 'whole_dorm' ? 'selected' : '' ?>>Book the whole dorm (6 beds)</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6" id="dorm-bed-count-wrap">
+                        <label for="dorm_beds" class="form-label">Number of beds</label>
+                        <select class="form-select" id="dorm_beds" name="dorm_beds">
+                          <?php for ($bed = 1; $bed <= 6; $bed++): ?>
+                            <option value="<?= $bed ?>" <?= (int)($_POST['dorm_beds'] ?? 1) === $bed ? 'selected' : '' ?>><?= $bed ?> bed<?= $bed === 1 ? '' : 's' ?> - UGX <?= number_format(60000 * $bed) ?>/night</option>
+                          <?php endfor; ?>
+                        </select>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="dorm_occupants_confirmed" name="dorm_occupants_confirmed" value="yes" <?= ($_POST['dorm_occupants_confirmed'] ?? '') === 'yes' ? 'checked' : '' ?>>
+                          <label class="form-check-label" for="dorm_occupants_confirmed" id="dorm-confirmation-label"></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <div class="alert alert-light border mt-3 mb-0" id="booking-estimate" aria-live="polite">Select dates and an accommodation to see the nightly estimate.</div>
             </div>
           </div>
           
@@ -502,26 +644,63 @@ include __DIR__ . '/../includes/layout_header.php';
 // Auto-calculate nights and estimate
 document.getElementById('check_in')?.addEventListener('change', calculateEstimate);
 document.getElementById('check_out')?.addEventListener('change', calculateEstimate);
-document.getElementById('room_type')?.addEventListener('change', calculateEstimate);
+document.getElementById('room_type')?.addEventListener('change', updateDormFields);
+document.getElementById('dorm_beds')?.addEventListener('change', calculateEstimate);
+
+function updateDormFields() {
+  const roomType = document.getElementById('room_type').value;
+  const isDorm = roomType === 'ginger' || roomType === 'rocket';
+  const dormOptions = document.getElementById('dorm-options');
+  const dormBookingType = document.getElementById('dorm_booking_type');
+  const dormBeds = document.getElementById('dorm_beds');
+  const confirmation = document.getElementById('dorm_occupants_confirmed');
+  const bedCountWrap = document.getElementById('dorm-bed-count-wrap');
+  const guestGroup = roomType === 'ginger' ? 'women and girls' : 'men and boys';
+
+  dormOptions.classList.toggle('d-none', !isDorm);
+  dormBookingType.required = isDorm;
+  confirmation.required = isDorm;
+  document.getElementById('dorm-policy').textContent = isDorm
+    ? (roomType === 'ginger' ? 'Ginger is reserved for women and girls only.' : 'Rocket is reserved for men and boys only.')
+    : '';
+  document.getElementById('dorm-confirmation-label').textContent = `I confirm that all guests staying in this dorm are ${guestGroup}.`;
+  const wholeDorm = dormBookingType.value === 'whole_dorm';
+  bedCountWrap.classList.toggle('d-none', wholeDorm);
+  dormBeds.required = isDorm && !wholeDorm;
+  calculateEstimate();
+}
 
 function calculateEstimate() {
   const checkIn = document.getElementById('check_in').value;
   const checkOut = document.getElementById('check_out').value;
   const roomType = document.getElementById('room_type').value;
-  
-  if (checkIn && checkOut && roomType) {
-    const date1 = new Date(checkIn);
-    const date2 = new Date(checkOut);
-    const nights = Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24));
-    
-    const rates = <?= json_encode($roomRatesByType, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
-    
-    if (nights > 0 && rates[roomType]) {
-      const total = nights * rates[roomType];
-      console.log(`Estimated cost: ${nights} nights × UGX ${rates[roomType].toLocaleString()} = UGX ${total.toLocaleString()}`);
-    }
+  const estimate = document.getElementById('booking-estimate');
+  if (!checkIn || !checkOut || !roomType) {
+    estimate.textContent = 'Select dates and an accommodation to see the nightly estimate.';
+    return;
   }
+
+  const start = new Date(`${checkIn}T00:00:00Z`);
+  const end = new Date(`${checkOut}T00:00:00Z`);
+  const nights = Math.round((end - start) / 86400000);
+  if (nights < 1) {
+    estimate.textContent = 'Choose a check-out date after check-in to see the estimate.';
+    return;
+  }
+
+  const rates = <?= json_encode($roomRatesByType, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>;
+  let nightlyRate = rates[roomType] || 0;
+  if (roomType === 'ginger' || roomType === 'rocket') {
+    nightlyRate = document.getElementById('dorm_booking_type').value === 'whole_dorm'
+      ? 360000
+      : 60000 * Number(document.getElementById('dorm_beds').value);
+  }
+  const total = nightlyRate * nights;
+  estimate.textContent = `${nights} night${nights === 1 ? '' : 's'} × UGX ${nightlyRate.toLocaleString()} per night = UGX ${total.toLocaleString()} total`;
 }
+
+document.getElementById('dorm_booking_type')?.addEventListener('change', updateDormFields);
+updateDormFields();
 </script>
 
 <?php include __DIR__ . '/../includes/layout_footer.php'; ?>

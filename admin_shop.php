@@ -202,8 +202,8 @@ include __DIR__ . '/includes/admin_layout_header.php';
         <div class="card-body">
           <form method="post" class="input-group mb-3">
             <?= csrf_field() ?><input type="hidden" name="action" value="add_category">
-            <input class="form-control" name="name" maxlength="120" placeholder="New category" required>
-            <button class="btn btn-success" type="submit">Add</button>
+            <input class="form-control form-control-sm" name="name" maxlength="120" placeholder="New category" required>
+            <button class="btn btn-sm btn-success" type="submit">Add</button>
           </form>
           <?php foreach ($categories as $category): ?>
             <div class="border-top py-2">

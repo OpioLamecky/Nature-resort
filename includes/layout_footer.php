@@ -30,7 +30,7 @@
           ?>
           <ul class="list-unstyled mb-0 footer-list">
             <li><i class="fas fa-phone me-2"></i>Phone: <?= sanitize(site_content('contact', 'phone', $settings['contact_phone'] ?? '+256 772 957 573')) ?></li>
-            <li><i class="fas fa-envelope me-2"></i>Email: <a href="mailto:<?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusiresort.com')) ?>"><?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusiresort.com')) ?></a></li>
+            <li><i class="fas fa-envelope me-2"></i>Email: <a href="mailto:<?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusi.com')) ?>"><?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusi.com')) ?></a></li>
             <li><i class="fab fa-whatsapp me-2"></i>WhatsApp: <a href="<?= sanitize($waLink) ?>" target="_blank" rel="noopener"><?= sanitize(site_content('contact', 'phone', '+256 772 957 573')) ?></a></li>
             <li class="mt-2"><i class="fas fa-map-marker-alt me-2"></i>Address:</li>
             <li><?= nl2br(sanitize(str_ireplace(['<br>', '<br/>', '<br />'], "\n", site_content('contact', 'address', $settings['address_html'] ?? "Kalitusi Nature Resort\nFort Portal Tourism City\nWestern Uganda")))) ?></li>

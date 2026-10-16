@@ -683,7 +683,7 @@ Nature resort/
 - **Last Updated:** November 21, 2025
 
 ### Support Channels
-- **Email:** info@kalitusiresort.com
+- **Email:** info@kalitusi.com
 - **Phone:** +256 772 123 456
 - **Website:** https://kalitusiresort.infinityfreeapp.com
 

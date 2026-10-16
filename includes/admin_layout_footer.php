@@ -64,6 +64,9 @@
                 sidebarToggle.addEventListener('click', function() {
                     sidebar.classList.toggle('collapsed');
                     mainContent.classList.toggle('sidebar-collapsed');
+                    const expanded = !sidebar.classList.contains('collapsed');
+                    sidebarToggle.setAttribute('aria-expanded', String(expanded));
+                    sidebarToggle.setAttribute('aria-label', expanded ? 'Collapse sidebar' : 'Expand sidebar');
                     
                     // Save state to localStorage
                     localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
@@ -76,6 +79,7 @@
                     sidebar.classList.toggle('mobile-open');
                     sidebarOverlay.classList.toggle('show');
                     document.body.classList.toggle('sidebar-open');
+                    mobileSidebarToggle.setAttribute('aria-expanded', String(sidebar.classList.contains('mobile-open')));
                 });
             }
             
@@ -85,6 +89,7 @@
                     sidebar.classList.remove('mobile-open');
                     sidebarOverlay.classList.remove('show');
                     document.body.classList.remove('sidebar-open');
+                    mobileSidebarToggle?.setAttribute('aria-expanded', 'false');
                 });
             }
             
@@ -95,8 +100,10 @@
                     const navItem = this.closest('.nav-item');
                     const submenu = navItem.querySelector('.submenu');
                     const arrow = navItem.querySelector('.submenu-arrow');
+                    const expanded = !navItem.classList.contains('submenu-open');
                     
-                    navItem.classList.toggle('submenu-open');
+                    navItem.classList.toggle('submenu-open', expanded);
+                    this.setAttribute('aria-expanded', String(expanded));
                     if (submenu) {
                         submenu.classList.toggle('show');
                     }
@@ -133,6 +140,23 @@
                 const bsAlert = new bootstrap.Alert(alert);
                 bsAlert.close();
             }, 5000);
+        });
+
+        document.querySelectorAll('.admin-layout .table-responsive .table').forEach(function(table) {
+            const headerRow = table.tHead?.rows[table.tHead.rows.length - 1];
+            if (!headerRow) return;
+
+            const labels = Array.from(headerRow.cells).map(function(cell, index) {
+                return cell.textContent.replace(/\s+/g, ' ').trim() || `Column ${index + 1}`;
+            });
+            table.querySelectorAll('tbody tr').forEach(function(row) {
+                if (row.cells.length === 1 && row.cells[0].hasAttribute('colspan')) return;
+                Array.from(row.cells).forEach(function(cell, index) {
+                    if (!cell.hasAttribute('data-label') && labels[index]) {
+                        cell.setAttribute('data-label', labels[index]);
+                    }
+                });
+            });
         });
         
         // Tooltip initialization

@@ -39,6 +39,7 @@ if (!isset($stats)) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css">
     <link rel="stylesheet" href="<?= asset_url('css/style.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('css/admin-sidebar.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('css/admin-theme.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/admin-theme.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('css/admin-timepicker.css') ?>">
     
     <!-- Favicon -->
@@ -56,7 +57,7 @@ if (!isset($stats)) {
         <!-- Top Header Bar -->
         <header class="admin-header">
             <div class="header-left">
-                <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+                <button class="mobile-sidebar-toggle" id="mobileSidebarToggle" type="button" aria-label="Open navigation" aria-controls="adminSidebar" aria-expanded="false">
                     <i class="fas fa-bars"></i>
                 </button>
                 <h1 class="page-title"><?= $pageTitle ?? 'Dashboard' ?></h1>
@@ -122,16 +123,6 @@ if (!isset($stats)) {
         
         <!-- Page Content -->
         <main class="page-content" role="main">
-
-        <?php
-        // ── Development Environment Banner ──────────────────────────────────
-        // Shows a visible bar in dev mode so you always know which env is active.
-        if (defined('IS_DEV') && IS_DEV): ?>
-            <div style="background:#f59e0b;color:#1c1c1c;text-align:center;padding:6px 12px;font-size:0.8rem;font-weight:600;letter-spacing:.05em;position:sticky;top:0;z-index:9999;">
-                ⚙️ DEVELOPMENT MODE &mdash; DB: <?= htmlspecialchars($_ENV['DB_NAME'] ?? 'N/A') ?> &mdash;
-                URL: <?= htmlspecialchars($_ENV['APP_URL'] ?? '') ?>
-            </div>
-        <?php endif; ?>
 
         <?php
         // ── Flash Messages ───────────────────────────────────────────────────

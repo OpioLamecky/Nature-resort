@@ -29,13 +29,6 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
 </head>
 <body class="page-transition">
   
-  <?php 
-  // Show admin bar if user is logged in as admin
-  if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
-      include __DIR__ . '/admin_bar.php';
-  }
-  ?>
-  
   <!-- Top Contact Bar -->
   <div class="topbar">
     <div class="container">
@@ -43,7 +36,7 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
         <div class="col-md-6">
           <div class="d-flex gap-3 small">
             <a href="tel:<?= sanitize(preg_replace('/[^0-9+]/', '', site_content('contact', 'phone', '+256 772 957 573'))) ?>"><i class="fas fa-phone"></i> <?= sanitize(site_content('contact', 'phone', '+256 772 957 573')) ?></a>
-            <a href="mailto:<?= sanitize(site_content('contact', 'email', 'info@kalitusiresort.com')) ?>"><i class="fas fa-envelope"></i> <?= sanitize(site_content('contact', 'email', 'info@kalitusiresort.com')) ?></a>
+            <a href="mailto:<?= sanitize(site_content('contact', 'email', 'info@kalitusi.com')) ?>"><i class="fas fa-envelope"></i> <?= sanitize(site_content('contact', 'email', 'info@kalitusi.com')) ?></a>
           </div>
         </div>
         <div class="col-md-6 text-end">
@@ -92,37 +85,23 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/news.php') ?>">Blog</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/contact.php') ?>">Contact</a></li>
           <li class="nav-item"><a class="btn btn-outline-light btn-sm ms-2" href="<?= base_url('public/booking.php') ?>">Book Now</a></li>
-          <?php if (!empty($_SESSION['user'])): ?>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admin</a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="<?= base_url('admin/dashboard.php') ?>">Dashboard</a></li>
-                <li><a class="dropdown-item" href="<?= base_url('admin/rooms.php') ?>">Manage Rooms</a></li>
-                <li><a class="dropdown-item" href="<?= base_url('admin/bookings.php') ?>">Bookings</a></li>
-                <li><a class="dropdown-item" href="<?= base_url('admin/posts.php') ?>">Blog Posts</a></li>
-                <li><a class="dropdown-item" href="<?= base_url('admin/gallery.php') ?>">Gallery</a></li>
-                <?php if (($_SESSION['user']['role'] ?? '') === 'Super Admin'): ?>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="<?= base_url('admin_shop.php') ?>">Manage E-shop</a></li>
-                <?php endif; ?>
-              </ul>
-            </li>
-          <?php endif; ?>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminMenu">
+              <?php if (!empty($_SESSION['user'])): ?>
+                <li><a class="dropdown-item" href="<?= base_url('admin/dashboard.php') ?>"><i class="fas fa-gauge-high me-2"></i>Admin Dashboard</a></li>
+                <li><a class="dropdown-item" href="<?= base_url('admin/profile.php') ?>"><i class="fas fa-user-circle me-2"></i>My Profile</a></li>
+              <?php else: ?>
+                <li><a class="dropdown-item" href="<?= base_url('public/login.php?next=' . urlencode(base_url('admin/dashboard.php'))) ?>"><i class="fas fa-right-to-bracket me-2"></i>Admin sign in</a></li>
+              <?php endif; ?>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 
   <main id="main-content" class="py-0" role="main">
-
-  <?php
-  // ── Development Environment Banner ────────────────────────────────────────
-  if (defined('IS_DEV') && IS_DEV): ?>
-    <div style="background:#f59e0b;color:#1c1c1c;text-align:center;padding:5px 12px;font-size:0.8rem;font-weight:600;position:sticky;top:0;z-index:9999;">
-        ⚙️ DEVELOPMENT MODE &mdash; DB: <?= htmlspecialchars($_ENV['DB_NAME'] ?? 'N/A') ?>
-        &mdash; URL: <?= htmlspecialchars($_ENV['APP_URL'] ?? '') ?>
-    </div>
-  <?php endif; ?>
 
   <?php
   // ── Flash Messages ─────────────────────────────────────────────────────────

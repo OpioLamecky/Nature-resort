@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../includes/bootstrap.php';
 require_once __DIR__ . '/../includes/permissions.php';
 
-// Check authentication
 if (!isset($_SESSION['user'])) {
     redirect(base_url('public/login.php'));
 }
@@ -10,439 +9,186 @@ if (!isset($_SESSION['user'])) {
 $title = 'Admin Dashboard | Kalitusi Nature Resort';
 $pageTitle = 'Dashboard';
 $currentUser = $_SESSION['user'];
+$today = date('Y-m-d');
+$hour = (int)date('G');
+$greeting = $hour < 12 ? 'Good morning' : ($hour < 17 ? 'Good afternoon' : 'Good evening');
 
-// Get quick stats
 try {
     $stats = [
-        'bookings_today' => $pdo->query("SELECT COUNT(*) FROM bookings WHERE DATE(created_at) = CURDATE()")->fetchColumn(),
-        'bookings_pending' => $pdo->query("SELECT COUNT(*) FROM bookings WHERE status = 'pending'")->fetchColumn(),
-        'checkins_today' => $pdo->query("SELECT COUNT(*) FROM bookings WHERE check_in = CURDATE() AND status IN ('confirmed', 'pending')")->fetchColumn(),
-        'rooms_available' => $pdo->query("SELECT COUNT(*) FROM accommodations WHERE availability_status = 'available'")->fetchColumn(),
-        'reviews_pending' => $pdo->query("SELECT COUNT(*) FROM testimonials WHERE status = 'pending'")->fetchColumn(),
-        'total_staff' => $pdo->query("SELECT COUNT(*) FROM users WHERE status = 'active'")->fetchColumn(),
-        'total_rooms' => $pdo->query("SELECT COUNT(*) FROM accommodations")->fetchColumn(),
-        'occupancy_rate' => 0, // Will calculate below
+        'bookings_today' => (int)$pdo->query("SELECT COUNT(*) FROM bookings WHERE DATE(created_at) = CURDATE()")->fetchColumn(),
+        'bookings_pending' => (int)$pdo->query("SELECT COUNT(*) FROM bookings WHERE status = 'pending'")->fetchColumn(),
+        'checkins_today' => (int)$pdo->query("SELECT COUNT(*) FROM bookings WHERE check_in = CURDATE() AND status IN ('confirmed', 'pending')")->fetchColumn(),
+        'rooms_available' => (int)$pdo->query("SELECT COUNT(*) FROM accommodations WHERE availability_status = 'available'")->fetchColumn(),
+        'total_rooms' => (int)$pdo->query("SELECT COUNT(*) FROM accommodations")->fetchColumn(),
+        'occupied_rooms' => (int)$pdo->query("SELECT COUNT(*) FROM accommodations WHERE availability_status = 'occupied'")->fetchColumn(),
+        'reviews_pending' => (int)$pdo->query("SELECT COUNT(*) FROM testimonials WHERE status = 'pending'")->fetchColumn(),
     ];
-    
-    // Calculate occupancy rate
-    $total_rooms = $stats['total_rooms'];
-    $occupied_rooms = $pdo->query("SELECT COUNT(*) FROM accommodations WHERE availability_status = 'occupied'")->fetchColumn();
-    $stats['occupancy_rate'] = $total_rooms > 0 ? round(($occupied_rooms / $total_rooms) * 100) : 0;
-    
-} catch (Exception $e) {
+    $stats['occupancy_rate'] = $stats['total_rooms'] > 0
+        ? (int)round(($stats['occupied_rooms'] / $stats['total_rooms']) * 100)
+        : 0;
+} catch (Throwable $e) {
+    error_log('Admin dashboard metrics failed: ' . $e->getMessage());
     $stats = [
         'bookings_today' => 0,
         'bookings_pending' => 0,
         'checkins_today' => 0,
         'rooms_available' => 0,
-        'reviews_pending' => 0,
-        'total_staff' => 0,
         'total_rooms' => 0,
+        'occupied_rooms' => 0,
+        'reviews_pending' => 0,
         'occupancy_rate' => 0,
     ];
+}
+
+$recentBookings = [];
+if (has_permission('bookings.view')) {
+    try {
+        $bookingStmt = $pdo->query(
+            "SELECT b.booking_id, b.booking_reference, b.guest_name, b.check_in, b.check_out,
+                    b.status, b.total_amount, a.name AS accommodation_name
+             FROM bookings b
+             LEFT JOIN accommodations a ON a.accommodation_id = b.accommodation_id
+             WHERE b.status IN ('pending', 'confirmed', 'checked_in')
+             ORDER BY CASE b.status WHEN 'pending' THEN 0 WHEN 'confirmed' THEN 1 ELSE 2 END,
+                      b.check_in ASC, b.created_at DESC
+             LIMIT 6"
+        );
+        $recentBookings = $bookingStmt->fetchAll();
+    } catch (Throwable $e) {
+        error_log('Admin dashboard booking queue failed: ' . $e->getMessage());
+    }
+}
+
+$dashboardShortcuts = [];
+if (has_permission('bookings.view')) {
+    $dashboardShortcuts[] = ['label' => 'All bookings', 'icon' => 'fa-calendar-check', 'url' => 'admin/bookings.php'];
+    $dashboardShortcuts[] = ['label' => 'Meal reservations', 'icon' => 'fa-utensils', 'url' => 'admin/meal-reservations.php'];
+}
+if (has_permission('accommodations.view')) {
+    $dashboardShortcuts[] = ['label' => 'Accommodations', 'icon' => 'fa-bed', 'url' => 'admin/accommodations-manage.php'];
+}
+if (has_permission('users.view')) {
+    $dashboardShortcuts[] = ['label' => 'Staff', 'icon' => 'fa-users', 'url' => 'admin/staff.php'];
+}
+if (has_permission('testimonials.view')) {
+    $dashboardShortcuts[] = ['label' => 'Reviews', 'icon' => 'fa-star', 'url' => 'admin/testimonials.php'];
+}
+if (has_permission('content.view')) {
+    $dashboardShortcuts[] = ['label' => 'Website content', 'icon' => 'fa-pen-to-square', 'url' => 'admin/site-content.php'];
+    $dashboardShortcuts[] = ['label' => 'Announcements', 'icon' => 'fa-bullhorn', 'url' => 'admin/announcements.php'];
+}
+if (has_permission('analytics.view')) {
+    $dashboardShortcuts[] = ['label' => 'Analytics', 'icon' => 'fa-chart-line', 'url' => 'admin/analytics.php'];
 }
 
 include __DIR__ . '/../includes/admin_layout_header.php';
 ?>
 
-<!-- Welcome Header -->
-<div class="dashboard-welcome mb-4">
-  <div class="row align-items-center">
-    <div class="col-md-8">
-      <h2 class="mb-2">Welcome back, <?= sanitize($currentUser['username']) ?>!</h2>
-      <p class="text-muted mb-1">Here's what's happening at Kalitusi Resort today</p>
-      <div class="d-flex align-items-center">
-        <small class="text-muted me-3">
-          <i class="fas fa-calendar me-1"></i>
-          <?= date('l, F j, Y') ?>
-        </small>
-        <small class="text-muted me-3">
-          <i class="fas fa-clock me-1"></i>
-          <?= date('g:i A') ?>
-        </small>
-        <?php if ($stats['bookings_pending'] > 0): ?>
-        <small class="text-warning">
-          <i class="fas fa-exclamation-triangle me-1"></i>
-          <?= $stats['bookings_pending'] ?> pending booking<?= $stats['bookings_pending'] > 1 ? 's' : '' ?>
-        </small>
-        <?php endif; ?>
-      </div>
+<div class="admin-dashboard">
+  <section class="dashboard-heading" aria-labelledby="dashboardTitle">
+    <div>
+      <div class="dashboard-eyebrow">Resort operations / <?= date('l, F j, Y') ?></div>
+      <h2 class="dashboard-title" id="dashboardTitle"><?= sanitize($greeting) ?>, <?= sanitize($currentUser['username']) ?></h2>
+      <p class="dashboard-subtitle">Today at Kalitusi Nature Resort. Review arrivals and open requests below.</p>
     </div>
-    <div class="col-md-4 text-end">
-      <div class="d-flex flex-column align-items-end">
-        <span class="badge bg-primary fs-6 px-3 py-2 mb-2"><?= strtoupper(sanitize($currentUser['role'])) ?></span>
-        <div class="d-flex align-items-center text-muted">
-          <i class="fas fa-users me-1"></i>
-          <small><?= $stats['total_staff'] ?> staff online</small>
+    <div class="dashboard-heading-actions">
+      <?php if (has_permission('bookings.create')): ?>
+        <a href="<?= base_url('admin/booking-create.php') ?>" class="btn btn-primary"><i class="fas fa-plus me-2"></i>New booking</a>
+      <?php endif; ?>
+      <?php if (has_permission('accommodations.view')): ?>
+        <a href="<?= base_url('admin/accommodations-manage.php') ?>" class="btn btn-outline-secondary"><i class="fas fa-bed me-2"></i>Manage rooms</a>
+      <?php endif; ?>
+    </div>
+  </section>
+
+  <section class="dashboard-metrics" aria-label="Today's resort metrics">
+    <?php if (has_permission('bookings.view')): ?>
+      <a class="dashboard-metric" href="<?= base_url('admin/bookings.php') ?>">
+        <div><div class="dashboard-metric-label">New bookings today</div><p class="dashboard-metric-value"><?= number_format($stats['bookings_today']) ?></p><small class="dashboard-metric-note">Requests received today</small></div>
+        <span class="dashboard-metric-icon"><i class="fas fa-calendar-plus" aria-hidden="true"></i></span>
+      </a>
+      <a class="dashboard-metric" href="<?= base_url('admin/bookings.php?status=pending') ?>">
+        <div><div class="dashboard-metric-label">Awaiting confirmation</div><p class="dashboard-metric-value"><?= number_format($stats['bookings_pending']) ?></p><small class="dashboard-metric-note">Bookings needing action</small></div>
+        <span class="dashboard-metric-icon"><i class="fas fa-hourglass-half" aria-hidden="true"></i></span>
+      </a>
+      <a class="dashboard-metric" href="<?= base_url('admin/bookings.php?date_from=' . $today . '&date_to=' . $today) ?>">
+        <div><div class="dashboard-metric-label">Arrivals today</div><p class="dashboard-metric-value"><?= number_format($stats['checkins_today']) ?></p><small class="dashboard-metric-note">Expected check-ins</small></div>
+        <span class="dashboard-metric-icon"><i class="fas fa-right-to-bracket" aria-hidden="true"></i></span>
+      </a>
+    <?php endif; ?>
+    <?php if (has_permission('accommodations.view')): ?>
+      <a class="dashboard-metric" href="<?= base_url('admin/accommodations-manage.php') ?>">
+        <div><div class="dashboard-metric-label">Rooms available</div><p class="dashboard-metric-value"><?= number_format($stats['rooms_available']) ?></p><small class="dashboard-metric-note">Of <?= number_format($stats['total_rooms']) ?> listed rooms</small></div>
+        <span class="dashboard-metric-icon"><i class="fas fa-bed" aria-hidden="true"></i></span>
+      </a>
+    <?php endif; ?>
+  </section>
+
+  <div class="row g-3 align-items-stretch mb-3">
+    <?php if (has_permission('bookings.view')): ?>
+    <div class="col-xl-8">
+      <section class="dashboard-panel" aria-labelledby="bookingQueueTitle">
+        <div class="dashboard-panel-header">
+          <div><h2 id="bookingQueueTitle">Booking queue</h2><small class="text-muted">Pending requests and upcoming arrivals</small></div>
+          <a href="<?= base_url('admin/bookings.php') ?>" class="btn btn-sm btn-outline-secondary">View all</a>
         </div>
-      </div>
+        <?php if ($recentBookings): ?>
+          <div class="table-responsive border-0 rounded-0">
+            <table class="table table-hover">
+              <thead><tr><th scope="col">Guest</th><th scope="col">Stay</th><th scope="col">Check-in</th><th scope="col">Status</th><th scope="col" class="text-end">Amount</th></tr></thead>
+              <tbody>
+                <?php foreach ($recentBookings as $booking):
+                  $statusClass = strtolower(str_replace(' ', '_', (string)$booking['status']));
+                  $checkIn = strtotime((string)$booking['check_in']);
+                ?>
+                  <tr>
+                    <td><span class="booking-guest"><?= sanitize($booking['guest_name']) ?></span><a class="booking-reference" href="<?= base_url('admin/bookings.php?search=' . urlencode($booking['booking_reference'])) ?>"><?= sanitize($booking['booking_reference']) ?></a></td>
+                    <td><?= sanitize($booking['accommodation_name'] ?: 'Room to be assigned') ?></td>
+                    <td><?= $checkIn ? date('M j, Y', $checkIn) : 'Not set' ?></td>
+                    <td><span class="booking-status is-<?= sanitize($statusClass) ?>"><?= sanitize(str_replace('_', ' ', $booking['status'])) ?></span></td>
+                    <td class="text-end text-nowrap">UGX <?= number_format((float)$booking['total_amount']) ?></td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+        <?php else: ?>
+          <div class="dashboard-empty"><i class="fas fa-calendar-check mb-2" aria-hidden="true"></i><p class="mb-0">No active bookings to review.</p></div>
+        <?php endif; ?>
+      </section>
+    </div>
+    <?php endif; ?>
+
+    <div class="col-xl-4">
+      <?php if (has_permission('accommodations.view')): ?>
+      <section class="dashboard-panel mb-3" aria-labelledby="occupancyTitle">
+        <div class="dashboard-panel-header"><h2 id="occupancyTitle">Room occupancy</h2><i class="fas fa-chart-pie text-success" aria-hidden="true"></i></div>
+        <div class="dashboard-panel-body">
+          <div class="d-flex align-items-end justify-content-between mb-3">
+            <div><span class="occupancy-value"><?= $stats['occupancy_rate'] ?>%</span><div class="small text-muted mt-1">Currently occupied</div></div>
+            <div class="text-end small text-muted"><?= number_format($stats['occupied_rooms']) ?> occupied<br><?= number_format($stats['rooms_available']) ?> available</div>
+          </div>
+          <div class="occupancy-bar" role="progressbar" aria-label="Room occupancy" aria-valuenow="<?= $stats['occupancy_rate'] ?>" aria-valuemin="0" aria-valuemax="100"><span style="width: <?= $stats['occupancy_rate'] ?>%"></span></div>
+        </div>
+      </section>
+      <?php endif; ?>
+
+      <section class="dashboard-panel" aria-labelledby="shortcutsTitle">
+        <div class="dashboard-panel-header"><h2 id="shortcutsTitle">Quick access</h2><span class="small text-muted"><?= count($dashboardShortcuts) ?> links</span></div>
+        <div class="dashboard-panel-body">
+          <?php if ($dashboardShortcuts): ?>
+            <div class="dashboard-shortcut-list">
+              <?php foreach ($dashboardShortcuts as $shortcut): ?>
+                <a class="dashboard-shortcut" href="<?= base_url($shortcut['url']) ?>"><i class="fas <?= sanitize($shortcut['icon']) ?>" aria-hidden="true"></i><span><?= sanitize($shortcut['label']) ?></span></a>
+              <?php endforeach; ?>
+            </div>
+          <?php else: ?>
+            <p class="small text-muted mb-0">No shortcuts are available for this account.</p>
+          <?php endif; ?>
+        </div>
+      </section>
     </div>
   </div>
 </div>
-
-  <!-- Key Metrics -->
-  <div class="row g-4 mb-5">
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-primary h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="stat-content">
-              <div class="stat-number-container">
-                <h3 class="stat-number mb-1"><?= $stats['bookings_today'] ?></h3>
-                <div class="stat-trend">
-                  <i class="fas fa-arrow-up text-success me-1"></i>
-                  <small class="text-light opacity-75">New today</small>
-                </div>
-              </div>
-              <p class="stat-label mb-0">Today's Bookings</p>
-              <small class="stat-description">Fresh reservations received</small>
-            </div>
-            <div class="stat-icon">
-              <i class="fas fa-calendar-check"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-warning h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="stat-content">
-              <div class="stat-number-container">
-                <h3 class="stat-number mb-1"><?= $stats['bookings_pending'] ?></h3>
-                <div class="stat-trend">
-                  <i class="fas fa-clock text-warning me-1"></i>
-                  <small class="text-dark opacity-75">Awaiting action</small>
-                </div>
-              </div>
-              <p class="stat-label mb-0">Pending Bookings</p>
-              <small class="stat-description">Require confirmation</small>
-            </div>
-            <div class="stat-icon">
-              <i class="fas fa-hourglass-half"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-success h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="stat-content">
-              <div class="stat-number-container">
-                <h3 class="stat-number mb-1"><?= $stats['rooms_available'] ?></h3>
-                <div class="stat-trend">
-                  <i class="fas fa-check-circle text-success me-1"></i>
-                  <small class="text-light opacity-75">Ready to book</small>
-                </div>
-              </div>
-              <p class="stat-label mb-0">Available Rooms</p>
-              <small class="stat-description">Open for reservations</small>
-            </div>
-            <div class="stat-icon">
-              <i class="fas fa-bed"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-info h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="stat-content">
-              <div class="stat-number-container">
-                <h3 class="stat-number mb-1"><?= $stats['checkins_today'] ?></h3>
-                <div class="stat-trend">
-                  <i class="fas fa-user-check text-info me-1"></i>
-                  <small class="text-dark opacity-75">Arriving guests</small>
-                </div>
-              </div>
-              <p class="stat-label mb-0">Today's Check-ins</p>
-              <small class="stat-description">Expected arrivals</small>
-            </div>
-            <div class="stat-icon">
-              <i class="fas fa-door-open"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Secondary Metrics -->
-  <div class="row g-4 mb-5">
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-secondary h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="stat-content">
-              <div class="stat-number-container">
-                <h3 class="stat-number mb-1"><?= $stats['occupancy_rate'] ?>%</h3>
-                <div class="stat-trend">
-                  <i class="fas fa-chart-line text-info me-1"></i>
-                  <small class="text-light opacity-75">Current rate</small>
-                </div>
-              </div>
-              <p class="stat-label mb-0">Occupancy Rate</p>
-              <small class="stat-description">Rooms currently occupied</small>
-            </div>
-            <div class="stat-icon">
-              <i class="fas fa-percentage"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-dark h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="stat-content">
-              <div class="stat-number-container">
-                <h3 class="stat-number mb-1"><?= $stats['reviews_pending'] ?></h3>
-                <div class="stat-trend">
-                  <i class="fas fa-star text-warning me-1"></i>
-                  <small class="text-light opacity-75">Need review</small>
-                </div>
-              </div>
-              <p class="stat-label mb-0">Pending Reviews</p>
-              <small class="stat-description">Awaiting moderation</small>
-            </div>
-            <div class="stat-icon">
-              <i class="fas fa-star-half-alt"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-accent h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="stat-content">
-              <div class="stat-number-container">
-                <h3 class="stat-number mb-1"><?= $stats['total_staff'] ?></h3>
-                <div class="stat-trend">
-                  <i class="fas fa-users text-success me-1"></i>
-                  <small class="text-dark opacity-75">Active team</small>
-                </div>
-              </div>
-              <p class="stat-label mb-0">Staff Members</p>
-              <small class="stat-description">Currently active</small>
-            </div>
-            <div class="stat-icon">
-              <i class="fas fa-users-cog"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-gradient h-100">
-        <div class="card-body">
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="stat-content">
-              <div class="stat-number-container">
-                <h3 class="stat-number mb-1"><?= $stats['total_rooms'] ?></h3>
-                <div class="stat-trend">
-                  <i class="fas fa-home text-info me-1"></i>
-                  <small class="text-light opacity-75">Total inventory</small>
-                </div>
-              </div>
-              <p class="stat-label mb-0">Total Rooms</p>
-              <small class="stat-description">Resort capacity</small>
-            </div>
-            <div class="stat-icon">
-              <i class="fas fa-building"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Primary Actions -->
-  <div class="row g-4 mb-5">
-    
-    <!-- Booking Management -->
-    <?php if (has_permission('bookings.view')): ?>
-    <div class="col-lg-6 col-md-6">
-      <div class="card action-card h-100 border-primary">
-        <div class="card-body">
-          <div class="d-flex align-items-center mb-3">
-            <div class="rounded-circle bg-primary text-white p-3 me-3">
-              <i class="fas fa-calendar-check fa-2x"></i>
-            </div>
-            <div>
-              <h5 class="card-title mb-0">Bookings & Reservations</h5>
-              <small class="text-muted">Manage all guest bookings and check-ins</small>
-            </div>
-          </div>
-          <div class="row g-2">
-            <div class="col-6">
-              <a href="<?= base_url('admin/bookings.php') ?>" class="btn btn-sm btn-outline-primary w-100">
-                <i class="fas fa-list me-1"></i>View All
-              </a>
-            </div>
-            <?php if (has_permission('bookings.create')): ?>
-            <div class="col-6">
-              <a href="<?= base_url('admin/booking-create.php') ?>" class="btn btn-sm btn-primary w-100">
-                <i class="fas fa-plus me-1"></i>New Booking
-              </a>
-            </div>
-            <?php endif; ?>
-          </div>
-        </div>
-      </div>
-    </div>
-    <?php endif; ?>
-
-    <!-- Accommodation Management -->
-    <?php if (has_permission('accommodations.view')): ?>
-    <div class="col-lg-6 col-md-6">
-      <div class="card action-card h-100 border-success">
-        <div class="card-body">
-          <div class="d-flex align-items-center mb-3">
-            <div class="rounded-circle bg-success text-white p-3 me-3">
-              <i class="fas fa-bed fa-2x"></i>
-            </div>
-            <div>
-              <h5 class="card-title mb-0">Rooms & Accommodations</h5>
-              <small class="text-muted">Manage room availability and pricing</small>
-            </div>
-          </div>
-          <div class="row g-2">
-            <div class="col-6">
-              <a href="<?= base_url('admin/accommodations-manage.php') ?>" class="btn btn-sm btn-outline-success w-100">
-                <i class="fas fa-list me-1"></i>Manage Rooms
-              </a>
-            </div>
-            <?php if (has_permission('accommodations.create')): ?>
-            <div class="col-6">
-              <a href="<?= base_url('admin/accommodations-manage.php') ?>" class="btn btn-sm btn-success w-100">
-                <i class="fas fa-plus me-1"></i>Add Room
-              </a>
-            </div>
-            <?php endif; ?>
-          </div>
-        </div>
-      </div>
-    </div>
-    <?php endif; ?>
-  </div>
-
-  <!-- Secondary Actions -->
-  <div class="row g-4 mb-5">
-    
-    <!-- Staff & Reviews Combined -->
-    <div class="col-lg-6 col-md-6">
-      <div class="card action-card h-100">
-        <div class="card-body">
-          <h5 class="card-title mb-3"><i class="fas fa-users me-2"></i>Team & Reviews</h5>
-          <div class="row g-2">
-            <?php if (has_permission('users.view')): ?>
-            <div class="col-6">
-              <a href="<?= base_url('admin/staff.php') ?>" class="btn btn-outline-secondary w-100">
-                <i class="fas fa-users me-1"></i>Staff
-              </a>
-            </div>
-            <?php endif; ?>
-            <?php if (has_permission('testimonials.view')): ?>
-            <div class="col-6">
-              <a href="<?= base_url('admin/testimonials.php') ?>" class="btn btn-outline-secondary w-100">
-                <i class="fas fa-star me-1"></i>Reviews
-                <?php if (($stats['reviews_pending'] ?? 0) > 0): ?>
-                  <span class="badge bg-warning ms-1"><?= $stats['reviews_pending'] ?></span>
-                <?php endif; ?>
-              </a>
-            </div>
-            <?php endif; ?>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Content & Analytics Combined -->
-    <div class="col-lg-6 col-md-6">
-      <div class="card action-card h-100">
-        <div class="card-body">
-          <h5 class="card-title mb-3"><i class="fas fa-chart-line me-2"></i>Content & Analytics</h5>
-          <div class="row g-2">
-            <?php if (has_permission('content.view')): ?>
-            <div class="col-6">
-              <a href="<?= base_url('admin/posts.php') ?>" class="btn btn-outline-secondary w-100">
-                <i class="fas fa-file-alt me-1"></i>Content
-              </a>
-            </div>
-            <?php endif; ?>
-            <?php if (has_permission('analytics.view')): ?>
-            <div class="col-6">
-              <a href="<?= base_url('admin/analytics.php') ?>" class="btn btn-outline-secondary w-100">
-                <i class="fas fa-chart-bar me-1"></i>Analytics
-              </a>
-            </div>
-            <?php endif; ?>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Website Content -->
-  <div class="row g-4 mb-4">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-end mb-2">
-        <div><h2 class="h4 mb-1">Website Content</h2><p class="text-muted mb-0">Edit public pages, media, and published information.</p></div>
-        <a class="btn btn-sm btn-outline-secondary" href="<?= base_url('public/') ?>" target="_blank" rel="noopener">View public site</a>
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="card h-100">
-        <div class="card-header bg-white"><h3 class="h6 mb-0"><i class="fas fa-file-alt me-2 text-success"></i>Pages</h3></div>
-        <div class="card-body d-grid gap-2">
-          <?php if (has_permission('content.view')): ?>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=home') ?>">Home page copy</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=about') ?>">About page copy</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=legal') ?>">Policy page headings</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/pages-home.php') ?>">Home slides and quick links</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/about-content.php') ?>">About story and team</a>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="card h-100">
-        <div class="card-header bg-white"><h3 class="h6 mb-0"><i class="fas fa-images me-2 text-success"></i>Resort Content</h3></div>
-        <div class="card-body d-grid gap-2">
-          <?php if (has_permission('accommodations.view')): ?><a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/accommodations-manage.php') ?>">Accommodations and rates</a><?php endif; ?>
-          <?php if (has_permission('content.view')): ?>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=activities') ?>">Activities and images</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=dining') ?>">Dining page content</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=gallery') ?>">Gallery page copy</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/pages-services.php') ?>">Service blocks</a>
-          <?php endif; ?>
-          <?php if (($currentUser['role'] ?? '') === 'Super Admin'): ?><a class="btn btn-outline-secondary text-start" href="<?= base_url('admin_shop.php') ?>">Gift shop products</a><?php endif; ?>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="card h-100">
-        <div class="card-header bg-white"><h3 class="h6 mb-0"><i class="fas fa-bullhorn me-2 text-success"></i>Publishing</h3></div>
-        <div class="card-body d-grid gap-2">
-          <?php if (has_permission('content.view')): ?>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/posts.php') ?>">News and blog posts</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/downloads.php') ?>">Brochures and downloads</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/announcements.php') ?>">Announcements</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/site-content.php?page=contact') ?>">Contact and social details</a>
-            <a class="btn btn-outline-secondary text-start" href="<?= base_url('admin/pages-footer.php?tab=settings') ?>">Contact and site settings</a>
-          <?php endif; ?>
-          <a class="btn btn-outline-primary text-start" href="<?= base_url('admin/profile.php') ?>">My profile</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
 <?php include __DIR__ . '/../includes/admin_layout_footer.php';

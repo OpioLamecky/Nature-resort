@@ -5,12 +5,15 @@ include __DIR__ . '/../includes/layout_header.php';
 ?>
 
 <!-- Hero Section -->
-<section class="hero-section" style="background: linear-gradient(135deg, var(--pine-dark) 0%, var(--charcoal) 100%); color: white; padding: 80px 0;">
+<section class="page-intro-hero bg-soft-mint">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-8">
-        <h1 class="display-4 fw-bold mb-4"><?= sanitize(site_content('legal', 'privacy_title', 'Privacy Policy')) ?></h1>
+    <div class="row g-4 g-lg-5 align-items-center">
+      <div class="col-md-7">
+        <h1 class="mb-3"><?= sanitize(site_content('legal', 'privacy_title', 'Privacy Policy')) ?></h1>
         <p class="lead mb-0"><?= sanitize(site_content('legal', 'privacy_subtitle', 'How we collect, use, and protect your personal information')) ?></p>
+      </div>
+      <div class="col-md-5">
+        <img src="<?= asset_url('images/view.webp') ?>" alt="Nature surrounding Kalitusi Nature Resort">
       </div>
     </div>
   </div>

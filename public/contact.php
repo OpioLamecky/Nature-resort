@@ -12,6 +12,7 @@ try {
 include __DIR__ . '/../includes/layout_header.php';
 ?>
 
+<div class="container contact-page-container">
 <nav aria-label="breadcrumb" class="mb-2 mt-2">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
@@ -42,7 +43,7 @@ include __DIR__ . '/../includes/layout_header.php';
         <div class="card h-100"><div class="card-body">
           <h2 class="h6 border-bottom pb-2">Get in Touch</h2>
           <ul class="list-unstyled mb-0 small">
-            <li class="mb-2"><i class="fas fa-envelope text-primary"></i> <strong>Email</strong><br><a href="mailto:<?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusiresort.com')) ?>"><?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusiresort.com')) ?></a></li>
+            <li class="mb-2"><i class="fas fa-envelope text-primary"></i> <strong>Email</strong><br><a href="mailto:<?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusi.com')) ?>"><?= sanitize(site_content('contact', 'email', $settings['contact_email'] ?? 'info@kalitusi.com')) ?></a></li>
             <li class="mb-2"><i class="fab fa-whatsapp text-success"></i> <strong>WhatsApp</strong><br><a href="<?= sanitize(site_content('contact', 'whatsapp_link', 'https://wa.me/256772957573')) ?>"><?= sanitize(site_content('contact', 'phone', '+256 772 957 573')) ?></a></li>
             <li class="mb-2"><i class="fab fa-facebook text-primary"></i> <strong>Facebook</strong><br><a href="<?= sanitize(site_content('contact', 'facebook_url', '#')) ?>" target="_blank" rel="noopener">@KalitusiResort</a></li>
             <li class="mb-2"><i class="fab fa-instagram text-danger"></i> <strong>Instagram</strong><br><a href="<?= sanitize(site_content('contact', 'instagram_url', '#')) ?>" target="_blank" rel="noopener">@kalitusiresort</a></li>
@@ -108,4 +109,5 @@ include __DIR__ . '/../includes/layout_header.php';
   </div>
 </div>
 
+ </div>
 <?php include __DIR__ . '/../includes/layout_footer.php';

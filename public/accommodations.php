@@ -28,17 +28,21 @@ include __DIR__ . '/../includes/layout_header.php';
 </nav>
 
 <!-- Hero Section -->
-<section class="bg-soft-mint py-5 rounded mb-4">
+<section class="page-intro-hero accommodation-hero bg-soft-mint">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-8">
-        <h1 class="display-4 mb-3"><?= sanitize(site_content('accommodations', 'title', 'Our Accommodations')) ?></h1>
-        <p class="lead mb-4"><?= sanitize(site_content('accommodations', 'intro', "From cozy rooms to luxury suites, find the perfect retreat for your stay in Fort Portal's most beautiful setting.")) ?></p>
-        <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg">Book Your Stay</a>
-        <a href="<?= base_url('public/contact.php') ?>" class="btn btn-outline-primary btn-lg ms-2">Contact Us</a>
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-md-7">
+        <div class="accommodation-hero__content">
+          <h1 class="accommodation-hero__title mb-3"><?= sanitize(site_content('accommodations', 'title', 'Our Accommodations')) ?></h1>
+          <p class="accommodation-hero__intro lead mb-4"><?= sanitize(site_content('accommodations', 'intro', "From cozy rooms to luxury suites, find the perfect retreat for your stay in Fort Portal's most beautiful setting.")) ?></p>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg">Book Your Stay</a>
+            <a href="<?= base_url('public/contact.php') ?>" class="btn btn-outline-primary btn-lg">Contact Us</a>
+          </div>
+        </div>
       </div>
-      <div class="col-lg-4 d-none d-lg-block">
-        <img src="<?= sanitize(site_content_image('accommodations', 'hero_image', 'images/rooms.webp')) ?>" alt="Kalitusi Rooms" class="img-fluid rounded shadow">
+      <div class="col-md-5">
+        <img src="<?= sanitize(site_content_image('accommodations', 'hero_image', 'images/cabin.webp')) ?>" alt="Accommodation cottages at Kalitusi Nature Resort" class="accommodation-hero__image" fetchpriority="high">
       </div>
     </div>
   </div>
@@ -66,20 +70,18 @@ include __DIR__ . '/../includes/layout_header.php';
   </div>
 
   <div class="row g-4 mb-5" id="accommodation-grid">
-    <?php if ($rooms): foreach ($rooms as $room): $roomImages = resort_accommodation_images($room); ?>
+    <?php if ($rooms): foreach ($rooms as $room): $roomImages = resort_accommodation_images($room); $isDormitory = in_array(strtolower(trim($room['name'])), ['ginger', 'rocket'], true); ?>
       <div class="col-12 col-sm-6 col-xl-4 stay-cell" data-room-type="<?= sanitize($room['room_type']) ?>">
         <article class="card stay-card resort-image-card">
           <?php if ($roomImages): ?>
             <div class="stay-photo-grid">
-              <?php foreach ($roomImages as $image): ?>
-                <img src="<?= sanitize($image['url']) ?>" alt="<?= sanitize($image['alt']) ?>" data-lightbox="<?= sanitize($image['url']) ?>" loading="lazy">
-              <?php endforeach; ?>
+              <img src="<?= sanitize($roomImages[0]['url']) ?>" alt="<?= sanitize($roomImages[0]['alt']) ?>" data-lightbox="<?= sanitize($roomImages[0]['url']) ?>" loading="lazy">
+              <span class="stay-type-badge"><?= sanitize($room['room_type']) ?></span>
             </div>
           <?php endif; ?>
           <div class="card-body d-flex flex-column">
             <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
               <h2 class="card-title h5 mb-0"><?= sanitize($room['name']) ?></h2>
-              <span class="badge text-bg-success-subtle text-success-emphasis"><?= sanitize($room['room_type']) ?></span>
             </div>
             <p class="text-muted small mb-3"><?= sanitize($room['description'] ?? '') ?></p>
             <?php $amenities = json_decode($room['amenities'] ?? '[]', true); if (!empty($amenities)): ?>
@@ -87,9 +89,14 @@ include __DIR__ . '/../includes/layout_header.php';
                 <?php foreach (array_slice($amenities, 0, 4) as $amenity): ?><span class="small text-muted"><i class="fas fa-check text-success me-1"></i><?= sanitize($amenity) ?></span><?php endforeach; ?>
               </div>
             <?php endif; ?>
-            <div class="mt-auto d-flex justify-content-between align-items-center gap-2">
-              <span class="fw-semibold text-success">UGX <?= number_format((float)$room['price_per_night']) ?><small class="text-muted fw-normal"> / night</small></span>
-              <a href="<?= base_url('public/booking.php?room=' . (int)$room['accommodation_id']) ?>" class="btn btn-success btn-sm">View stay</a>
+            <div class="mt-auto">
+              <?php if ($isDormitory): ?>
+                <div class="mb-1 fw-semibold">UGX 60,000<small class="text-muted fw-normal"> / bed / night</small></div>
+                <div class="small text-muted mb-3">Whole dorm (6 beds): UGX 360,000 / night</div>
+              <?php else: ?>
+                <div class="mb-3 fw-semibold">UGX <?= number_format((float)$room['price_per_night']) ?><small class="text-muted fw-normal"> / night</small></div>
+              <?php endif; ?>
+              <a href="<?= base_url('public/booking.php?room=' . (int)$room['accommodation_id']) ?>" class="btn btn-success btn-sm w-100">View stay</a>
             </div>
           </div>
         </article>

@@ -33,7 +33,7 @@ if (empty($slides)) {
             'slider_id' => 'fallback',
             'title' => 'Welcome to Kalitusi Nature Resort',
             'subtitle' => 'Experience the tranquility of nature.',
-            'image_url' => 'images/hero-fallback.webp',
+            'image_url' => asset_url('images/rooms.webp'),
             'button_text' => 'Explore More',
             'button_url' => base_url('public/about.php'),
         ]
@@ -105,9 +105,11 @@ include __DIR__ . '/../includes/layout_header.php';
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
-  
-  <!-- Quick links strip under slider -->
-  <div id="main-content" class="quicklinks py-3">
+
+</div>
+
+<!-- Quick links strip under slider -->
+<div class="quicklinks py-3">
     <div class="container d-flex flex-wrap justify-content-center gap-4">
       <?php if ($quick): ?>
         <?php foreach ($quick as $q): ?>
@@ -121,7 +123,6 @@ include __DIR__ . '/../includes/layout_header.php';
         <a class="ql-link" href="<?= base_url('public/contact.php') ?>"><i class="fas fa-phone me-1"></i> Contact Us</a>
       <?php endif; ?>
     </div>
-  </div>
 </div>
 
 <!-- About Section -->
@@ -241,12 +242,15 @@ include __DIR__ . '/../includes/layout_header.php';
                 <?php 
                   $roomImageEntries = resort_accommodation_images($room);
                   $roomImage = $roomImageEntries[0]['url'] ?? asset_url('images/rooms.webp');
+                  $isDormitory = in_array(strtolower(trim($room['name'])), ['ginger', 'rocket'], true);
                 ?>
-                <img src="<?= sanitize($roomImage) ?>" class="img-fluid" alt="<?= sanitize($room['name']) ?>" style="height: 250px; object-fit: cover;">
+                <div class="room-card-media">
+                  <img src="<?= sanitize($roomImage) ?>" alt="<?= sanitize($room['name']) ?>" loading="lazy">
+                  <span class="room-type-badge"><?= sanitize($room['room_type']) ?></span>
+                </div>
                 <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between align-items-start">
                         <h3 class="card-title h5 mb-1 text-dark-green"><?= sanitize($room['name']) ?></h3>
-                        <span class="badge bg-soft-mint text-dark-green border border-light-green ms-2"><?= sanitize($room['room_type']) ?></span>
                     </div>
                     <p class="card-text text-muted mb-3"><small><?= substr(sanitize($room['description']), 0, 70) ?>...</small></p>
                     
@@ -254,8 +258,13 @@ include __DIR__ . '/../includes/layout_header.php';
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="price-label">From</span>
-                                <span class="price-value">UGX <?= number_format($room['price_per_night']) ?></span>
-                                <span class="price-per">/ night</span>
+                                <?php if ($isDormitory): ?>
+                                  <span class="price-value">UGX 60,000 / bed</span>
+                                  <span class="price-per">/ night; whole dorm: UGX 360,000</span>
+                                <?php else: ?>
+                                  <span class="price-value">UGX <?= number_format($room['price_per_night']) ?></span>
+                                  <span class="price-per">/ night</span>
+                                <?php endif; ?>
                             </div>
                             <a href="<?= base_url('public/booking.php?room=' . $room['accommodation_id']) ?>" class="btn btn-primary btn-sm">Details</a>
                         </div>
@@ -396,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 bgElement.classList.remove('loading');
             };
             img.onerror = function() {
-                bgElement.style.backgroundImage = "url('assets/images/rooms.webp')";
+                bgElement.style.backgroundImage = "url('<?= asset_url('images/rooms.webp') ?>')";
                 bgElement.classList.add('loaded');
                 bgElement.classList.remove('loading');
             };
