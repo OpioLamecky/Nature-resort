@@ -29,7 +29,7 @@ if (!$isAdmin) {
     padding: 10px 20px;
     z-index: 99999;
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-ui);
     display: flex;
     justify-content: space-between;
     align-items: center;

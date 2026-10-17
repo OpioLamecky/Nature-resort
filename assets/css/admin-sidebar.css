@@ -2,7 +2,7 @@
 
 /* Admin Layout */
 .admin-layout {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--font-ui);
     background-color: #f8f9fa;
     overflow-x: hidden;
 }

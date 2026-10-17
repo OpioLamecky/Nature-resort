@@ -1,8 +1,9 @@
 /* Kalitusi Nature Resort - Elegant Premium Design */
 
-@import url('https://fonts.googleapis.com/css2?family=Libre+Caslon+Display:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
 :root {
+    --font-ui: 'DM Sans', 'Segoe UI', sans-serif;
     /* Carva Color Palette */
     --pine-dark: #1C2D2A;           /* Primary brand - Pine */
     --charcoal: #0E1719;            /* Deep backgrounds - Charcoal */
@@ -72,8 +73,8 @@
 }
 
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    line-height: 1.7;
+    font-family: var(--font-ui);
+    line-height: 1.6;
     color: var(--text-dark);
     background-color: var(--pearl-white);
     font-size: 16px;
@@ -81,11 +82,25 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Big Caslon', 'Libre Caslon Display', 'Times New Roman', serif;
+    font-family: var(--font-ui);
     font-weight: 600;
     color: var(--forest-green);
     line-height: 1.3;
 }
+
+h1, .h1 { font-size: 2rem; }
+h2, .h2 { font-size: 1.75rem; }
+h3, .h3 { font-size: 1.5rem; }
+h4, .h4 { font-size: 1.25rem; }
+h5, .h5 { font-size: 1.125rem; }
+h6, .h6 { font-size: 1rem; }
+
+.display-1 { font-size: 2.25rem; }
+.display-2 { font-size: 2.125rem; }
+.display-3 { font-size: 2rem; }
+.display-4 { font-size: 1.875rem; }
+.display-5 { font-size: 1.75rem; }
+.display-6 { font-size: 1.5rem; }
 
 p {
     margin-bottom: 1.2em;
@@ -124,8 +139,8 @@ p {
 }
 
 .nav-blue .navbar-brand {
-    font-family: 'Big Caslon', 'Times New Roman', serif;
-    font-size: 1.5rem;
+    font-family: var(--font-ui);
+    font-size: 1.25rem;
     font-weight: 600;
     color: var(--cream) !important;
     letter-spacing: 1px;
@@ -327,18 +342,18 @@ p {
 }
 
 .hero-slide__title {
-    font-family: 'Big Caslon', 'Libre Caslon Display', 'Times New Roman', serif;
-    font-size: 3.1rem;
-    letter-spacing: 0.08em;
+    font-family: var(--font-ui);
+    font-size: 2.25rem;
+    letter-spacing: 0;
     text-transform: uppercase;
     margin-bottom: 0.75rem;
     color: #ffffff;
 }
 
 .hero-slide__subtitle {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 1.1rem;
-    line-height: 1.8;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    line-height: 1.6;
     color: rgba(255, 255, 255, 0.9);
     max-width: 32rem;
     margin-bottom: 1.75rem;
@@ -1058,12 +1073,12 @@ textarea.form-control:focus {
 
 /* Achievement/Stats Numbers */
 .achievement-number {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 600;
     color: var(--primary-green);
     margin-bottom: 0.5rem;
     line-height: 1;
-    font-family: 'Big Caslon', 'Times New Roman', serif;
+    font-family: var(--font-ui);
 }
 
 /* Mission & Vision Cards */
@@ -1092,7 +1107,7 @@ textarea.form-control:focus {
 
 .footer-main h6 {
     color: var(--pine-dark);
-    font-family: 'Big Caslon', 'Times New Roman', serif;
+    font-family: var(--font-ui);
     margin-bottom: 1.5rem;
     font-weight: 600;
     position: relative;
@@ -1464,11 +1479,12 @@ body.dark-mode .dark-mode-toggle {
 
 .login-container {
     min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, var(--pine-dark) 0%, var(--forest-green) 50%, var(--olive-muted) 100%);
-    padding: 2rem 1rem;
+    padding: 1rem;
     position: relative;
     overflow: hidden;
 }
@@ -1509,17 +1525,17 @@ body.dark-mode .dark-mode-toggle {
 .login-header {
     background: linear-gradient(135deg, var(--charcoal) 0%, var(--pine-dark) 100%);
     color: var(--white);
-    padding: 2.5rem 2rem;
+    padding: 1.25rem 1.5rem;
     text-align: center;
     position: relative;
 }
 
 .login-logo {
     display: block;
-    width: 240px;
-    max-width: 100%;
+    width: 180px;
+    max-width: 70%;
     height: auto;
-    margin: 0 auto 0.75rem;
+    margin: 0 auto 0.5rem;
 }
 
 .login-header::after {
@@ -1533,31 +1549,37 @@ body.dark-mode .dark-mode-toggle {
 }
 
 .login-header h1 {
-    font-size: 1.75rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
     color: var(--white);
 }
 
 .login-header p {
     color: var(--moss-light);
     margin-bottom: 0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .login-body {
-    padding: 2.5rem 2rem;
+    padding: 1.25rem 1.5rem;
+}
+
+.login-form .mb-4 {
+    margin-bottom: 0.75rem !important;
 }
 
 .login-form .form-label {
     font-weight: 600;
     color: var(--pine-dark);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
 }
 
 .login-form .form-control {
     border: 2px solid var(--soft-gray);
     border-radius: 12px;
-    padding: 0.875rem 1rem;
+    padding: 0.65rem 0.85rem;
+    font-size: 1rem;
     transition: all 0.3s;
 }
 
@@ -1569,9 +1591,9 @@ body.dark-mode .dark-mode-toggle {
 .login-form .btn-login {
     background: linear-gradient(135deg, var(--pine-dark) 0%, var(--forest-green) 100%);
     border: none;
-    padding: 1rem;
+    padding: 0.7rem;
     font-weight: 600;
-    font-size: 1.05rem;
+    font-size: 1rem;
     border-radius: 12px;
     transition: all 0.3s;
     position: relative;
@@ -1603,7 +1625,7 @@ body.dark-mode .dark-mode-toggle {
 
 .login-footer {
     background: var(--soft-mint);
-    padding: 1.5rem 2rem;
+    padding: 0.9rem 1.5rem;
     text-align: center;
     border-top: 1px solid var(--soft-gray);
 }
@@ -1611,6 +1633,50 @@ body.dark-mode .dark-mode-toggle {
 .login-footer a {
     color: var(--pine-dark);
     font-weight: 500;
+}
+
+@media (max-height: 700px) {
+    .login-container {
+        padding: 0.25rem 0.75rem;
+    }
+
+    .login-header {
+        padding: 0.8rem 1.25rem;
+    }
+
+    .login-logo {
+        width: 140px;
+        margin-bottom: 0.25rem;
+    }
+
+    .login-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .login-body {
+        padding: 0.85rem 1.25rem;
+    }
+
+    .login-form .mb-4 {
+        margin-bottom: 0.55rem !important;
+    }
+
+    .login-form .form-label {
+        margin-bottom: 0.2rem;
+        font-size: 0.9rem;
+    }
+
+    .login-form .form-control {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .login-form .btn-login {
+        padding: 0.6rem;
+    }
+
+    .login-footer {
+        padding: 0.55rem 0.75rem;
+    }
 }
 
 /* ===== ADMIN DASHBOARD STYLING ===== */
@@ -2509,9 +2575,9 @@ html {
 }
 
 .stat-number {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 600;
-    font-family: 'Big Caslon', 'Times New Roman', serif;
+    font-family: var(--font-ui);
     margin-bottom: 10px;
     color: var(--mint-green);
 }
@@ -2546,8 +2612,8 @@ html {
     position: absolute;
     top: 15px;
     left: 20px;
-    font-size: 4rem;
-    font-family: 'Big Caslon', 'Times New Roman', serif;
+    font-size: 2.5rem;
+    font-family: var(--font-ui);
     color: var(--mint-green);
     opacity: 0.2;
     line-height: 1;

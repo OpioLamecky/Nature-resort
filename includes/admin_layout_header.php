@@ -37,7 +37,7 @@ if (!isset($stats)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css">
-    <link rel="stylesheet" href="<?= asset_url('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('css/style.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/style.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('css/admin-sidebar.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('css/admin-theme.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/admin-theme.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('css/admin-timepicker.css') ?>">
