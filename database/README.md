@@ -137,6 +137,10 @@ SELECT * FROM published_posts LIMIT 10;
 
 Existing installations should import `database/meal_reservations_migration.sql` once to create the Meal Reservations table. The migration is safe to re-run and links reservations to bookings when a matching booking exists.
 
+## About Us Content Upgrade
+
+Existing installations should import `database/about_content_migration.sql` once to create the leadership, achievements, and timeline tables used by the About Us dashboard and public About page. The migration is safe to re-run and does not modify existing About content.
+
 ### Search Posts:
 ```sql
 SELECT * FROM posts 

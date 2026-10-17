@@ -25,7 +25,7 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
   <link rel="stylesheet" href="<?= asset_url('css/custom-styles.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/custom-styles.css') ?>">
   
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="<?= asset_url('images/kalitusi-logo.png') ?>">
+  <link rel="icon" type="image/png" href="<?= asset_url('images/kalitusi-logo-transparent.png') ?>">
 </head>
 <body class="page-transition">
   
@@ -58,8 +58,13 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
   <nav class="navbar navbar-expand-lg nav-blue" role="navigation" aria-label="Main navigation">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="<?= base_url('public/') ?>" aria-label="Kalitusi Nature Resort Home">
-        <img src="<?= asset_url('images/kalitusi-logo.png') ?>" alt="Kalitusi Nature Resort Logo" class="resort-logo me-2">
+        <img src="<?= asset_url('images/kalitusi-logo-transparent.png') ?>" alt="Kalitusi Nature Resort Logo" class="resort-logo me-2">
         <span class="resort-name">KALITUSI NATURE RESORT</span>
+      </a>
+      <a class="header-cart-link position-relative ms-2 order-lg-last" id="header-cart-link" href="<?= base_url('eshop.php?cart=open') ?>" aria-label="Shopping basket" title="Shopping basket">
+        <i class="fas fa-basket-shopping" aria-hidden="true"></i>
+        <span class="visually-hidden">Shopping basket</span>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-success" id="header-cart-count" aria-hidden="true">0</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation menu">
         <span class="navbar-toggler-icon"></span>
@@ -84,7 +89,6 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/gallery.php') ?>">Gallery</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/news.php') ?>">Blog</a></li>
           <li class="nav-item"><a class="nav-link" href="<?= base_url('public/contact.php') ?>">Contact</a></li>
-          <li class="nav-item"><a class="btn btn-outline-light btn-sm ms-2" href="<?= base_url('public/booking.php') ?>">Book Now</a></li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminMenu">
@@ -100,6 +104,29 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
       </div>
     </div>
   </nav>
+
+  <script>
+    (() => {
+      const cartLink = document.getElementById('header-cart-link');
+      const cartCount = document.getElementById('header-cart-count');
+      const updateCartCount = () => {
+        try {
+          const cart = JSON.parse(localStorage.getItem('kalitusiShopCart') || '{}') || {};
+          const count = Object.values(cart).reduce((total, item) => total + Math.max(0, parseInt(item.quantity, 10) || 0), 0);
+          cartCount.textContent = String(count);
+          cartLink.setAttribute('aria-label', count === 1 ? 'Shopping basket, 1 item' : `Shopping basket, ${count} items`);
+        } catch (_) {
+          cartCount.textContent = '0';
+          cartLink.setAttribute('aria-label', 'Shopping basket, empty');
+        }
+      };
+      updateCartCount();
+      window.addEventListener('storage', event => {
+        if (event.key === 'kalitusiShopCart') updateCartCount();
+      });
+      window.addEventListener('shop-cart-updated', updateCartCount);
+    })();
+  </script>
 
   <main id="main-content" class="py-0" role="main">
 

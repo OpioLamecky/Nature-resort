@@ -156,7 +156,7 @@ foreach ($navItems as $item) {
     <!-- Sidebar Header -->
     <div class="sidebar-header">
         <div class="sidebar-brand">
-            <img src="<?= asset_url('images/kalitusi-logo.png') ?>" alt="Logo" class="sidebar-logo">
+            <img src="<?= asset_url('images/kalitusi-logo-transparent.png') ?>" alt="Logo" class="sidebar-logo">
             <span class="brand-text">Kalitusi Admin</span>
         </div>
         <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Collapse sidebar" aria-expanded="true">

@@ -41,6 +41,7 @@ resort.zip
 # Never publish live production credentials or private database exports
 /includes/config.production.php
 /database/*.sql
+!/database/about_content_migration.sql
 
 # Local diagnostic endpoints expose account, password, or session details
 /debug-*.php

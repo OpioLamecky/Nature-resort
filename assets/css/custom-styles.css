@@ -345,6 +345,42 @@
   letter-spacing: 0;
 }
 
+.header-cart-link {
+  display: inline-flex;
+  flex: 0 0 36px;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  text-decoration: none;
+}
+
+.header-cart-link:hover,
+.header-cart-link:focus-visible {
+  background: transparent;
+  color: #d9e8bd;
+}
+
+.header-cart-link:focus-visible {
+  outline: 2px solid #d9e8bd;
+  outline-offset: 2px;
+}
+
+.header-cart-link > i {
+  font-size: 1rem;
+}
+
+.header-cart-link #header-cart-count {
+  min-width: 1rem;
+  padding: 0.15rem 0.3rem;
+  font-size: 0.65rem;
+}
+
 .resort-logo {
   height: 42px;
 }

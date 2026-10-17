@@ -109,4 +109,4 @@ include __DIR__ . '/../includes/admin_layout_header.php';
   </tbody>
 </table>
 <?php endif; ?>
-<?php include __DIR__ . '/../includes/layout_footer.php';
+<?php include __DIR__ . '/../includes/admin_layout_footer.php';

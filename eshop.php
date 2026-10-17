@@ -137,7 +137,12 @@ include __DIR__ . '/includes/layout_header.php';
 <div class="offcanvas offcanvas-end" tabindex="-1" id="shopCart" aria-labelledby="shopCartLabel">
   <div class="offcanvas-header border-bottom">
     <h2 class="offcanvas-title h5" id="shopCartLabel">Your basket</h2>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close basket"></button>
+    <div class="d-flex align-items-center gap-2">
+      <button type="button" class="btn btn-sm btn-outline-danger" id="clear-cart">
+        <i class="fas fa-trash-can me-1" aria-hidden="true"></i>Clear basket
+      </button>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close basket"></button>
+    </div>
   </div>
   <div class="offcanvas-body d-flex flex-column">
     <div id="cart-lines" class="mb-4"></div>
@@ -192,11 +197,16 @@ include __DIR__ . '/includes/layout_header.php';
   const cartTotal = document.getElementById('cart-total');
   const cartJson = document.getElementById('cart-json');
   const checkoutButton = document.getElementById('checkout-button');
+  const clearCartButton = document.getElementById('clear-cart');
   let cart = {};
   try { cart = JSON.parse(localStorage.getItem(cartKey) || '{}') || {}; } catch (_) { cart = {}; }
 
   const money = value => 'UGX ' + Math.round(value).toLocaleString();
-  const save = () => { localStorage.setItem(cartKey, JSON.stringify(cart)); render(); };
+  const save = () => {
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    render();
+    window.dispatchEvent(new Event('shop-cart-updated'));
+  };
   const render = () => {
     cartLines.replaceChildren();
     let count = 0;
@@ -235,6 +245,7 @@ include __DIR__ . '/includes/layout_header.php';
     cartTotal.textContent = money(total);
     cartJson.value = JSON.stringify(Object.values(cart).map(item => ({ id: item.id, quantity: item.quantity })));
     checkoutButton.disabled = count === 0;
+    clearCartButton.disabled = count === 0;
   };
 
   document.querySelectorAll('.add-to-cart').forEach(button => button.addEventListener('click', () => {
@@ -242,7 +253,13 @@ include __DIR__ . '/includes/layout_header.php';
     if (!cart[id]) cart[id] = { id, name: button.dataset.name, price: Number(button.dataset.price), quantity: 0 };
     cart[id].quantity += 1;
     save();
+    bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('shopCart')).show();
   }));
+  clearCartButton.addEventListener('click', () => {
+    if (!Object.keys(cart).length) return;
+    cart = {};
+    save();
+  });
   document.querySelectorAll('[data-category]').forEach(button => button.addEventListener('click', () => {
     document.querySelectorAll('.shop-filter [data-category]').forEach(filter => {
       const active = filter === button;
@@ -266,6 +283,11 @@ include __DIR__ . '/includes/layout_header.php';
     cartJson.value = JSON.stringify(Object.values(cart).map(item => ({ id: item.id, quantity: item.quantity })));
   });
   render();
+  if (new URLSearchParams(window.location.search).get('cart') === 'open') {
+    window.addEventListener('load', () => {
+      bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('shopCart')).show();
+    }, { once: true });
+  }
 })();
 </script>
 <?php include __DIR__ . '/includes/layout_footer.php'; ?>

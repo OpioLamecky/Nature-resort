@@ -126,7 +126,7 @@ include __DIR__ . '/../includes/layout_header.php';
 </div>
 
 <!-- About Section -->
-<section class="bg-white py-5" style="padding-top: 4.5rem !important;">
+<section class="bg-white py-5">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-6 mb-4 mb-lg-0 slide-up">

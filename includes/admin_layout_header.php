@@ -43,7 +43,7 @@ if (!isset($stats)) {
     <link rel="stylesheet" href="<?= asset_url('css/admin-timepicker.css') ?>">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="<?= asset_url('images/kalitusi-logo.png') ?>">
+    <link rel="icon" type="image/png" href="<?= asset_url('images/kalitusi-logo-transparent.png') ?>">
 </head>
 <body class="admin-layout">
     
