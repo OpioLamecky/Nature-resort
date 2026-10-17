@@ -1514,6 +1514,14 @@ body.dark-mode .dark-mode-toggle {
     position: relative;
 }
 
+.login-logo {
+    display: block;
+    width: 240px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 0.75rem;
+}
+
 .login-header::after {
     content: '';
     position: absolute;

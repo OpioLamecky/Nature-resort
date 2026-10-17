@@ -112,14 +112,14 @@ $title = 'Login | Kalitusi Nature Resort';
   <title><?= sanitize($title) ?></title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/style.css') ?>">
 </head>
 <body>
 
 <div class="login-container">
   <div class="login-card">
     <div class="login-header">
-      <i class="fas fa-tree fa-3x mb-3 login-header-icon"></i>
+      <img src="<?= asset_url('images/kalitusi-logo-transparent.png') ?>" alt="Kalitusi Nature Resort" class="login-logo">
       <h1>Kalitusi Resort</h1>
       <p>Administrator Access Portal</p>
     </div>
