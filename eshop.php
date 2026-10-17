@@ -54,7 +54,8 @@ try {
 include __DIR__ . '/includes/layout_header.php';
 ?>
 <style>
-  .shop-intro { background: linear-gradient(115deg, #173c31 0%, #285c45 58%, #64895c 100%); color: #fff; }
+  .shop-intro { display: flex; align-items: center; min-height: 320px; background: linear-gradient(115deg, #173c31 0%, #285c45 58%, #64895c 100%); color: #fff; text-align: center; }
+  .shop-intro .container { max-width: 900px; }
   .shop-intro h1 { color: #fff !important; }
   .shop-intro .shop-tagline { color: #edf4e7; }
   .shop-intro .eyebrow { color: #d9e8bd; letter-spacing: .12em; text-transform: uppercase; }
@@ -68,16 +69,8 @@ include __DIR__ . '/includes/layout_header.php';
 <section class="shop-intro py-5">
   <div class="container py-3">
     <p class="eyebrow small mb-2"><?= sanitize($settings['shop_eyebrow']) ?></p>
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
-      <div>
-        <h1 class="display-5 fw-semibold mb-2"><?= sanitize($settings['shop_title']) ?></h1>
-        <p class="shop-tagline mb-0"><?= sanitize($settings['shop_tagline']) ?></p>
-      </div>
-      <button class="btn btn-light position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#shopCart" aria-controls="shopCart">
-        <i class="fas fa-basket-shopping me-2" aria-hidden="true"></i>View basket
-        <span class="badge text-bg-success ms-1" id="cart-count">0</span>
-      </button>
-    </div>
+    <h1 class="display-5 fw-semibold mb-2"><?= sanitize($settings['shop_title']) ?></h1>
+    <p class="shop-tagline mb-0"><?= sanitize($settings['shop_tagline']) ?></p>
   </div>
 </section>
 
@@ -192,7 +185,6 @@ include __DIR__ . '/includes/layout_header.php';
 <script>
 (() => {
   const cartKey = 'kalitusiShopCart';
-  const cartCount = document.getElementById('cart-count');
   const cartLines = document.getElementById('cart-lines');
   const cartTotal = document.getElementById('cart-total');
   const cartJson = document.getElementById('cart-json');
@@ -241,7 +233,6 @@ include __DIR__ . '/includes/layout_header.php';
       cartLines.append(row);
     });
     if (count === 0) cartLines.innerHTML = '<p class="text-muted">Your basket is empty.</p>';
-    cartCount.textContent = count;
     cartTotal.textContent = money(total);
     cartJson.value = JSON.stringify(Object.values(cart).map(item => ({ id: item.id, quantity: item.quantity })));
     checkoutButton.disabled = count === 0;
@@ -284,6 +275,9 @@ include __DIR__ . '/includes/layout_header.php';
   });
   render();
   if (new URLSearchParams(window.location.search).get('cart') === 'open') {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('cart');
+    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
     window.addEventListener('load', () => {
       bootstrap.Offcanvas.getOrCreateInstance(document.getElementById('shopCart')).show();
     }, { once: true });
