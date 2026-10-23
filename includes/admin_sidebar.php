@@ -114,11 +114,10 @@ $navItems = [
         'icon' => 'fas fa-cog',
         'url' => '#',
         'permission' => 'settings.view',
-        'active' => in_array($currentPage, ['pages-footer.php', 'profile.php', 'test-sidebar.php']),
+        'active' => in_array($currentPage, ['pages-footer.php', 'profile.php']),
         'submenu' => [
             ['title' => 'Footer Links', 'url' => 'pages-footer.php', 'icon' => 'fas fa-link'],
-            ['title' => 'My Profile', 'url' => 'profile.php', 'icon' => 'fas fa-user-circle'],
-            ['title' => 'Test Sidebar', 'url' => 'test-sidebar.php', 'icon' => 'fas fa-vial']
+            ['title' => 'My Profile', 'url' => 'profile.php', 'icon' => 'fas fa-user-circle']
         ]
     ]
 ];

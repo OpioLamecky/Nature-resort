@@ -53,7 +53,7 @@ if ($tab === 'links') {
     verify_csrf($_GET['csrf'] ?? '');
     $pdo->prepare('DELETE FROM footer_links WHERE footer_link_id=?')->execute([$id]);
     flash('Footer link deleted.');
-    redirect('/kellen/ura-website/admin/pages-footer.php?tab=links');
+    redirect(base_url('admin/pages-footer.php?tab=links'));
   }
 }
 
@@ -69,7 +69,7 @@ if ($tab === 'settings' && ($action === 'save') && (($_SERVER['REQUEST_METHOD'] 
     $st->execute([$key, $val]);
   }
   flash('Settings saved.');
-  redirect('/kellen/ura-website/admin/pages-footer.php?tab=settings');
+  redirect(base_url('admin/pages-footer.php?tab=settings'));
 }
 
 $title = 'Pages - Footer';

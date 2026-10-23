@@ -387,21 +387,47 @@
 
 .resort-name {
   display: inline-block;
-  max-width: 10rem;
-  font-size: 1rem;
-  line-height: 1.15;
-  letter-spacing: 0;
-  white-space: normal;
+  white-space: nowrap !important;
+  max-width: none !important;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+@media (max-width: 991.98px) {
+  .resort-name {
+    font-size: 0.95rem;
+  }
 }
 
 .nav-blue .navbar-nav {
   align-items: center;
+  flex-wrap: nowrap;
 }
 
 .nav-blue .nav-link {
-  padding: 0.4rem 0.5rem;
-  font-size: 1.125rem;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   white-space: nowrap;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.nav-blue .nav-link:hover,
+.nav-blue .nav-link:focus {
+  color: #c9a961;
+}
+
+@media (min-width: 992px) and (max-width: 1240px) {
+  .resort-name {
+    font-size: 0.95rem;
+  }
+  .nav-blue .nav-link {
+    padding: 0.4rem 0.45rem;
+    font-size: 0.88rem;
+  }
 }
   .nav-blue .navbar-nav > .nav-item > .btn {
     display: inline-flex;

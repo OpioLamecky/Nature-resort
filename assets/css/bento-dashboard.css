@@ -1,0 +1,615 @@
+/* ==========================================================================
+   Bento Grid Dashboard Styles - Kalitusi Nature Resort
+   Inspired by modern minimalist bento card architecture with vibrant accents
+   ========================================================================== */
+
+:root {
+  --bento-bg: #f1f3f6;
+  --bento-card-bg: #ffffff;
+  --bento-card-radius: 24px;
+  --bento-card-shadow: 0 6px 24px rgba(17, 24, 39, 0.04), 0 1px 3px rgba(17, 24, 39, 0.02);
+  --bento-card-border: 1px solid rgba(229, 231, 235, 0.85);
+  
+  /* Primary Vibrant Accents */
+  --bento-lime: #8eed21;
+  --bento-lime-dark: #76cf15;
+  --bento-blue: #4f61f7;
+  --bento-blue-dark: #3b4de0;
+  
+  /* Neutral Palette */
+  --bento-dark: #111827;
+  --bento-slate: #374151;
+  --bento-muted: #6b7280;
+  --bento-light-muted: #9ca3af;
+  --bento-soft-bg: #f8fafc;
+  --bento-border-soft: #e5e7eb;
+}
+
+.bento-dashboard-wrap {
+  background: var(--bento-bg);
+  padding: 1.75rem 2rem 2.5rem;
+  min-height: calc(100vh - 70px);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--bento-dark);
+}
+
+@media (max-width: 768px) {
+  .bento-dashboard-wrap {
+    padding: 1rem 0.85rem 2rem;
+  }
+}
+
+/* Bento Card Base */
+.bento-card {
+  background: var(--bento-card-bg);
+  border-radius: var(--bento-card-radius);
+  border: var(--bento-card-border);
+  box-shadow: var(--bento-card-shadow);
+  padding: 1.5rem 1.65rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bento-card:hover {
+  box-shadow: 0 12px 32px rgba(17, 24, 39, 0.06), 0 2px 6px rgba(17, 24, 39, 0.03);
+}
+
+/* Bento Header Component */
+.bento-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.bento-card-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--bento-dark);
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.bento-card-subtitle {
+  font-size: 0.78rem;
+  color: var(--bento-muted);
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+  font-weight: 450;
+}
+
+/* Bento Round Action Buttons */
+.bento-action-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--bento-border-soft);
+  background: #ffffff;
+  color: var(--bento-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.bento-action-btn:hover {
+  background: #f9fafb;
+  color: var(--bento-dark);
+  border-color: #d1d5db;
+  transform: scale(1.05);
+}
+
+/* Hatched Stripe Pattern Utility */
+.bento-hatch-pattern {
+  background: repeating-linear-gradient(
+    45deg,
+    #e2e8f0,
+    #e2e8f0 3px,
+    #f8fafc 3px,
+    #f8fafc 7px
+  ) !important;
+}
+
+/* --------------------------------------------------------------------------
+   CARD 1: Spotlight (Host on Duty)
+   -------------------------------------------------------------------------- */
+.bento-spotlight-card {
+  text-align: center;
+}
+
+.bento-spotlight-avatar-wrap {
+  margin: 0.75rem auto 1rem;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.bento-spotlight-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.bento-spotlight-badge {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  background: var(--bento-lime);
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+}
+
+.bento-spotlight-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--bento-dark);
+  margin-bottom: 0.2rem;
+  letter-spacing: -0.01em;
+}
+
+.bento-spotlight-role {
+  font-size: 0.82rem;
+  color: var(--bento-muted);
+  margin-bottom: 1.25rem;
+}
+
+.bento-spotlight-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.bento-spotlight-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--bento-border-soft);
+  background: #ffffff;
+  color: var(--bento-slate);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.bento-spotlight-icon-btn:hover {
+  background: var(--bento-soft-bg);
+  color: var(--bento-blue);
+  border-color: #cbd5e1;
+}
+
+/* --------------------------------------------------------------------------
+   CARD 2: Today's Schedule & Progress
+   -------------------------------------------------------------------------- */
+.bento-progress-box {
+  margin-bottom: 1.25rem;
+}
+
+.bento-progress-bar-wrap {
+  height: 16px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #f1f5f9;
+  display: flex;
+  margin-bottom: 0.6rem;
+}
+
+.bento-progress-fill-lime {
+  background: var(--bento-lime);
+  height: 100%;
+  border-radius: 999px 0 0 999px;
+  transition: width 0.6s ease;
+}
+
+.bento-progress-fill-hatch {
+  height: 100%;
+  flex-grow: 1;
+}
+
+.bento-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--bento-slate);
+}
+
+.bento-progress-fraction {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--bento-dark);
+}
+
+.bento-schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.bento-schedule-item {
+  background: var(--bento-soft-bg);
+  border-radius: 16px;
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(241, 245, 249, 0.8);
+  transition: background 0.2s ease;
+}
+
+.bento-schedule-item:hover {
+  background: #f1f5f9;
+}
+
+.bento-schedule-lead {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.bento-schedule-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e2e8f0;
+}
+
+.bento-schedule-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--bento-dark);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.bento-schedule-sub {
+  font-size: 0.72rem;
+  color: var(--bento-muted);
+  margin: 0;
+}
+
+.bento-schedule-meta {
+  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bento-schedule-time {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--bento-slate);
+  background: #ffffff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--bento-border-soft);
+  white-space: nowrap;
+}
+
+.bento-schedule-tag {
+  font-size: 0.7rem;
+  color: var(--bento-muted);
+  white-space: nowrap;
+}
+
+.bento-schedule-arrow {
+  color: var(--bento-light-muted);
+  font-size: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   CARD 3: Room Occupancy Donut
+   -------------------------------------------------------------------------- */
+.bento-donut-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  padding: 0.5rem 0;
+}
+
+.bento-donut-svg-wrap {
+  position: relative;
+  width: 170px;
+  height: 170px;
+  margin: 0 auto 1.25rem;
+}
+
+.bento-donut-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.bento-donut-big-num {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--bento-dark);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.bento-donut-label {
+  font-size: 0.72rem;
+  color: var(--bento-muted);
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+.bento-legend-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--bento-border-soft);
+}
+
+.bento-legend-col {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  flex: 1;
+}
+
+.bento-legend-pill {
+  width: 4px;
+  height: 28px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.bento-legend-pill.is-blue { background: var(--bento-blue); }
+.bento-legend-pill.is-lime { background: var(--bento-lime); }
+.bento-legend-pill.is-hatch {
+  background: repeating-linear-gradient(
+    45deg,
+    #94a3b8,
+    #94a3b8 2px,
+    #e2e8f0 2px,
+    #e2e8f0 5px
+  );
+}
+
+.bento-legend-pct {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--bento-dark);
+  line-height: 1.1;
+}
+
+.bento-legend-text {
+  font-size: 0.68rem;
+  color: var(--bento-muted);
+  line-height: 1.2;
+}
+
+/* --------------------------------------------------------------------------
+   CARD 4: Monthly Performance & Bar Chart
+   -------------------------------------------------------------------------- */
+.bento-chart-container {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 3.5rem; /* room for tooltip */
+  min-height: 240px;
+}
+
+.bento-chart-floating-tooltip {
+  position: absolute;
+  top: 0;
+  left: 54%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  padding: 0.65rem 0.95rem;
+  z-index: 10;
+  pointer-events: none;
+  min-width: 140px;
+}
+
+.bento-chart-tooltip-month {
+  font-size: 0.72rem;
+  color: var(--bento-muted);
+  font-weight: 500;
+}
+
+.bento-chart-tooltip-val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--bento-dark);
+  line-height: 1.2;
+}
+
+.bento-chart-tooltip-sub {
+  font-size: 0.68rem;
+  color: var(--bento-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.15rem;
+}
+
+.bento-chart-tooltip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--bento-dark);
+  display: inline-block;
+}
+
+.bento-chart-canvas {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 170px;
+  padding: 0 0.5rem;
+  position: relative;
+  border-bottom: 1px solid var(--bento-border-soft);
+}
+
+.bento-chart-grid-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed rgba(226, 232, 240, 0.8);
+  pointer-events: none;
+}
+
+.bento-chart-month-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 2;
+}
+
+.bento-chart-bars-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 100%;
+}
+
+.bento-chart-bar {
+  width: 14px;
+  border-radius: 999px 999px 4px 4px;
+  transition: height 0.4s ease, opacity 0.2s ease;
+}
+
+.bento-chart-bar.is-lime {
+  background: var(--bento-lime);
+}
+
+.bento-chart-bar.is-blue {
+  background: var(--bento-blue);
+}
+
+.bento-chart-bar.is-hatch {
+  background: repeating-linear-gradient(
+    45deg,
+    #cbd5e1,
+    #cbd5e1 2px,
+    #f1f5f9 2px,
+    #f1f5f9 5px
+  );
+}
+
+.bento-chart-month-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--bento-muted);
+  margin-top: 0.5rem;
+}
+
+.bento-chart-month-group.is-active .bento-chart-month-label {
+  color: var(--bento-dark);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   CARD 5: Guest Satisfaction & Reviews
+   -------------------------------------------------------------------------- */
+.bento-satisfaction-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.bento-satisfaction-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--bento-soft-bg);
+  border: 1px solid var(--bento-border-soft);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--bento-slate);
+  align-self: flex-start;
+  margin-bottom: 1rem;
+}
+
+.bento-satisfaction-quote {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--bento-slate);
+  font-style: normal;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.bento-satisfaction-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--bento-border-soft);
+}
+
+.bento-satisfaction-score {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--bento-dark);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.bento-satisfaction-score small {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--bento-muted);
+}
+
+.bento-avatars-stack {
+  display: flex;
+  align-items: center;
+}
+
+.bento-avatar-stacked {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  object-fit: cover;
+  margin-left: -8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.bento-avatar-stacked:first-child {
+  margin-left: 0;
+}

@@ -248,35 +248,35 @@ include __DIR__ . '/../includes/admin_layout_header.php';
   <div class="card">
     <div class="card-body p-0">
       <div class="table-responsive">
-        <table class="table table-hover mb-0">
+        <table class="table table-hover table-sm align-middle mb-0 accommodations-table">
           <thead class="table-light">
             <tr>
-              <th>Room #</th>
-              <th>Type</th>
+              <th style="width: 80px;">Room #</th>
+              <th style="min-width: 130px;">Type</th>
               <th>Name</th>
-              <th>Capacity</th>
-              <th>Price/Night</th>
-              <th>Availability</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th style="min-width: 140px;">Capacity</th>
+              <th style="min-width: 130px;">Price/Night</th>
+              <th style="min-width: 140px;">Availability</th>
+              <th style="width: 90px;">Status</th>
+              <th style="width: 100px;" class="text-end pe-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             <?php foreach ($accommodations as $room): ?>
               <tr>
-                <td><strong><?= sanitize($room['room_number']) ?></strong></td>
-                <td><?= sanitize($room['room_type']) ?></td>
-                <td><?= sanitize($room['name']) ?></td>
-                <td><?= $room['capacity_adults'] ?> adults, <?= $room['capacity_children'] ?> children</td>
-                <td><strong>UGX <?= number_format($room['price_per_night']) ?></strong></td>
+                <td><span class="badge bg-light text-dark border px-2 py-1 font-monospace fw-semibold"><?= sanitize($room['room_number']) ?></span></td>
+                <td><span class="text-nowrap fw-semibold text-secondary" style="font-size: 0.88rem;"><?= sanitize($room['room_type']) ?></span></td>
+                <td><div class="fw-semibold text-dark" style="font-size: 0.9rem;"><?= sanitize($room['name']) ?></div></td>
+                <td><span class="text-nowrap small text-muted"><i class="fas fa-users me-1 text-secondary"></i><?= $room['capacity_adults'] ?> ad, <?= $room['capacity_children'] ?> ch</span></td>
+                <td><span class="text-nowrap fw-bold text-success" style="font-size: 0.88rem;">UGX <?= number_format($room['price_per_night']) ?></span></td>
                 <td>
                   <?php if (has_permission('accommodations.status')): ?>
                     <form method="POST" style="display:inline;">
                       <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
                       <input type="hidden" name="action" value="update_status">
                       <input type="hidden" name="accommodation_id" value="<?= $room['accommodation_id'] ?>">
-                      <select name="availability_status" class="form-select form-select-sm" 
-                              onchange="this.form.submit()" style="width:auto;">
+                      <select name="availability_status" class="form-select form-select-sm py-1 px-2 border-<?= $room['availability_status'] === 'available' ? 'success' : ($room['availability_status'] === 'occupied' ? 'danger' : 'warning') ?>" 
+                              onchange="this.form.submit()" style="width:auto; font-size: 0.82rem; font-weight: 500;">
                         <option value="available" <?= $room['availability_status'] === 'available' ? 'selected' : '' ?>>Available</option>
                         <option value="occupied" <?= $room['availability_status'] === 'occupied' ? 'selected' : '' ?>>Occupied</option>
                         <option value="maintenance" <?= $room['availability_status'] === 'maintenance' ? 'selected' : '' ?>>Maintenance</option>
@@ -291,15 +291,15 @@ include __DIR__ . '/../includes/admin_layout_header.php';
                 </td>
                 <td>
                   <?php if ($room['status'] === 'active'): ?>
-                    <span class="badge bg-success">Active</span>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">Active</span>
                   <?php else: ?>
-                    <span class="badge bg-secondary">Inactive</span>
+                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1">Inactive</span>
                   <?php endif; ?>
                 </td>
-                <td>
+                <td class="text-end pe-3">
                   <div class="btn-group btn-group-sm">
                     <?php if (has_permission('accommodations.edit')): ?>
-                      <button type="button" class="btn btn-outline-primary" 
+                      <button type="button" class="btn btn-outline-primary py-1 px-2" title="Edit"
                               onclick="editRoom(<?= htmlspecialchars(json_encode($room)) ?>)">
                         <i class="fas fa-edit"></i>
                       </button>
@@ -310,7 +310,7 @@ include __DIR__ . '/../includes/admin_layout_header.php';
                         <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="accommodation_id" value="<?= $room['accommodation_id'] ?>">
-                        <button type="submit" class="btn btn-outline-danger">
+                        <button type="submit" class="btn btn-outline-danger py-1 px-2" title="Delete">
                           <i class="fas fa-trash"></i>
                         </button>
                       </form>

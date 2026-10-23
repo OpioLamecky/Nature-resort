@@ -49,15 +49,25 @@ include __DIR__ . '/../includes/layout_header.php';
 </section>
 
 <style>
-  .stay-filter .btn.active { background: #244f3b; border-color: #244f3b; color: #fff; }
-  .stay-card { height: 100%; overflow: hidden; border: 1px solid #e4e8df; border-radius: 6px; }
-  .stay-photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 3px; background: #eef1e8; }
-  .stay-photo-grid img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; cursor: zoom-in; }
-  .stay-card .card-title { color: #233b30; }
+  .stay-filter .btn { font-size: 0.85rem; padding: 0.35rem 0.85rem; border-radius: 20px; transition: all 0.2s; }
+  .stay-filter .btn.active { background: #1a4d2e; border-color: #1a4d2e; color: #fff; }
+  .stay-card { height: 100%; border: 1px solid #e2ebe4; border-radius: 12px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; background: #fff; }
+  .stay-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(26, 77, 46, 0.12); }
+  .stay-photo-grid { position: relative; height: 210px; overflow: hidden; background: #eaefe9; }
+  .stay-photo-grid img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; transition: transform 0.35s ease; }
+  .stay-card:hover .stay-photo-grid img { transform: scale(1.04); }
+  .stay-type-badge { position: absolute; bottom: 10px; left: 10px; background: rgba(26, 77, 46, 0.88); backdrop-filter: blur(4px); color: #fff; font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stay-card .card-body { padding: 0.85rem 1rem 0.95rem; }
+  .stay-card .card-title { font-size: 1.05rem; font-weight: 700; color: #1a4d2e; margin-bottom: 0.3rem; line-height: 1.3; }
+  .stay-desc { font-size: 0.82rem; line-height: 1.4; color: #5c6b60; margin-bottom: 0.45rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .stay-amenities { gap: 0.35rem !important; margin-bottom: 0.55rem; }
+  .stay-amenity-chip { font-size: 0.72rem; background: #f0f5f1; color: #234d30; padding: 0.15rem 0.45rem; border-radius: 4px; display: inline-flex; align-items: center; }
+  .stay-price-wrap { border-top: 1px solid #edf2ee; padding-top: 0.5rem; margin-top: auto; }
+  .stay-price-val { font-size: 1.05rem; font-weight: 700; color: #1a4d2e; }
 </style>
 
-<div class="container py-4">
-  <div class="stay-filter d-flex flex-wrap gap-2 mb-4" aria-label="Filter accommodations by type">
+<div class="container py-3">
+  <div class="stay-filter d-flex flex-wrap gap-2 mb-3" aria-label="Filter accommodations by type">
     <button class="btn btn-outline-success active" type="button" data-room-type="all" aria-pressed="true">All stays <span class="badge text-bg-light ms-1"><?= count($rooms) ?></span></button>
     <?php
       $roomTypes = ['Standard Room', 'Deluxe Room', 'Suite', 'Chalet', 'Glamping Tent'];
@@ -69,10 +79,10 @@ include __DIR__ . '/../includes/layout_header.php';
     <?php endif; endforeach; ?>
   </div>
 
-  <div class="row g-4 mb-5" id="accommodation-grid">
+  <div class="row g-3 mb-4" id="accommodation-grid">
     <?php if ($rooms): foreach ($rooms as $room): $roomImages = resort_accommodation_images($room); $isDormitory = in_array(strtolower(trim($room['name'])), ['ginger', 'rocket'], true); ?>
-      <div class="col-12 col-sm-6 col-xl-4 stay-cell" data-room-type="<?= sanitize($room['room_type']) ?>">
-        <article class="card stay-card resort-image-card">
+      <div class="col-12 col-sm-6 col-lg-4 stay-cell" data-room-type="<?= sanitize($room['room_type']) ?>">
+        <article class="card stay-card resort-image-card shadow-sm">
           <?php if ($roomImages): ?>
             <div class="stay-photo-grid">
               <img src="<?= sanitize($roomImages[0]['url']) ?>" alt="<?= sanitize($roomImages[0]['alt']) ?>" data-lightbox="<?= sanitize($roomImages[0]['url']) ?>" loading="lazy">
@@ -80,23 +90,30 @@ include __DIR__ . '/../includes/layout_header.php';
             </div>
           <?php endif; ?>
           <div class="card-body d-flex flex-column">
-            <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
-              <h2 class="card-title h5 mb-0"><?= sanitize($room['name']) ?></h2>
-            </div>
-            <p class="text-muted small mb-3"><?= sanitize($room['description'] ?? '') ?></p>
+            <h2 class="card-title"><?= sanitize($room['name']) ?></h2>
+            <?php if (!empty($room['description'])): ?>
+              <p class="stay-desc"><?= sanitize($room['description']) ?></p>
+            <?php endif; ?>
             <?php $amenities = json_decode($room['amenities'] ?? '[]', true); if (!empty($amenities)): ?>
-              <div class="d-flex flex-wrap gap-2 mb-3">
-                <?php foreach (array_slice($amenities, 0, 4) as $amenity): ?><span class="small text-muted"><i class="fas fa-check text-success me-1"></i><?= sanitize($amenity) ?></span><?php endforeach; ?>
+              <div class="d-flex flex-wrap stay-amenities">
+                <?php foreach (array_slice($amenities, 0, 3) as $amenity): ?>
+                  <span class="stay-amenity-chip"><i class="fas fa-check text-success me-1"></i><?= sanitize($amenity) ?></span>
+                <?php endforeach; ?>
               </div>
             <?php endif; ?>
-            <div class="mt-auto">
-              <?php if ($isDormitory): ?>
-                <div class="mb-1 fw-semibold">UGX 60,000<small class="text-muted fw-normal"> / bed / night</small></div>
-                <div class="small text-muted mb-3">Whole dorm (6 beds): UGX 360,000 / night</div>
-              <?php else: ?>
-                <div class="mb-3 fw-semibold">UGX <?= number_format((float)$room['price_per_night']) ?><small class="text-muted fw-normal"> / night</small></div>
-              <?php endif; ?>
-              <a href="<?= base_url('public/booking.php?room=' . (int)$room['accommodation_id']) ?>" class="btn btn-success btn-sm w-100">View stay</a>
+            <div class="stay-price-wrap">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                  <?php if ($isDormitory): ?>
+                    <span class="stay-price-val">UGX 60,000</span><small class="text-muted"> / bed</small>
+                    <div class="text-muted" style="font-size: 0.72rem;">Whole dorm: UGX 360,000</div>
+                  <?php else: ?>
+                    <span class="stay-price-val">UGX <?= number_format((float)$room['price_per_night']) ?></span><small class="text-muted"> / night</small>
+                  <?php endif; ?>
+                </div>
+                <span class="small text-muted"><i class="fas fa-user-friends me-1"></i><?= (int)$room['capacity_adults'] ?>+<?= (int)$room['capacity_children'] ?></span>
+              </div>
+              <a href="<?= base_url('public/booking.php?room=' . (int)$room['accommodation_id']) ?>" class="btn btn-success btn-sm w-100 py-1 fw-semibold">View stay & book</a>
             </div>
           </div>
         </article>

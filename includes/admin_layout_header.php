@@ -40,6 +40,8 @@ if (!isset($stats)) {
     <link rel="stylesheet" href="<?= asset_url('css/style.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/style.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('css/admin-sidebar.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('css/admin-theme.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/admin-theme.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('css/bento-dashboard.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/bento-dashboard.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('css/scrim-cards.css') ?>?v=<?= (int)filemtime(__DIR__ . '/../assets/css/scrim-cards.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('css/admin-timepicker.css') ?>">
     
     <!-- Favicon -->
