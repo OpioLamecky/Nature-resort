@@ -61,7 +61,8 @@ include __DIR__ . '/includes/layout_header.php';
   .shop-intro .eyebrow { color: #d9e8bd; letter-spacing: .12em; text-transform: uppercase; }
   .shop-filter .btn.active { background: #244f3b; border-color: #244f3b; color: #fff; }
   .shop-card { border: 1px solid #e4e8df; border-radius: 6px; overflow: hidden; height: 100%; }
-  .shop-card img { aspect-ratio: 4 / 3; object-fit: cover; background: #f0f2eb; }
+  .shop-card .scrim-image-frame { aspect-ratio: 4 / 3; flex-basis: auto; }
+  .shop-card .scrim-image-frame > img { background: #f0f2eb; }
   .shop-card .card-title { color: #233b30; }
   .shop-price { color: #285c45; font-weight: 700; }
 </style>
@@ -101,7 +102,9 @@ include __DIR__ . '/includes/layout_header.php';
           <div class="col-12 col-sm-6 col-lg-4 col-xl-3 product-cell" data-category="<?= (int)$item['category_id'] ?>">
             <article class="card shop-card">
               <?php if ($image !== ''): ?>
-                <img src="<?= sanitize($image) ?>" class="card-img-top" alt="<?= sanitize($item['name']) ?>" loading="lazy">
+                <div class="scrim-image-frame scrim-image-frame-fluid">
+                  <img src="<?= sanitize($image) ?>" class="card-img-top" alt="<?= sanitize($item['name']) ?>" loading="lazy">
+                </div>
               <?php else: ?>
                 <div class="d-flex align-items-center justify-content-center text-success" style="aspect-ratio:4/3;background:#eef1e8" aria-hidden="true"><i class="fas fa-leaf fa-2x"></i></div>
               <?php endif; ?>

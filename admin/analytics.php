@@ -154,33 +154,31 @@ try {
 include __DIR__ . '/../includes/admin_layout_header.php';
 ?>
 
-  
-  <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="analytics-page">
+  <div class="analytics-heading d-flex justify-content-between align-items-center mb-4">
     <div>
-      <h1 class="h3 mb-1">Analytics Dashboard</h1>
-      <p class="text-muted mb-0">Real-time insights and reports</p>
+      <p class="text-muted mb-0">Booking performance, occupancy, revenue, and guest feedback.</p>
     </div>
-    <div>
-      <a href="<?= base_url('admin/dashboard.php') ?>" class="btn btn-outline-secondary">
-        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+    <div class="analytics-heading-actions">
+      <a href="<?= base_url('admin/dashboard.php') ?>" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-arrow-left me-2"></i>Dashboard
       </a>
     </div>
   </div>
 
   <!-- Date Range Filter -->
-  <div class="card mb-4">
+  <div class="card analytics-filter-card mb-4">
     <div class="card-body">
       <form method="GET" class="row g-3 align-items-end">
-        <div class="col-md-3">
+        <div class="col-12 col-sm-5 col-lg-3">
           <label for="start_date" class="form-label">Start Date</label>
           <input type="date" class="form-control" id="start_date" name="start_date" value="<?= sanitize($startDate) ?>">
         </div>
-        <div class="col-md-3">
+        <div class="col-12 col-sm-5 col-lg-3">
           <label for="end_date" class="form-label">End Date</label>
           <input type="date" class="form-control" id="end_date" name="end_date" value="<?= sanitize($endDate) ?>">
         </div>
-        <div class="col-md-3">
+        <div class="col-12 col-sm-12 col-lg-6 analytics-filter-actions">
           <button type="submit" class="btn btn-primary">
             <i class="fas fa-filter me-2"></i>Filter
           </button>
@@ -191,9 +189,13 @@ include __DIR__ . '/../includes/admin_layout_header.php';
   </div>
 
   <!-- Stats Cards -->
-  <div class="row g-4 mb-4">
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-primary h-100">
+  <div class="analytics-section-heading">
+    <h2>Booking performance</h2>
+    <p>Summary for the selected date range, except pending bookings.</p>
+  </div>
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3 d-flex">
+      <div class="card analytics-metric-card analytics-metric-primary h-100 w-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="stat-icon">
@@ -208,8 +210,8 @@ include __DIR__ . '/../includes/admin_layout_header.php';
       </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-success h-100">
+    <div class="col-12 col-sm-6 col-xl-3 d-flex">
+      <div class="card analytics-metric-card analytics-metric-success h-100 w-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="stat-icon">
@@ -224,8 +226,8 @@ include __DIR__ . '/../includes/admin_layout_header.php';
       </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-info h-100">
+    <div class="col-12 col-sm-6 col-xl-3 d-flex">
+      <div class="card analytics-metric-card analytics-metric-info h-100 w-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="stat-icon">
@@ -240,8 +242,8 @@ include __DIR__ . '/../includes/admin_layout_header.php';
       </div>
     </div>
 
-    <div class="col-lg-3 col-md-6">
-      <div class="card stat-card stat-card-warning h-100">
+    <div class="col-12 col-sm-6 col-xl-3 d-flex">
+      <div class="card analytics-metric-card analytics-metric-warning h-100 w-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="stat-icon">
@@ -258,9 +260,13 @@ include __DIR__ . '/../includes/admin_layout_header.php';
   </div>
 
   <!-- Additional Analytics Cards -->
+  <div class="analytics-section-heading">
+    <h2>Guest experience</h2>
+    <p>Average booking value uses the selected range; reviews cover the last 30 days.</p>
+  </div>
   <div class="row g-3 mb-4">
-    <div class="col-md-3">
-      <div class="card stat-card stat-card-info">
+    <div class="col-12 col-sm-6 col-xl-3 d-flex">
+      <div class="card analytics-metric-card analytics-metric-info h-100 w-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="stat-icon">
@@ -275,8 +281,8 @@ include __DIR__ . '/../includes/admin_layout_header.php';
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="card stat-card stat-card-warning">
+    <div class="col-12 col-sm-6 col-xl-3 d-flex">
+      <div class="card analytics-metric-card analytics-metric-warning h-100 w-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="stat-icon">
@@ -291,8 +297,8 @@ include __DIR__ . '/../includes/admin_layout_header.php';
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="card stat-card stat-card-success">
+    <div class="col-12 col-sm-6 col-xl-3 d-flex">
+      <div class="card analytics-metric-card analytics-metric-success h-100 w-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="stat-icon">
@@ -307,8 +313,8 @@ include __DIR__ . '/../includes/admin_layout_header.php';
       </div>
     </div>
 
-    <div class="col-md-3">
-      <div class="card stat-card stat-card-primary">
+    <div class="col-12 col-sm-6 col-xl-3 d-flex">
+      <div class="card analytics-metric-card analytics-metric-primary h-100 w-100">
         <div class="card-body">
           <div class="d-flex align-items-center">
             <div class="stat-icon">
@@ -327,66 +333,71 @@ include __DIR__ . '/../includes/admin_layout_header.php';
   <div class="row g-3">
     
     <!-- Recent Bookings -->
-    <div class="col-lg-8">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="h5 mb-0"><i class="fas fa-list me-2"></i>Recent Bookings</h3>
-        </div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-hover mb-0">
-              <thead class="table-light">
-                <tr>
-                  <th>Reference</th>
-                  <th>Guest</th>
-                  <th>Check-in</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Created</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php if (empty($recentBookings)): ?>
-                  <tr>
-                    <td colspan="6" class="text-center text-muted py-4">No bookings yet</td>
-                  </tr>
-                <?php else: ?>
-                  <?php foreach ($recentBookings as $booking): ?>
-                    <tr>
-                      <td><strong><?= sanitize($booking['booking_reference']) ?></strong></td>
-                      <td>
-                        <?= sanitize($booking['guest_name']) ?><br>
-                        <small class="text-muted"><?= sanitize($booking['guest_email']) ?></small>
-                      </td>
-                      <td><?= date('M j, Y', strtotime($booking['check_in'])) ?></td>
-                      <td>UGX <?= number_format($booking['total_amount'] ?? 0) ?></td>
-                      <td>
-                        <?php
-                        $statusColors = [
-                            'pending' => 'warning',
-                            'confirmed' => 'success',
-                            'checked_in' => 'info',
-                            'checked_out' => 'secondary',
-                            'cancelled' => 'danger'
-                        ];
-                        $color = $statusColors[$booking['status']] ?? 'secondary';
-                        ?>
-                        <span class="badge bg-<?= $color ?>"><?= ucfirst($booking['status']) ?></span>
-                      </td>
-                      <td><small><?= date('M j, g:i A', strtotime($booking['created_at'])) ?></small></td>
-                    </tr>
-                  <?php endforeach; ?>
-                <?php endif; ?>
-              </tbody>
-            </table>
+    <div class="col-12">
+      <div class="card h-100">
+        <div class="card-header analytics-card-heading">
+          <div>
+            <h3 class="h5 mb-1"><i class="fas fa-list me-2"></i>Recent Bookings</h3>
+            <p class="small text-muted mb-0">The latest 10 bookings across all dates.</p>
           </div>
+          <a href="<?= base_url('admin/bookings.php') ?>" class="btn btn-outline-secondary btn-sm">View all bookings</a>
+        </div>
+        <div class="card-body analytics-bookings-body">
+          <?php if (empty($recentBookings)): ?>
+            <p class="text-center text-muted mb-0 py-3">No bookings yet</p>
+          <?php else: ?>
+            <div class="analytics-booking-list">
+              <?php foreach ($recentBookings as $booking): ?>
+                <?php
+                $statusColors = [
+                    'pending' => 'warning',
+                    'confirmed' => 'success',
+                    'checked_in' => 'info',
+                    'checked_out' => 'secondary',
+                    'cancelled' => 'danger'
+                ];
+                $color = $statusColors[$booking['status']] ?? 'secondary';
+                ?>
+                <article class="analytics-booking-item">
+                  <div class="analytics-booking-heading">
+                    <div class="analytics-booking-guest">
+                      <strong><?= sanitize($booking['guest_name']) ?></strong>
+                      <span class="text-muted"><?= sanitize($booking['guest_email']) ?></span>
+                    </div>
+                    <span class="badge bg-<?= $color ?>"><?= ucfirst($booking['status']) ?></span>
+                  </div>
+                  <div class="analytics-booking-details">
+                    <div>
+                      <span class="analytics-detail-label">Reference</span>
+                      <strong><?= sanitize($booking['booking_reference']) ?></strong>
+                    </div>
+                    <div>
+                      <span class="analytics-detail-label">Check-in</span>
+                      <strong><?= date('M j, Y', strtotime($booking['check_in'])) ?></strong>
+                    </div>
+                    <div>
+                      <span class="analytics-detail-label">Amount</span>
+                      <strong>UGX <?= number_format($booking['total_amount'] ?? 0) ?></strong>
+                    </div>
+                    <div>
+                      <span class="analytics-detail-label">Created</span>
+                      <strong><?= date('M j, Y', strtotime($booking['created_at'])) ?> at <?= date('g:i A', strtotime($booking['created_at'])) ?></strong>
+                    </div>
+                  </div>
+                </article>
+              <?php endforeach; ?>
+            </div>
+          <?php endif; ?>
         </div>
       </div>
     </div>
 
+  </div>
+
+  <div class="row g-3 mt-1">
     <!-- Occupancy by Room Type -->
-    <div class="col-lg-4">
-      <div class="card">
+    <div class="col-xl-4">
+      <div class="card h-100">
         <div class="card-header">
           <h3 class="h5 mb-0"><i class="fas fa-bed me-2"></i>Occupancy by Type</h3>
         </div>
@@ -415,10 +426,11 @@ include __DIR__ . '/../includes/admin_layout_header.php';
     </div>
 
     <!-- Upcoming Arrivals -->
-    <div class="col-lg-6">
-      <div class="card">
+    <div class="col-xl-4 col-md-6">
+      <div class="card h-100">
         <div class="card-header">
-          <h3 class="h5 mb-0"><i class="fas fa-plane-arrival me-2"></i>Upcoming Arrivals (Next 7 Days)</h3>
+          <h3 class="h5 mb-0"><i class="fas fa-plane-arrival me-2"></i>Upcoming Arrivals</h3>
+          <p class="small text-muted mb-0 mt-1">Confirmed arrivals over the next 7 days.</p>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -460,10 +472,11 @@ include __DIR__ . '/../includes/admin_layout_header.php';
     </div>
 
     <!-- Monthly Revenue -->
-    <div class="col-lg-6">
-      <div class="card">
+    <div class="col-xl-4 col-md-6">
+      <div class="card h-100">
         <div class="card-header">
-          <h3 class="h5 mb-0"><i class="fas fa-chart-line me-2"></i>Monthly Revenue Trend</h3>
+          <h3 class="h5 mb-1"><i class="fas fa-chart-line me-2"></i>Monthly Revenue Trend</h3>
+          <p class="small text-muted mb-0">Last 12 months; excludes cancelled bookings.</p>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -501,11 +514,12 @@ include __DIR__ . '/../includes/admin_layout_header.php';
   </div>
 
   <!-- Popular Room Types -->
-  <div class="row g-3 mt-4">
+  <div class="row g-3 mt-3">
     <div class="col-lg-12">
-      <div class="card">
+      <div class="card h-100">
         <div class="card-header">
-          <h3 class="h5 mb-0"><i class="fas fa-trophy me-2"></i>Popular Room Types (Last 30 Days)</h3>
+          <h3 class="h5 mb-1"><i class="fas fa-trophy me-2"></i>Popular Room Types</h3>
+          <p class="small text-muted mb-0 mt-1">Top room types by booking count over the last 30 days.</p>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -561,6 +575,7 @@ include __DIR__ . '/../includes/admin_layout_header.php';
     </div>
   </div>
 
+</div>
 </div>
 
 <?php include __DIR__ . '/../includes/admin_layout_footer.php'; ?>

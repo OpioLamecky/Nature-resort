@@ -42,7 +42,9 @@ include __DIR__ . '/../includes/layout_header.php';
         </div>
       </div>
       <div class="col-md-5">
-        <img src="<?= sanitize(site_content_image('accommodations', 'hero_image', 'images/cabin.webp')) ?>" alt="Accommodation cottages at Kalitusi Nature Resort" class="accommodation-hero__image" fetchpriority="high">
+        <div class="scrim-image-frame scrim-image-frame-intro accommodation-hero__image-frame">
+          <img src="<?= sanitize(site_content_image('accommodations', 'hero_image', 'images/cabin.webp')) ?>" alt="Accommodation cottages at Kalitusi Nature Resort" class="accommodation-hero__image" fetchpriority="high">
+        </div>
       </div>
     </div>
   </div>

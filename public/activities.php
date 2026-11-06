@@ -23,7 +23,9 @@ include __DIR__ . '/../includes/layout_header.php';
         <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg"><?= sanitize(site_content('activities', 'booking_label', 'Book Your Experience')) ?></a>
       </div>
       <div class="col-lg-5">
-        <img src="<?= sanitize(site_content_image('activities', 'hero_image', 'images/view.webp')) ?>" alt="Nature Activities">
+        <div class="scrim-image-frame scrim-image-frame-intro">
+          <img src="<?= sanitize(site_content_image('activities', 'hero_image', 'images/view.webp')) ?>" alt="Nature Activities">
+        </div>
       </div>
     </div>
   </div>
@@ -37,7 +39,9 @@ include __DIR__ . '/../includes/layout_header.php';
       <!-- Bird Watching -->
       <div class="col-md-6 col-lg-4">
         <div class="card h-100 shadow-sm resort-image-card">
-          <img src="<?= sanitize(site_content_image('activities', 'bird_image', 'images/birds.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'bird_title', 'Bird Watching')) ?>" loading="lazy">
+          <div class="scrim-image-frame">
+            <img src="<?= sanitize(site_content_image('activities', 'bird_image', 'images/birds.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'bird_title', 'Bird Watching')) ?>" loading="lazy">
+          </div>
           <div class="card-body">
             <h3 class="h5 card-title"><i class="fas fa-binoculars text-primary me-2"></i><?= sanitize(site_content('activities', 'bird_title', 'Bird Watching')) ?></h3>
             <p class="card-text"><?= sanitize(site_content('activities', 'bird_copy', 'Explore over 300 species of birds in their natural habitat. Our expert guides will help you spot rare and beautiful birds unique to the region.')) ?></p>
@@ -54,7 +58,9 @@ include __DIR__ . '/../includes/layout_header.php';
       <!-- Nature Walks -->
       <div class="col-md-6 col-lg-4">
         <div class="card h-100 shadow-sm resort-image-card">
-          <img src="<?= sanitize(site_content_image('activities', 'walk_image', 'images/shade.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'walk_title', 'Nature Walks')) ?>" loading="lazy">
+          <div class="scrim-image-frame">
+            <img src="<?= sanitize(site_content_image('activities', 'walk_image', 'images/shade.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'walk_title', 'Nature Walks')) ?>" loading="lazy">
+          </div>
           <div class="card-body">
             <h3 class="h5 card-title"><i class="fas fa-hiking text-primary me-2"></i><?= sanitize(site_content('activities', 'walk_title', 'Nature Walks')) ?></h3>
             <p class="card-text"><?= sanitize(site_content('activities', 'walk_copy', 'Immerse yourself in the pristine wilderness surrounding our resort. Walk through forests, meadows, and scenic trails with breathtaking views.')) ?></p>
@@ -71,7 +77,9 @@ include __DIR__ . '/../includes/layout_header.php';
       <!-- Mountain Biking -->
       <div class="col-md-6 col-lg-4">
         <div class="card h-100 shadow-sm resort-image-card">
-          <img src="<?= sanitize(site_content_image('activities', 'bike_image', 'images/camp_van.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'bike_title', 'Mountain Biking')) ?>" loading="lazy">
+          <div class="scrim-image-frame">
+            <img src="<?= sanitize(site_content_image('activities', 'bike_image', 'images/camp_van.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'bike_title', 'Mountain Biking')) ?>" loading="lazy">
+          </div>
           <div class="card-body">
             <h3 class="h5 card-title"><i class="fas fa-bicycle text-primary me-2"></i><?= sanitize(site_content('activities', 'bike_title', 'Mountain Biking')) ?></h3>
             <p class="card-text"><?= sanitize(site_content('activities', 'bike_copy', 'Explore the rugged terrain on two wheels. We provide quality mountain bikes and safety gear for all skill levels.')) ?></p>
@@ -88,7 +96,9 @@ include __DIR__ . '/../includes/layout_header.php';
       <!-- Cultural Tours -->
       <div class="col-md-6 col-lg-4">
         <div class="card h-100 shadow-sm resort-image-card">
-          <img src="<?= sanitize(site_content_image('activities', 'culture_image', 'images/picnic.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'culture_title', 'Cultural Tours')) ?>" loading="lazy">
+          <div class="scrim-image-frame">
+            <img src="<?= sanitize(site_content_image('activities', 'culture_image', 'images/picnic.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'culture_title', 'Cultural Tours')) ?>" loading="lazy">
+          </div>
           <div class="card-body">
             <h3 class="h5 card-title"><i class="fas fa-monument text-primary me-2"></i><?= sanitize(site_content('activities', 'culture_title', 'Cultural Tours')) ?></h3>
             <p class="card-text"><?= sanitize(site_content('activities', 'culture_copy', 'Visit local communities and experience the rich cultural heritage of Fort Portal. Meet artisans, learn traditional crafts, and enjoy authentic cuisine.')) ?></p>
@@ -105,7 +115,9 @@ include __DIR__ . '/../includes/layout_header.php';
       <!-- Crater Lake Tours -->
       <div class="col-md-6 col-lg-4">
         <div class="card h-100 shadow-sm resort-image-card">
-          <img src="<?= sanitize(site_content_image('activities', 'lake_image', 'images/rooms.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'lake_title', 'Crater Lake Tours')) ?>" loading="lazy">
+          <div class="scrim-image-frame">
+            <img src="<?= sanitize(site_content_image('activities', 'lake_image', 'images/rooms.webp')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'lake_title', 'Crater Lake Tours')) ?>" loading="lazy">
+          </div>
           <div class="card-body">
             <h3 class="h5 card-title"><i class="fas fa-water text-primary me-2"></i><?= sanitize(site_content('activities', 'lake_title', 'Crater Lake Tours')) ?></h3>
             <p class="card-text"><?= sanitize(site_content('activities', 'lake_copy', 'Explore the stunning crater lakes surrounding Fort Portal. Perfect for photography, picnics, and peaceful reflection.')) ?></p>
@@ -122,7 +134,9 @@ include __DIR__ . '/../includes/layout_header.php';
       <!-- Yoga & Wellness -->
       <div class="col-md-6 col-lg-4">
         <div class="card h-100 shadow-sm resort-image-card">
-          <img src="<?= sanitize(site_content_image('activities', 'wellness_image', 'images/activity_wellness.jpg')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'wellness_title', 'Yoga & Wellness')) ?>" loading="lazy">
+          <div class="scrim-image-frame">
+            <img src="<?= sanitize(site_content_image('activities', 'wellness_image', 'images/activity_wellness.jpg')) ?>" class="card-img-top" alt="<?= sanitize(site_content('activities', 'wellness_title', 'Yoga & Wellness')) ?>" loading="lazy">
+          </div>
           <div class="card-body">
             <h3 class="h5 card-title"><i class="fas fa-spa text-primary me-2"></i><?= sanitize(site_content('activities', 'wellness_title', 'Yoga & Wellness')) ?></h3>
             <p class="card-text"><?= sanitize(site_content('activities', 'wellness_copy', 'Start your day with sunrise yoga sessions in nature. Professional instructors guide you through rejuvenating practices.')) ?></p>

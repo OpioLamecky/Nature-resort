@@ -77,7 +77,9 @@ include __DIR__ . '/../includes/layout_header.php';
         <p class="lead mb-0"><?= sanitize(site_content('news', 'intro', 'Stay updated with the latest news, events, and stories from Kalitusi Nature Resort')) ?></p>
       </div>
       <div class="col-md-5">
-        <img src="<?= asset_url('images/cabin.webp') ?>" alt="Kalitusi Nature Resort cottages">
+        <div class="scrim-image-frame scrim-image-frame-intro">
+          <img src="<?= asset_url('images/cabin.webp') ?>" alt="Kalitusi Nature Resort cottages">
+        </div>
       </div>
     </div>
   </div>
@@ -89,9 +91,11 @@ include __DIR__ . '/../includes/layout_header.php';
   <div class="card border-0 shadow-lg overflow-hidden">
     <div class="row g-0">
       <div class="col-md-6">
-        <img src="<?= $featuredPost['featured_image'] ?: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=500&fit=crop' ?>" 
-             class="img-fluid h-100 object-fit-cover" 
-             alt="<?= sanitize($featuredPost['title']) ?>">
+        <div class="scrim-image-frame scrim-image-frame-featured">
+          <img src="<?= $featuredPost['featured_image'] ?: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=500&fit=crop' ?>"
+               class="img-fluid h-100 object-fit-cover"
+               alt="<?= sanitize($featuredPost['title']) ?>">
+        </div>
       </div>
       <div class="col-md-6">
         <div class="card-body p-4 p-lg-5">
@@ -157,10 +161,12 @@ include __DIR__ . '/../includes/layout_header.php';
         <?php foreach ($posts as $post): ?>
           <div class="col-md-6">
                  <article class="card h-100 shadow-sm hover-lift resort-image-card">
-              <img src="<?= $post['featured_image'] ?: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop' ?>" 
-                   class="card-img-top"
-                   loading="lazy"
-                   alt="<?= sanitize($post['title']) ?>">
+              <div class="scrim-image-frame">
+                <img src="<?= $post['featured_image'] ?: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop' ?>"
+                     class="card-img-top"
+                     loading="lazy"
+                     alt="<?= sanitize($post['title']) ?>">
+              </div>
               <div class="card-body d-flex flex-column">
                 <div class="mb-2">
                   <small class="text-muted">

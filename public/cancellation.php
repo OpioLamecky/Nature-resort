@@ -13,7 +13,9 @@ include __DIR__ . '/../includes/layout_header.php';
         <p class="lead mb-0"><?= sanitize(site_content('legal', 'cancellation_subtitle', 'Our fair and transparent cancellation policy for your peace of mind')) ?></p>
       </div>
       <div class="col-md-5">
-        <img src="<?= asset_url('images/view.webp') ?>" alt="Nature surrounding Kalitusi Nature Resort">
+        <div class="scrim-image-frame scrim-image-frame-intro">
+          <img src="<?= asset_url('images/view.webp') ?>" alt="Nature surrounding Kalitusi Nature Resort">
+        </div>
       </div>
     </div>
   </div>

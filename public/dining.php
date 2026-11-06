@@ -21,7 +21,9 @@ include __DIR__ . '/../includes/layout_header.php';
         <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg">Make a Reservation</a>
       </div>
       <div class="col-lg-5">
-        <img src="<?= sanitize(site_content_image('dining', 'hero_image', 'images/food1.webp')) ?>" alt="Dining at Kalitusi">
+        <div class="scrim-image-frame scrim-image-frame-intro">
+          <img src="<?= sanitize(site_content_image('dining', 'hero_image', 'images/food1.webp')) ?>" alt="Dining at Kalitusi">
+        </div>
       </div>
     </div>
   </div>
@@ -33,7 +35,9 @@ include __DIR__ . '/../includes/layout_header.php';
   <section class="mb-5">
     <div class="row align-items-center">
       <div class="col-md-6">
-        <img src="<?= sanitize(site_content_image('dining', 'restaurant_image', 'images/food2.webp')) ?>" alt="<?= sanitize(site_content('dining', 'restaurant_title', 'The Mountain View Restaurant')) ?>" class="dining-feature-image">
+        <div class="scrim-image-frame scrim-image-frame-dining">
+          <img src="<?= sanitize(site_content_image('dining', 'restaurant_image', 'images/food2.webp')) ?>" alt="<?= sanitize(site_content('dining', 'restaurant_title', 'The Mountain View Restaurant')) ?>" class="dining-feature-image">
+        </div>
       </div>
       <div class="col-md-6">
         <h2 class="h3 mb-3"><i class="fas fa-utensils text-primary me-2"></i><?= sanitize(site_content('dining', 'restaurant_title', 'The Mountain View Restaurant')) ?></h2>
@@ -217,7 +221,9 @@ include __DIR__ . '/../includes/layout_header.php';
   <section class="mb-5">
     <div class="row align-items-center">
       <div class="col-md-6 order-md-2">
-        <img src="<?= sanitize(site_content_image('dining', 'bar_image', 'images/food3.webp')) ?>" alt="<?= sanitize(site_content('dining', 'bar_title', 'The Sunset Bar')) ?>" class="dining-feature-image">
+        <div class="scrim-image-frame scrim-image-frame-dining">
+          <img src="<?= sanitize(site_content_image('dining', 'bar_image', 'images/food3.webp')) ?>" alt="<?= sanitize(site_content('dining', 'bar_title', 'The Sunset Bar')) ?>" class="dining-feature-image">
+        </div>
       </div>
       <div class="col-md-6 order-md-1">
         <h2 class="h3 mb-3"><i class="fas fa-glass-martini-alt text-primary me-2"></i><?= sanitize(site_content('dining', 'bar_title', 'The Sunset Bar')) ?></h2>

@@ -161,10 +161,11 @@ include __DIR__ . '/../includes/layout_header.php';
               <div class="col-md-4">
                 <article class="card h-100 border-0 shadow-sm hover-lift">
                   <?php $relImg = $related['featured_image'] ? cms_image_url($related['featured_image']) : asset_url('images/blog/post-related-default.jpg'); ?>
-                  <img src="<?= sanitize($relImg) ?>" 
-                       class="card-img-top" 
-                       style="height: 150px; object-fit: cover;"
-                       alt="<?= sanitize($related['title']) ?>">
+                  <div class="scrim-image-frame scrim-image-frame-compact">
+                    <img src="<?= sanitize($relImg) ?>"
+                         class="card-img-top"
+                         alt="<?= sanitize($related['title']) ?>">
+                  </div>
                   <div class="card-body">
                     <small class="text-muted">
                       <i class="fas fa-calendar me-1"></i>

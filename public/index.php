@@ -162,7 +162,9 @@ include __DIR__ . '/../includes/layout_header.php';
         <a href="<?= base_url('public/about.php') ?>" class="btn btn-primary">Learn More About Us</a>
       </div>
       <div class="col-lg-6 fade-in">
-        <img src="<?= sanitize(site_content_image('home', 'intro_image', 'images/picnic.webp')) ?>" alt="Resort View" class="img-fluid rounded shadow-lg">
+        <div class="scrim-image-frame scrim-image-frame-fluid rounded">
+          <img src="<?= sanitize(site_content_image('home', 'intro_image', 'images/picnic.webp')) ?>" alt="Resort View" class="img-fluid rounded shadow-lg">
+        </div>
       </div>
     </div>
   </div>
