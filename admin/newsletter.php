@@ -131,65 +131,53 @@ include __DIR__ . '/../includes/admin_layout_header.php';
     </div>
 <?php endif; ?>
 
-<!-- Statistics Cards -->
-<div class="row g-4 mb-4">
-    <div class="col-lg-3 col-md-6">
-        <div class="card stat-card-primary">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="ms-3">
-                        <div class="stat-number"><?= number_format($stats['total']) ?></div>
-                        <div class="stat-label">Total Subscribers</div>
-                    </div>
-                </div>
+<!-- Statistics Cards (Pinterest Bento KPI Strip) -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="bento-kpi-card">
+            <div class="bento-kpi-top">
+                <span class="bento-kpi-label">Total Subscribers</span>
+                <span class="bento-kpi-icon is-blue"><i class="fas fa-users"></i></span>
+            </div>
+            <div class="bento-kpi-bottom">
+                <span class="bento-kpi-value"><?= number_format($stats['total']) ?></span>
+                <span class="bento-kpi-pill is-up"><i class="fas fa-layer-group"></i> All Time</span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card stat-card-success">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="ms-3">
-                        <div class="stat-number"><?= number_format($stats['active']) ?></div>
-                        <div class="stat-label">Active Subscribers</div>
-                    </div>
-                </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bento-kpi-card">
+            <div class="bento-kpi-top">
+                <span class="bento-kpi-label">Active Subscribers</span>
+                <span class="bento-kpi-icon is-green"><i class="fas fa-check-circle"></i></span>
+            </div>
+            <div class="bento-kpi-bottom">
+                <span class="bento-kpi-value"><?= number_format($stats['active']) ?></span>
+                <span class="bento-kpi-pill is-up"><i class="fas fa-check"></i> Subscribed</span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card stat-card-warning">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="stat-icon">
-                        <i class="fas fa-user-times"></i>
-                    </div>
-                    <div class="ms-3">
-                        <div class="stat-number"><?= number_format($stats['unsubscribed']) ?></div>
-                        <div class="stat-label">Unsubscribed</div>
-                    </div>
-                </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bento-kpi-card">
+            <div class="bento-kpi-top">
+                <span class="bento-kpi-label">Unsubscribed</span>
+                <span class="bento-kpi-icon is-amber"><i class="fas fa-user-times"></i></span>
+            </div>
+            <div class="bento-kpi-bottom">
+                <span class="bento-kpi-value"><?= number_format($stats['unsubscribed']) ?></span>
+                <span class="bento-kpi-pill is-warn">Opted Out</span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card stat-card-info">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="stat-icon">
-                        <i class="fas fa-calendar-day"></i>
-                    </div>
-                    <div class="ms-3">
-                        <div class="stat-number"><?= number_format($stats['today']) ?></div>
-                        <div class="stat-label">New Today</div>
-                    </div>
-                </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="bento-kpi-card">
+            <div class="bento-kpi-top">
+                <span class="bento-kpi-label">Joined Today</span>
+                <span class="bento-kpi-icon is-rose"><i class="fas fa-calendar-day"></i></span>
+            </div>
+            <div class="bento-kpi-bottom">
+                <span class="bento-kpi-value"><?= number_format($stats['today']) ?></span>
+                <span class="bento-kpi-pill is-up"><i class="fas fa-bolt"></i> Today</span>
             </div>
         </div>
     </div>

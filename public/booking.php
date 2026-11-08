@@ -76,7 +76,6 @@ try {
   error_log('Booking accommodation lookup failed: ' . $e->getMessage());
   $bookingRoomTypes = [];
   $roomRatesByType = [];
-  $bookingDorms = [];
 }
 
 // Handle form submission
@@ -212,9 +211,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("
                 INSERT INTO bookings (
                     booking_reference, guest_name, guest_email, guest_phone,
-                    guest_country, accommodation_id, check_in, check_out, adults, children, room_rate, total_amount,
+                  guest_country, accommodation_id, check_in, check_out, adults, children, room_rate, total_amount,
                     deposit_amount, special_requests, status, payment_status, source, created_at
-                  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'unpaid', 'website', NOW())
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 'unpaid', 'website', NOW())
             ");
 
             $stmt->execute([
@@ -289,12 +288,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include __DIR__ . '/../includes/layout_header.php';
 ?>
 
-<nav aria-label="breadcrumb" class="mb-3 mt-3">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
-    <li class="breadcrumb-item active">Book Your Stay</li>
-  </ol>
-</nav>
+<div class="container mt-3">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Book Your Stay</li>
+    </ol>
+  </nav>
+</div>
+
+<!-- Hero Section -->
+<section class="page-intro-hero bg-soft-mint">
+  <div class="container">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <span class="badge rounded-pill px-3 py-2 mb-2" style="background: rgba(27, 138, 90, 0.12); color: #1b8a5a; font-weight: 600;">
+          <i class="fas fa-calendar-check me-1"></i> Direct Resort Reservation
+        </span>
+        <h1 class="display-5 fw-bold mb-3">Book Your Stay at Kalitusi</h1>
+        <p class="lead mb-0 mx-auto mx-lg-0">Reserve your cottage, suite, or glamping tent directly with us for our best guaranteed rates and personalized arrival support.</p>
+      </div>
+      <div class="col-lg-5">
+        <img src="<?= asset_url('images/rooms.webp') ?>" alt="Book Your Stay at Kalitusi Nature Resort">
+      </div>
+    </div>
+  </div>
+</section>
 
 <div class="container py-4 booking-layout">
   
@@ -305,11 +324,11 @@ include __DIR__ . '/../includes/layout_header.php';
         <div class="card border-success">
           <div class="card-body text-center py-5">
             <i class="fas fa-check-circle text-success fa-4x mb-3"></i>
-            <h1 class="h3 mb-3">Booking Request Received!</h1>
+            <h2 class="h3 mb-3">Booking Request Received!</h2>
             <p class="lead mb-4">Thank you for choosing Kalitusi Nature Resort</p>
             
             <div class="alert alert-info">
-              <h2 class="h5">Booking Reference: <strong><?= sanitize($bookingRef ?? '') ?></strong></h2>
+              <h3 class="h5">Booking Reference: <strong><?= sanitize($bookingRef ?? '') ?></strong></h3>
               <p class="mb-0">Please save this reference number for your records</p>
             </div>
             
@@ -324,8 +343,8 @@ include __DIR__ . '/../includes/layout_header.php';
             </div>
             
             <div class="d-grid gap-2 d-md-block">
-              <a href="<?= base_url('public/') ?>" class="btn btn-primary">Back to Home</a>
-              <a href="<?= base_url('public/contact.php') ?>" class="btn btn-outline-primary">Contact Us</a>
+              <a href="<?= base_url('public/') ?>" class="btn btn-primary rounded-pill px-4">Back to Home</a>
+              <a href="<?= base_url('public/contact.php') ?>" class="btn btn-outline-primary rounded-pill px-4">Contact Us</a>
             </div>
           </div>
         </div>
@@ -334,9 +353,8 @@ include __DIR__ . '/../includes/layout_header.php';
     
   <?php else: ?>
     <!-- Booking Form -->
-    <div class="row">
+    <div class="row g-4">
       <div class="col-lg-8">
-        <h1 class="display-5 mb-4">Book Your Stay</h1>
         
         <?php if (!empty($errors)): ?>
           <div class="alert alert-danger">
@@ -443,7 +461,7 @@ include __DIR__ . '/../includes/layout_header.php';
                 <div class="col-md-6">
                   <label for="check_in" class="form-label">Check-in Date *</label>
                   <input type="date" class="form-control" id="check_in" name="check_in"
-                         value="<?= sanitize($_POST['check_in'] ?? '') ?>" 
+                         value="<?= sanitize($_POST['check_in'] ?? $_GET['check_in'] ?? '') ?>" 
                          min="<?= date('Y-m-d') ?>" required>
                   <div class="form-text">Check-in time: 2:00 PM</div>
                 </div>
@@ -451,19 +469,20 @@ include __DIR__ . '/../includes/layout_header.php';
                 <div class="col-md-6">
                   <label for="check_out" class="form-label">Check-out Date *</label>
                   <input type="date" class="form-control" id="check_out" name="check_out"
-                         value="<?= sanitize($_POST['check_out'] ?? '') ?>" 
+                         value="<?= sanitize($_POST['check_out'] ?? $_GET['check_out'] ?? '') ?>" 
                          min="<?= date('Y-m-d', strtotime('+1 day')) ?>" required>
                   <div class="form-text">Check-out time: 11:00 AM</div>
                 </div>
                 
+                <?php $selectedAdults = (string)($_POST['adults'] ?? $_GET['adults'] ?? '1'); ?>
                 <div class="col-md-4">
                   <label for="adults" class="form-label">Adults *</label>
                   <select class="form-select" id="adults" name="adults" required>
-                    <option value="1" <?= ($_POST['adults'] ?? '1') == '1' ? 'selected' : '' ?>>1 Adult</option>
-                    <option value="2" <?= ($_POST['adults'] ?? '') == '2' ? 'selected' : '' ?>>2 Adults</option>
-                    <option value="3" <?= ($_POST['adults'] ?? '') == '3' ? 'selected' : '' ?>>3 Adults</option>
-                    <option value="4" <?= ($_POST['adults'] ?? '') == '4' ? 'selected' : '' ?>>4 Adults</option>
-                    <option value="5" <?= ($_POST['adults'] ?? '') == '5' ? 'selected' : '' ?>>5+ Adults</option>
+                    <option value="1" <?= $selectedAdults === '1' ? 'selected' : '' ?>>1 Adult</option>
+                    <option value="2" <?= $selectedAdults === '2' ? 'selected' : '' ?>>2 Adults</option>
+                    <option value="3" <?= $selectedAdults === '3' ? 'selected' : '' ?>>3 Adults</option>
+                    <option value="4" <?= $selectedAdults === '4' ? 'selected' : '' ?>>4 Adults</option>
+                    <option value="5" <?= $selectedAdults === '5' ? 'selected' : '' ?>>5+ Adults</option>
                   </select>
                 </div>
                 

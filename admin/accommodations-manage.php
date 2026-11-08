@@ -160,35 +160,51 @@ include __DIR__ . '/../includes/admin_layout_header.php';
 
   <!-- Stats Cards -->
   <div class="row g-3 mb-4">
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <h6 class="text-muted">Total Rooms</h6>
-          <h3><?= $stats['total'] ?></h3>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <p class="bento-kpi-label">Total Rooms</p>
+          <span class="bento-kpi-icon is-blue"><i class="fas fa-building"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <h3 class="bento-kpi-value"><?= (int)$stats['total'] ?></h3>
+          <span class="bento-kpi-pill">Inventory</span>
         </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card bg-success bg-opacity-10">
-        <div class="card-body">
-          <h6 class="text-muted">Available</h6>
-          <h3 class="text-success"><?= $stats['available'] ?></h3>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <p class="bento-kpi-label">Available</p>
+          <span class="bento-kpi-icon is-green"><i class="fas fa-check-circle"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <h3 class="bento-kpi-value text-success"><?= (int)$stats['available'] ?></h3>
+          <span class="bento-kpi-pill">Ready for check-in</span>
         </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card bg-danger bg-opacity-10">
-        <div class="card-body">
-          <h6 class="text-muted">Occupied</h6>
-          <h3 class="text-danger"><?= $stats['occupied'] ?></h3>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <p class="bento-kpi-label">Occupied</p>
+          <span class="bento-kpi-icon is-rose"><i class="fas fa-bed"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <h3 class="bento-kpi-value text-danger"><?= (int)$stats['occupied'] ?></h3>
+          <span class="bento-kpi-pill">Guests in house</span>
         </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card bg-warning bg-opacity-10">
-        <div class="card-body">
-          <h6 class="text-muted">Maintenance</h6>
-          <h3 class="text-warning"><?= $stats['maintenance'] ?></h3>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <p class="bento-kpi-label">Maintenance</p>
+          <span class="bento-kpi-icon is-amber"><i class="fas fa-tools"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <h3 class="bento-kpi-value text-warning"><?= (int)$stats['maintenance'] ?></h3>
+          <span class="bento-kpi-pill">Service queue</span>
         </div>
       </div>
     </div>

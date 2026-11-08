@@ -68,18 +68,28 @@ $featuredPost = $pdo->query(
 include __DIR__ . '/../includes/layout_header.php';
 ?>
 
+<div class="container mt-3">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">News &amp; Blog</li>
+    </ol>
+  </nav>
+</div>
+
 <!-- Page Header -->
-<section class="page-intro-hero page-news-hero">
+<section class="page-intro-hero page-news-hero bg-soft-mint">
   <div class="container">
     <div class="row g-4 g-lg-5 align-items-center">
-      <div class="col-md-7">
-        <h1 class="display-5 mb-3"><?= sanitize(site_content('news', 'title', 'News & Blog')) ?></h1>
-        <p class="lead mb-0"><?= sanitize(site_content('news', 'intro', 'Stay updated with the latest news, events, and stories from Kalitusi Nature Resort')) ?></p>
+      <div class="col-md-7 text-center text-md-start">
+        <span class="badge rounded-pill px-3 py-2 mb-2" style="background: rgba(27, 138, 90, 0.12); color: #1b8a5a; font-weight: 600;">
+          <i class="fas fa-newspaper me-1"></i> Resort Journal
+        </span>
+        <h1 class="display-5 fw-bold mb-3"><?= sanitize(site_content('news', 'title', 'News & Blog')) ?></h1>
+        <p class="lead mb-0 mx-auto mx-md-0"><?= sanitize(site_content('news', 'intro', 'Stay updated with the latest news, events, and stories from Kalitusi Nature Resort')) ?></p>
       </div>
       <div class="col-md-5">
-        <div class="scrim-image-frame scrim-image-frame-intro">
-          <img src="<?= asset_url('images/cabin.webp') ?>" alt="Kalitusi Nature Resort cottages">
-        </div>
+        <img src="<?= asset_url('images/cabin.webp') ?>" alt="Kalitusi Nature Resort cottages">
       </div>
     </div>
   </div>
@@ -87,32 +97,27 @@ include __DIR__ . '/../includes/layout_header.php';
 
 <!-- Featured Post -->
 <?php if ($featuredPost && $page === 1 && !$q && !$categoryId): ?>
-<div class="container mb-5">
-  <div class="card border-0 shadow-lg overflow-hidden">
-    <div class="row g-0">
-      <div class="col-md-6">
-        <div class="scrim-image-frame scrim-image-frame-featured">
-          <img src="<?= $featuredPost['featured_image'] ?: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=500&fit=crop' ?>"
-               class="img-fluid h-100 object-fit-cover"
-               alt="<?= sanitize($featuredPost['title']) ?>">
-        </div>
+<div class="container mb-4">
+  <article class="scrim-card" style="min-height: 280px;">
+    <img class="scrim-card-bg" 
+         src="<?= $featuredPost['featured_image'] ?: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=500&fit=crop' ?>" 
+         alt="<?= sanitize($featuredPost['title']) ?>">
+    <div class="scrim-badge-top is-gold">
+      <span class="badge-dot"></span>
+      Featured Story &bull; <?= date('M j, Y', strtotime($featuredPost['created_at'])) ?>
+    </div>
+    <div class="scrim-card-content" style="max-width: 720px;">
+      <div class="scrim-card-header">
+        <h2 class="scrim-card-title" style="font-size: 1.45rem;"><?= sanitize($featuredPost['title']) ?></h2>
       </div>
-      <div class="col-md-6">
-        <div class="card-body p-4 p-lg-5">
-          <div class="badge bg-success mb-3">Featured Post</div>
-          <h2 class="h3 mb-3"><?= sanitize($featuredPost['title']) ?></h2>
-          <p class="text-muted mb-4">
-            <i class="fas fa-calendar me-2"></i><?= date('F j, Y', strtotime($featuredPost['created_at'])) ?>
-          </p>
-          <p class="card-text"><?= sanitize($featuredPost['excerpt']) ?></p>
-          <a href="<?= base_url('public/news-view.php?id=' . $featuredPost['post_id']) ?>" 
-             class="btn btn-primary">
-            Read Full Article <i class="fas fa-arrow-right ms-2"></i>
-          </a>
-        </div>
+      <p class="scrim-card-subtitle mb-3"><?= sanitize($featuredPost['excerpt']) ?></p>
+      <div class="scrim-card-action-row" style="justify-content: flex-start;">
+        <a href="<?= base_url('public/news-view.php?id=' . $featuredPost['post_id']) ?>" class="btn-scrim-cta">
+          Read Full Article &rarr;
+        </a>
       </div>
     </div>
-  </div>
+  </article>
 </div>
 <?php endif; ?>
 
@@ -160,33 +165,34 @@ include __DIR__ . '/../includes/layout_header.php';
       <div class="row g-4 mb-4">
         <?php foreach ($posts as $post): ?>
           <div class="col-md-6">
-                 <article class="card h-100 shadow-sm hover-lift resort-image-card">
-              <div class="scrim-image-frame">
-                <img src="<?= $post['featured_image'] ?: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop' ?>"
-                     class="card-img-top"
-                     loading="lazy"
-                     alt="<?= sanitize($post['title']) ?>">
+            <article class="scrim-card scrim-card-compact">
+              <img class="scrim-card-bg" 
+                   src="<?= $post['featured_image'] ?: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop' ?>" 
+                   loading="lazy"
+                   alt="<?= sanitize($post['title']) ?>">
+              <div class="scrim-badge-top">
+                <span class="badge-dot"></span>
+                <?= date('M j, Y', strtotime($post['created_at'])) ?>
               </div>
-              <div class="card-body d-flex flex-column">
-                <div class="mb-2">
-                  <small class="text-muted">
-                    <i class="fas fa-calendar me-1"></i>
-                    <?= date('M j, Y', strtotime($post['created_at'])) ?>
-                  </small>
+              <div class="scrim-card-content">
+                <div class="scrim-card-header">
+                  <h3 class="scrim-card-title" style="font-size: 1.1rem;">
+                    <a href="<?= base_url('public/news-view.php?id=' . $post['post_id']) ?>" 
+                       style="color: #fff; text-decoration: none;">
+                      <?= sanitize($post['title']) ?>
+                    </a>
+                  </h3>
                 </div>
-                <h3 class="h5 card-title mb-2">
-                  <a href="<?= base_url('public/news-view.php?id=' . $post['post_id']) ?>" 
-                     class="text-decoration-none text-dark">
-                    <?= sanitize($post['title']) ?>
-                  </a>
-                </h3>
-                <p class="card-text text-muted small flex-grow-1">
+                <p class="scrim-card-subtitle" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                   <?= sanitize(substr($post['excerpt'] ?: strip_tags($post['content']), 0, 120)) ?>...
                 </p>
-                <div class="mt-auto">
+                <div class="scrim-card-action-row">
+                  <div class="scrim-price-pill" style="font-size: 0.78rem; padding: 0.35rem 0.75rem;">
+                    <i class="fas fa-newspaper me-1"></i> Article
+                  </div>
                   <a href="<?= base_url('public/news-view.php?id=' . $post['post_id']) ?>" 
-                     class="btn btn-sm btn-outline-primary">
-                    Read More <i class="fas fa-arrow-right ms-1"></i>
+                     class="btn-scrim-cta" style="font-size: 0.78rem; padding: 0.4rem 1rem;">
+                    Read More &rarr;
                   </a>
                 </div>
               </div>

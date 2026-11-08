@@ -53,18 +53,18 @@ include __DIR__ . '/../includes/layout_header.php';
 ?>
 
 <!-- Article Header with Featured Image -->
-<div class="article-header mb-4" style="position: relative; height: 400px; overflow: hidden;">
+<div class="article-header mb-4" style="position: relative; height: 300px; overflow: hidden;">
   <?php if ($post['featured_image']): ?>
     <?php $heroImg = cms_image_url($post['featured_image']) ?: asset_url('images/blog/post-hero-default.jpg'); ?>
     <img src="<?= sanitize($heroImg) ?>" 
          alt="<?= sanitize($post['title']) ?>"
-         style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7);">
+         style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.92);">
   <?php else: ?>
     <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1a4d2e 0%, #2d5f4d 100%);"></div>
   <?php endif; ?>
   
   <!-- Overlay Content -->
-  <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 40px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+  <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 0 24px; background: linear-gradient(to top, rgba(10, 16, 13, 0.65) 0%, rgba(10, 16, 13, 0.25) 60%, transparent 100%);">
     <div class="container">
       <!-- Breadcrumb -->
       <nav aria-label="breadcrumb" class="mb-3">
@@ -161,11 +161,10 @@ include __DIR__ . '/../includes/layout_header.php';
               <div class="col-md-4">
                 <article class="card h-100 border-0 shadow-sm hover-lift">
                   <?php $relImg = $related['featured_image'] ? cms_image_url($related['featured_image']) : asset_url('images/blog/post-related-default.jpg'); ?>
-                  <div class="scrim-image-frame scrim-image-frame-compact">
-                    <img src="<?= sanitize($relImg) ?>"
-                         class="card-img-top"
-                         alt="<?= sanitize($related['title']) ?>">
-                  </div>
+                  <img src="<?= sanitize($relImg) ?>" 
+                       class="card-img-top" 
+                       style="height: 150px; object-fit: cover;"
+                       alt="<?= sanitize($related['title']) ?>">
                   <div class="card-body">
                     <small class="text-muted">
                       <i class="fas fa-calendar me-1"></i>

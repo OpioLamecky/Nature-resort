@@ -10,6 +10,7 @@ $settings = [
   'shop_eyebrow' => 'Kalitusi Nature Resort',
   'shop_title' => 'E-shop & Gift Shop',
   'shop_tagline' => 'A little piece of Kalitusi to enjoy here or take home.',
+  'shop_hero_image' => 'images/unnamed (9).webp',
 ];
 
 try {
@@ -53,25 +54,99 @@ try {
 
 include __DIR__ . '/includes/layout_header.php';
 ?>
+<?php
+$shopHeroImg = site_content_image('eshop', 'hero_image', $settings['shop_hero_image'] ?? 'images/unnamed (9).webp');
+?>
 <style>
-  .shop-intro { display: flex; align-items: center; min-height: 320px; background: linear-gradient(115deg, #173c31 0%, #285c45 58%, #64895c 100%); color: #fff; text-align: center; }
-  .shop-intro .container { max-width: 900px; }
+  .shop-intro {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 280px;
+    background:
+      linear-gradient(110deg, rgba(16, 40, 31, 0.86) 0%, rgba(28, 68, 50, 0.72) 52%, rgba(20, 48, 36, 0.58) 100%),
+      url('<?= sanitize($shopHeroImg) ?>') center / cover no-repeat;
+    color: #fff;
+    overflow: hidden;
+  }
   .shop-intro h1 { color: #fff !important; }
-  .shop-intro .shop-tagline { color: #edf4e7; }
-  .shop-intro .eyebrow { color: #d9e8bd; letter-spacing: .12em; text-transform: uppercase; }
+  .shop-intro .shop-tagline { color: #edf4e7; font-size: 1.08rem; max-width: 34rem; }
+  .shop-intro .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #e2f2cb;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .shop-hero-showcase {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+    border: 2px solid rgba(255, 255, 255, 0.22);
+    height: 220px;
+  }
+  .shop-hero-showcase img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .shop-hero-showcase-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    padding: 0.55rem 0.85rem;
+    border-radius: 12px;
+    background: rgba(15, 29, 22, 0.68);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-size: 0.82rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .shop-filter .btn { border-radius: 999px; font-size: 0.85rem; padding: 0.4rem 1rem; }
   .shop-filter .btn.active { background: #244f3b; border-color: #244f3b; color: #fff; }
   .shop-card { border: 1px solid #e4e8df; border-radius: 6px; overflow: hidden; height: 100%; }
-  .shop-card .scrim-image-frame { aspect-ratio: 4 / 3; flex-basis: auto; }
-  .shop-card .scrim-image-frame > img { background: #f0f2eb; }
+  .shop-card img { aspect-ratio: 4 / 3; object-fit: cover; background: #f0f2eb; }
   .shop-card .card-title { color: #233b30; }
   .shop-price { color: #285c45; font-weight: 700; }
 </style>
 
-<section class="shop-intro py-5">
-  <div class="container py-3">
-    <p class="eyebrow small mb-2"><?= sanitize($settings['shop_eyebrow']) ?></p>
-    <h1 class="display-5 fw-semibold mb-2"><?= sanitize($settings['shop_title']) ?></h1>
-    <p class="shop-tagline mb-0"><?= sanitize($settings['shop_tagline']) ?></p>
+<section class="shop-intro py-4 py-lg-5">
+  <div class="container py-2">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7 text-center text-lg-start">
+        <p class="eyebrow small mb-3"><i class="fas fa-gift"></i> <?= sanitize($settings['shop_eyebrow']) ?></p>
+        <h1 class="display-5 fw-bold mb-2"><?= sanitize($settings['shop_title']) ?></h1>
+        <p class="shop-tagline mb-3 mx-auto mx-lg-0"><?= sanitize($settings['shop_tagline']) ?></p>
+        <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
+          <a href="#product-grid" class="btn btn-light rounded-pill px-4 fw-semibold" style="color: #173c31;"><i class="fas fa-shopping-bag me-2"></i>Browse Collection</a>
+          <button class="btn btn-outline-light rounded-pill px-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#shopCart" aria-controls="shopCart">
+            <i class="fas fa-shopping-basket me-2"></i>View Basket
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="shop-hero-showcase">
+          <img src="<?= sanitize($shopHeroImg) ?>" alt="<?= sanitize($settings['shop_title']) ?>" onerror="this.src='<?= asset_url('images/food3.webp') ?>'">
+          <div class="shop-hero-showcase-badge">
+            <span><i class="fas fa-leaf me-1" style="color: #a3e635;"></i> Artisan Crafts, Coffee &amp; Pastries</span>
+            <span class="badge rounded-pill" style="background: rgba(163, 230, 53, 0.2); color: #d9f99d;">Fort Portal</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -100,26 +175,31 @@ include __DIR__ . '/includes/layout_header.php';
           }
         ?>
           <div class="col-12 col-sm-6 col-lg-4 col-xl-3 product-cell" data-category="<?= (int)$item['category_id'] ?>">
-            <article class="card shop-card">
+            <article class="scrim-card scrim-card-compact">
               <?php if ($image !== ''): ?>
-                <div class="scrim-image-frame scrim-image-frame-fluid">
-                  <img src="<?= sanitize($image) ?>" class="card-img-top" alt="<?= sanitize($item['name']) ?>" loading="lazy">
-                </div>
+                <img class="scrim-card-bg" src="<?= sanitize($image) ?>" alt="<?= sanitize($item['name']) ?>" loading="lazy">
               <?php else: ?>
-                <div class="d-flex align-items-center justify-content-center text-success" style="aspect-ratio:4/3;background:#eef1e8" aria-hidden="true"><i class="fas fa-leaf fa-2x"></i></div>
+                <div style="position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;background:#1a2e1a;" aria-hidden="true"><i class="fas fa-leaf fa-2x" style="color: var(--scrim-lime);"></i></div>
               <?php endif; ?>
-              <div class="card-body d-flex flex-column">
-                <p class="small text-muted mb-1"><?= sanitize($item['category_name']) ?></p>
-                <h2 class="card-title h5"><?= sanitize($item['name']) ?></h2>
-                <?php if (!empty($item['description'])): ?><p class="card-text small text-muted"><?= sanitize($item['description']) ?></p><?php endif; ?>
-                <div class="mt-auto d-flex justify-content-between align-items-center gap-2">
-                  <span class="shop-price">UGX <?= number_format((float)$item['price']) ?></span>
+              <div class="scrim-badge-top">
+                <span class="badge-dot"></span>
+                <?= sanitize($item['category_name']) ?>
+              </div>
+              <div class="scrim-card-content">
+                <div class="scrim-card-header">
+                  <h2 class="scrim-card-title" style="font-size: 1.05rem;"><?= sanitize($item['name']) ?></h2>
+                </div>
+                <?php if (!empty($item['description'])): ?>
+                  <p class="scrim-card-subtitle" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"><?= sanitize($item['description']) ?></p>
+                <?php endif; ?>
+                <div class="scrim-card-action-row">
+                  <div class="scrim-price-pill">UGX <?= number_format((float)$item['price']) ?></div>
                   <?php if ($item['stock_status'] === 'in_stock' && !$demoMode): ?>
-                    <button class="btn btn-success btn-sm add-to-cart" type="button" data-id="<?= (int)$item['id'] ?>" data-name="<?= sanitize($item['name']) ?>" data-price="<?= sanitize((string)$item['price']) ?>">Add to basket</button>
+                    <button class="btn-scrim-cta add-to-cart" type="button" data-id="<?= (int)$item['id'] ?>" data-name="<?= sanitize($item['name']) ?>" data-price="<?= sanitize((string)$item['price']) ?>">Add to basket</button>
                   <?php elseif ($demoMode): ?>
-                    <button class="btn btn-outline-secondary btn-sm" type="button" disabled>Preview only</button>
+                    <span class="btn-scrim-cta" style="opacity: 0.5; cursor: default;">Preview</span>
                   <?php else: ?>
-                    <button class="btn btn-outline-secondary btn-sm" type="button" disabled>Out of stock</button>
+                    <span class="btn-scrim-cta" style="opacity: 0.5; cursor: default;">Sold Out</span>
                   <?php endif; ?>
                 </div>
               </div>

@@ -31,25 +31,42 @@ $roomTypes = array_values(array_unique(array_column($rooms, 'room_type')));
 include __DIR__ . '/../includes/layout_header.php';
 ?>
 <style>
+  .gallery-filter .btn { border-radius: 999px; font-size: 0.85rem; padding: 0.35rem 0.95rem; transition: all 0.2s ease; }
   .gallery-filter .btn.active { background: #244f3b; border-color: #244f3b; color: #fff; }
-  .resort-photo-card { height: 100%; overflow: hidden; border: 1px solid #e4e8df; border-radius: 6px; }
-  .resort-photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 3px; background: #eef1e8; }
-  .resort-photo-grid img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; cursor: zoom-in; }
-  .resort-photo-card .card-title { color: #233b30; }
 </style>
 
-<nav aria-label="breadcrumb" class="container mb-3 mt-3">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Gallery</li>
-  </ol>
-</nav>
+<div class="container mt-3">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Gallery</li>
+    </ol>
+  </nav>
+</div>
+
+<!-- Hero Section -->
+<section class="page-intro-hero bg-soft-mint">
+  <div class="container">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <span class="badge rounded-pill px-3 py-2 mb-2" style="background: rgba(27, 138, 90, 0.12); color: #1b8a5a; font-weight: 600;">
+          <i class="fas fa-camera-retro me-1"></i> Visual Journey
+        </span>
+        <h1 class="display-5 fw-bold mb-3"><?= sanitize(site_content('gallery', 'title', 'Photo Gallery')) ?></h1>
+        <p class="lead mb-4 mx-auto mx-lg-0"><?= sanitize(site_content('gallery', 'intro', 'Explore the luxury cottages, lush botanical gardens, farm-to-table cuisine, and unforgettable nature experiences at Kalitusi.')) ?></p>
+        <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
+          <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary rounded-pill px-4">Book Your Stay</a>
+          <a href="<?= base_url('public/accommodations.php') ?>" class="btn btn-outline-primary rounded-pill px-4">View Rooms</a>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <img src="<?= sanitize(site_content_image('gallery', 'hero_image', 'images/view.webp')) ?>" alt="Kalitusi Nature Resort Gallery" onerror="this.src='<?= asset_url('images/rooms.webp') ?>'">
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="container py-4">
-  <div class="bg-soft-mint rounded p-4 p-md-5 mb-4">
-    <h1 class="display-5 mb-2"><?= sanitize(site_content('gallery', 'title', 'Photo Gallery')) ?></h1>
-    <p class="lead mb-0"><?= sanitize(site_content('gallery', 'intro', 'Explore the rooms, gardens, food, and experiences at Kalitusi.')) ?></p>
-  </div>
 
   <div class="gallery-filter d-flex flex-wrap gap-2 mb-4" role="group" aria-label="Gallery categories">
     <button type="button" class="btn btn-outline-success active" data-filter="all" aria-pressed="true">All photos</button>
@@ -63,20 +80,25 @@ include __DIR__ . '/../includes/layout_header.php';
   </div>
 
   <div class="row g-4 gallery-grid">
-    <?php foreach ($rooms as $room): $roomImages = resort_accommodation_images($room); ?>
-      <div class="col-12 col-sm-6 col-xl-4 gallery-item" data-categories="accommodations" data-room-type="<?= sanitize($room['room_type']) ?>">
-        <article class="card resort-photo-card resort-image-card">
-          <?php if ($roomImages): ?><div class="resort-photo-grid">
-            <?php foreach ($roomImages as $image): ?>
-              <img src="<?= sanitize($image['url']) ?>" data-lightbox="<?= sanitize($image['url']) ?>" alt="<?= sanitize($image['alt']) ?>" loading="lazy">
-            <?php endforeach; ?>
-          </div><?php endif; ?>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start gap-2">
-              <h2 class="card-title h5 mb-1"><?= sanitize($room['name']) ?></h2>
-              <span class="badge text-bg-success-subtle text-success-emphasis"><?= sanitize($room['room_type']) ?></span>
+    <?php foreach ($rooms as $room): $roomImages = resort_accommodation_images($room); if (!$roomImages) continue; $primaryImage = $roomImages[0]; ?>
+      <div class="col-12 col-sm-6 col-lg-4 gallery-item" data-categories="accommodations" data-room-type="<?= sanitize($room['room_type']) ?>">
+        <article class="scrim-card scrim-card-compact gallery-scrim-card">
+          <img class="scrim-card-bg" src="<?= sanitize($primaryImage['url']) ?>" data-lightbox="<?= sanitize($primaryImage['url']) ?>" alt="<?= sanitize($room['name']) ?>" loading="lazy">
+          <?php foreach (array_slice($roomImages, 1) as $extraImg): ?>
+            <img src="<?= sanitize($extraImg['url']) ?>" data-lightbox="<?= sanitize($extraImg['url']) ?>" alt="<?= sanitize($extraImg['alt']) ?>" class="d-none" loading="lazy">
+          <?php endforeach; ?>
+          <div class="scrim-badge-top">
+            <span class="badge-dot"></span>
+            <?= sanitize($room['room_type']) ?>
+          </div>
+          <div class="scrim-badge-right" title="Click to enlarge"><i class="fas fa-expand-alt"></i></div>
+          <div class="scrim-card-content">
+            <div class="scrim-card-header">
+              <h2 class="scrim-card-title"><?= sanitize($room['name']) ?></h2>
             </div>
-            <?php if (!empty($room['description'])): ?><p class="card-text small text-muted mb-0"><?= sanitize($room['description']) ?></p><?php endif; ?>
+            <?php if (!empty($room['description'])): ?>
+              <p class="scrim-card-subtitle mb-0"><?= sanitize($room['description']) ?></p>
+            <?php endif; ?>
           </div>
         </article>
       </div>
@@ -86,10 +108,20 @@ include __DIR__ . '/../includes/layout_header.php';
       $url = resort_local_image_url($photo['path']);
       if (!$url) continue;
     ?>
-      <div class="col-12 col-sm-6 col-xl-4 gallery-item" data-categories="<?= sanitize($category) ?>">
-        <article class="card resort-photo-card resort-image-card">
-          <div class="resort-photo-grid"><img src="<?= sanitize($url) ?>" data-lightbox="<?= sanitize($url) ?>" alt="<?= sanitize($photo['name']) ?>" loading="lazy"></div>
-          <div class="card-body"><h2 class="card-title h5 mb-1"><?= sanitize($photo['name']) ?></h2><p class="small text-muted mb-0"><?= sanitize($category) ?></p></div>
+      <div class="col-12 col-sm-6 col-lg-4 gallery-item" data-categories="<?= sanitize($category) ?>">
+        <article class="scrim-card scrim-card-compact gallery-scrim-card">
+          <img class="scrim-card-bg" src="<?= sanitize($url) ?>" data-lightbox="<?= sanitize($url) ?>" alt="<?= sanitize($photo['name']) ?>" loading="lazy">
+          <div class="scrim-badge-top is-gold">
+            <span class="badge-dot"></span>
+            <?= sanitize($category) ?>
+          </div>
+          <div class="scrim-badge-right" title="Click to enlarge"><i class="fas fa-expand-alt"></i></div>
+          <div class="scrim-card-content">
+            <div class="scrim-card-header">
+              <h2 class="scrim-card-title"><?= sanitize($photo['name']) ?></h2>
+            </div>
+            <p class="scrim-card-subtitle mb-0"><i class="fas fa-camera"></i> <?= sanitize($category) ?> Collection</p>
+          </div>
         </article>
       </div>
     <?php endforeach; endforeach; ?>

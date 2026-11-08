@@ -613,3 +613,104 @@
 .bento-avatar-stacked:first-child {
   margin-left: 0;
 }
+
+/* --------------------------------------------------------------------------
+   Bento KPI Stat Strip (Used across Dashboard, Bookings & Accommodations)
+   -------------------------------------------------------------------------- */
+.bento-kpi-card {
+  background: var(--bento-card-bg);
+  border-radius: 20px;
+  border: var(--bento-card-border);
+  box-shadow: var(--bento-card-shadow);
+  padding: 1.15rem 1.3rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.bento-kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(17, 24, 39, 0.07);
+  border-color: #cbd5e1;
+  color: inherit;
+}
+
+.bento-kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.bento-kpi-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--bento-muted);
+  margin: 0;
+}
+
+.bento-kpi-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.bento-kpi-icon.is-green {
+  background: rgba(142, 237, 33, 0.22);
+  color: #1a4d2e;
+}
+
+.bento-kpi-icon.is-blue {
+  background: rgba(79, 97, 247, 0.12);
+  color: var(--bento-blue);
+}
+
+.bento-kpi-icon.is-amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+}
+
+.bento-kpi-icon.is-rose {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+}
+
+.bento-kpi-bottom {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.bento-kpi-value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--bento-dark);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.bento-kpi-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 650;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--bento-soft-bg);
+  border: 1px solid var(--bento-border-soft);
+  color: var(--bento-slate);
+  white-space: nowrap;
+}

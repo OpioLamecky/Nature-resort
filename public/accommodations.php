@@ -20,102 +20,118 @@ try {
 include __DIR__ . '/../includes/layout_header.php';
 ?>
 
-<nav aria-label="breadcrumb" class="mb-3 mt-3">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
-    <li class="breadcrumb-item active">Accommodations</li>
-  </ol>
-</nav>
+<div class="container mt-3">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Accommodations</li>
+    </ol>
+  </nav>
+</div>
 
 <!-- Hero Section -->
 <section class="page-intro-hero accommodation-hero bg-soft-mint">
   <div class="container">
     <div class="row align-items-center g-4 g-lg-5">
-      <div class="col-md-7">
+      <div class="col-md-7 text-center text-md-start">
         <div class="accommodation-hero__content">
-          <h1 class="accommodation-hero__title mb-3"><?= sanitize(site_content('accommodations', 'title', 'Our Accommodations')) ?></h1>
+          <span class="badge rounded-pill px-3 py-2 mb-2" style="background: rgba(27, 138, 90, 0.12); color: #1b8a5a; font-weight: 600;">
+            <i class="fas fa-bed me-1"></i> Sanctuary in the Forest
+          </span>
+          <h1 class="accommodation-hero__title fw-bold mb-3"><?= sanitize(site_content('accommodations', 'title', 'Our Accommodations')) ?></h1>
           <p class="accommodation-hero__intro lead mb-4"><?= sanitize(site_content('accommodations', 'intro', "From cozy rooms to luxury suites, find the perfect retreat for your stay in Fort Portal's most beautiful setting.")) ?></p>
-          <div class="d-flex flex-wrap gap-2">
-            <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg">Book Your Stay</a>
-            <a href="<?= base_url('public/contact.php') ?>" class="btn btn-outline-primary btn-lg">Contact Us</a>
+          <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start mb-3">
+            <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg rounded-pill px-4">Book Your Stay</a>
+            <a href="<?= base_url('public/contact.php') ?>" class="btn btn-outline-primary btn-lg rounded-pill px-4">Inquire With Us</a>
+          </div>
+          <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start small text-muted pt-1">
+            <span><i class="fas fa-wifi text-success me-1"></i>Free High-Speed Wi-Fi</span>
+            <span><i class="fas fa-coffee text-success me-1"></i>Breakfast Included</span>
+            <span><i class="fas fa-mountain text-success me-1"></i>Scenic Views</span>
           </div>
         </div>
       </div>
       <div class="col-md-5">
-        <div class="scrim-image-frame scrim-image-frame-intro accommodation-hero__image-frame">
-          <img src="<?= sanitize(site_content_image('accommodations', 'hero_image', 'images/cabin.webp')) ?>" alt="Accommodation cottages at Kalitusi Nature Resort" class="accommodation-hero__image" fetchpriority="high">
-        </div>
+        <img src="<?= sanitize(site_content_image('accommodations', 'hero_image', 'images/cabin.webp')) ?>" alt="Accommodation cottages at Kalitusi Nature Resort" class="accommodation-hero__image" fetchpriority="high">
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .stay-filter .btn { font-size: 0.85rem; padding: 0.35rem 0.85rem; border-radius: 20px; transition: all 0.2s; }
-  .stay-filter .btn.active { background: #1a4d2e; border-color: #1a4d2e; color: #fff; }
-  .stay-card { height: 100%; border: 1px solid #e2ebe4; border-radius: 12px; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; background: #fff; }
-  .stay-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(26, 77, 46, 0.12); }
-  .stay-photo-grid { position: relative; height: 210px; overflow: hidden; background: #eaefe9; }
-  .stay-photo-grid img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; transition: transform 0.35s ease; }
-  .stay-card:hover .stay-photo-grid img { transform: scale(1.04); }
-  .stay-type-badge { position: absolute; bottom: 10px; left: 10px; background: rgba(26, 77, 46, 0.88); backdrop-filter: blur(4px); color: #fff; font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .stay-card .card-body { padding: 0.85rem 1rem 0.95rem; }
-  .stay-card .card-title { font-size: 1.05rem; font-weight: 700; color: #1a4d2e; margin-bottom: 0.3rem; line-height: 1.3; }
-  .stay-desc { font-size: 0.82rem; line-height: 1.4; color: #5c6b60; margin-bottom: 0.45rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .stay-amenities { gap: 0.35rem !important; margin-bottom: 0.55rem; }
-  .stay-amenity-chip { font-size: 0.72rem; background: #f0f5f1; color: #234d30; padding: 0.15rem 0.45rem; border-radius: 4px; display: inline-flex; align-items: center; }
-  .stay-price-wrap { border-top: 1px solid #edf2ee; padding-top: 0.5rem; margin-top: auto; }
-  .stay-price-val { font-size: 1.05rem; font-weight: 700; color: #1a4d2e; }
+  .stay-filter .btn { font-size: 0.85rem; padding: 0.42rem 1rem; border-radius: 999px; font-weight: 600; transition: all 0.2s; }
+  .stay-filter .btn.active { background: #1a4d2e; border-color: #1a4d2e; color: #fff; box-shadow: 0 6px 16px rgba(26, 77, 46, 0.2); }
+  .accom-scrim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.35rem; }
+  @media (max-width: 575px) { .accom-scrim-grid { grid-template-columns: 1fr; } }
+  .accom-policy-bento {
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid rgba(15, 23, 42, 0.07);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    padding: 1.5rem;
+    height: 100%;
+  }
 </style>
 
-<div class="container py-3">
-  <div class="stay-filter d-flex flex-wrap gap-2 mb-3" aria-label="Filter accommodations by type">
-    <button class="btn btn-outline-success active" type="button" data-room-type="all" aria-pressed="true">All stays <span class="badge text-bg-light ms-1"><?= count($rooms) ?></span></button>
-    <?php
-      $roomTypes = ['Standard Room', 'Deluxe Room', 'Suite', 'Chalet', 'Glamping Tent'];
-      foreach ($roomTypes as $roomType):
-        $typeCount = count(array_filter($rooms, static fn($room) => $room['room_type'] === $roomType));
-        if ($typeCount):
-    ?>
-      <button class="btn btn-outline-success" type="button" data-room-type="<?= sanitize($roomType) ?>" aria-pressed="false"><?= sanitize($roomType) ?> <span class="badge text-bg-light ms-1"><?= $typeCount ?></span></button>
-    <?php endif; endforeach; ?>
+<div class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div class="stay-filter d-flex flex-wrap gap-2" aria-label="Filter accommodations by type">
+      <button class="btn btn-outline-success active" type="button" data-room-type="all" aria-pressed="true">
+        All Stays <span class="badge rounded-pill text-bg-light ms-1"><?= count($rooms) ?></span>
+      </button>
+      <?php
+        $roomTypes = ['Standard Room', 'Deluxe Room', 'Suite', 'Chalet', 'Glamping Tent'];
+        foreach ($roomTypes as $roomType):
+          $typeCount = count(array_filter($rooms, static fn($room) => $room['room_type'] === $roomType));
+          if ($typeCount):
+      ?>
+        <button class="btn btn-outline-success" type="button" data-room-type="<?= sanitize($roomType) ?>" aria-pressed="false">
+          <?= sanitize($roomType) ?> <span class="badge rounded-pill text-bg-light ms-1"><?= $typeCount ?></span>
+        </button>
+      <?php endif; endforeach; ?>
+    </div>
+    <span class="text-muted small"><i class="fas fa-check-circle text-success me-1"></i>Instant confirmation available</span>
   </div>
 
-  <div class="row g-3 mb-4" id="accommodation-grid">
+  <div class="accom-scrim-grid mb-5" id="accommodation-grid">
     <?php if ($rooms): foreach ($rooms as $room): $roomImages = resort_accommodation_images($room); $isDormitory = in_array(strtolower(trim($room['name'])), ['ginger', 'rocket'], true); ?>
-      <div class="col-12 col-sm-6 col-lg-4 stay-cell" data-room-type="<?= sanitize($room['room_type']) ?>">
-        <article class="card stay-card resort-image-card shadow-sm">
+      <div class="stay-cell" data-room-type="<?= sanitize($room['room_type']) ?>">
+        <article class="scrim-card">
           <?php if ($roomImages): ?>
-            <div class="stay-photo-grid">
-              <img src="<?= sanitize($roomImages[0]['url']) ?>" alt="<?= sanitize($roomImages[0]['alt']) ?>" data-lightbox="<?= sanitize($roomImages[0]['url']) ?>" loading="lazy">
-              <span class="stay-type-badge"><?= sanitize($room['room_type']) ?></span>
-            </div>
+            <img class="scrim-card-bg" src="<?= sanitize($roomImages[0]['url']) ?>" alt="<?= sanitize($roomImages[0]['alt']) ?>" loading="lazy">
           <?php endif; ?>
-          <div class="card-body d-flex flex-column">
-            <h2 class="card-title"><?= sanitize($room['name']) ?></h2>
+          <div class="scrim-badge-top">
+            <span class="badge-dot"></span>
+            <?= sanitize($room['room_type']) ?>
+          </div>
+          <div class="scrim-badge-right" title="<?= (int)$room['capacity_adults'] ?> Adults + <?= (int)$room['capacity_children'] ?> Children">
+            <i class="fas fa-user-friends"></i>
+          </div>
+          <div class="scrim-card-content">
+            <div class="scrim-card-header">
+              <h2 class="scrim-card-title"><?= sanitize($room['name']) ?></h2>
+            </div>
             <?php if (!empty($room['description'])): ?>
-              <p class="stay-desc"><?= sanitize($room['description']) ?></p>
+              <p class="scrim-card-subtitle"><?= sanitize($room['description']) ?></p>
             <?php endif; ?>
-            <?php $amenities = json_decode($room['amenities'] ?? '[]', true); if (!empty($amenities)): ?>
-              <div class="d-flex flex-wrap stay-amenities">
-                <?php foreach (array_slice($amenities, 0, 3) as $amenity): ?>
-                  <span class="stay-amenity-chip"><i class="fas fa-check text-success me-1"></i><?= sanitize($amenity) ?></span>
-                <?php endforeach; ?>
+            <div class="scrim-card-specs">
+              <span class="scrim-spec-item"><i class="fas fa-user"></i> <?= (int)$room['capacity_adults'] ?> Adults</span>
+              <span class="scrim-spec-divider"></span>
+              <span class="scrim-spec-item"><i class="fas fa-child"></i> <?= (int)$room['capacity_children'] ?> Children</span>
+              <span class="scrim-spec-divider"></span>
+              <span class="scrim-spec-item"><i class="fas fa-bed"></i> <?= sanitize($room['room_type']) ?></span>
+            </div>
+            <div class="scrim-card-action-row">
+              <div class="scrim-price-pill">
+                <?php if ($isDormitory): ?>
+                  UGX 60k <small>/bed</small>
+                <?php else: ?>
+                  UGX <?= number_format((float)$room['price_per_night']) ?> <small>/night</small>
+                <?php endif; ?>
               </div>
-            <?php endif; ?>
-            <div class="stay-price-wrap">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <div>
-                  <?php if ($isDormitory): ?>
-                    <span class="stay-price-val">UGX 60,000</span><small class="text-muted"> / bed</small>
-                    <div class="text-muted" style="font-size: 0.72rem;">Whole dorm: UGX 360,000</div>
-                  <?php else: ?>
-                    <span class="stay-price-val">UGX <?= number_format((float)$room['price_per_night']) ?></span><small class="text-muted"> / night</small>
-                  <?php endif; ?>
-                </div>
-                <span class="small text-muted"><i class="fas fa-user-friends me-1"></i><?= (int)$room['capacity_adults'] ?>+<?= (int)$room['capacity_children'] ?></span>
-              </div>
-              <a href="<?= base_url('public/booking.php?room=' . (int)$room['accommodation_id']) ?>" class="btn btn-success btn-sm w-100 py-1 fw-semibold">View stay & book</a>
+              <a href="<?= base_url('public/booking.php?room=' . (int)$room['accommodation_id']) ?>" class="btn-scrim-cta">
+                Reserve Now &rarr;
+              </a>
             </div>
           </div>
         </article>
@@ -125,40 +141,75 @@ include __DIR__ . '/../includes/layout_header.php';
     <?php endif; ?>
   </div>
 
-  <!-- Child Pricing Information -->
-  <div class="row mt-5">
-    <div class="col-12">
-      <div class="card border-info">
-        <div class="card-header bg-info text-white">
-          <h4 class="mb-0"><i class="fas fa-child me-2"></i><?= sanitize(site_content('accommodations', 'child_policy_title', 'Child Pricing Policy')) ?></h4>
+  <!-- Family & Child Pricing Policy + Included Amenities (Pinterest Bento Section) -->
+  <div class="row g-4 mt-2 mb-4">
+    <div class="col-lg-7">
+      <div class="accom-policy-bento">
+        <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
+          <span class="d-inline-flex align-items-center justify-content-center rounded-4" style="width: 48px; height: 48px; background: rgba(27, 138, 90, 0.12); color: #1b8a5a; font-size: 1.25rem;">
+            <i class="fas fa-child"></i>
+          </span>
+          <div>
+            <span class="badge rounded-pill px-2 py-1 mb-1" style="background: rgba(27, 138, 90, 0.1); color: #1b8a5a; font-size: 0.7rem;">Family Friendly</span>
+            <h3 class="h5 fw-bold mb-0"><?= sanitize(site_content('accommodations', 'child_policy_title', 'Child & Family Pricing Policy')) ?></h3>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6">
-              <h5 class="text-primary"><?= sanitize(site_content('accommodations', 'child_10_14_title', 'Children 10-14 years')) ?></h5>
-              <p class="mb-3"><?= sanitize(site_content('accommodations', 'child_10_14_copy', 'Pay 50% of the adult rate for any room type')) ?></p>
-              
-              <h5 class="text-success"><?= sanitize(site_content('accommodations', 'child_4_10_title', 'Children 4-10 years')) ?></h5>
-              <p class="mb-3"><?= sanitize(site_content('accommodations', 'child_4_10_copy', 'Pay fixed 20,000 UGX per night regardless of room type')) ?></p>
-              
-              <h5 class="text-muted"><?= sanitize(site_content('accommodations', 'child_under_4_title', 'Children under 4 years')) ?></h5>
-              <p class="mb-0"><?= sanitize(site_content('accommodations', 'child_under_4_copy', 'Stay free of charge')) ?></p>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="p-3 rounded-4 h-100" style="background: #f0fdf4; border: 1px solid rgba(22, 163, 74, 0.14);">
+              <span class="badge rounded-pill bg-success mb-2">Free Stay</span>
+              <h4 class="h6 fw-bold mb-1"><?= sanitize(site_content('accommodations', 'child_under_4_title', 'Children under 4 years')) ?></h4>
+              <p class="small text-muted mb-0"><?= sanitize(site_content('accommodations', 'child_under_4_copy', 'Stay free of charge when sharing with parents')) ?></p>
             </div>
-            <div class="col-md-6">
-              <div class="alert alert-light">
-                <h6 class="fw-bold"><?= sanitize(site_content('accommodations', 'example_title', 'Example Pricing')) ?>:</h6>
-                <ul class="mb-0">
-                  <li><?= sanitize(site_content('accommodations', 'example_standard', 'Standard Room (2P): 2 adults + 1 child (10-14) = UGX 180,000 + 90,000 = 270,000')) ?></li>
-                  <li><?= sanitize(site_content('accommodations', 'example_deluxe', 'Deluxe Room (2P): 2 adults + 1 child (4-10) = UGX 300,000 + 20,000 = 320,000')) ?></li>
-                  <li><?= sanitize(site_content('accommodations', 'example_suite', 'Suite (3P): 3 adults + 2 children (4-10) = UGX 450,000 + 40,000 = 490,000')) ?></li>
-                </ul>
-              </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded-4 h-100" style="background: #f8fafc; border: 1px solid rgba(15, 23, 42, 0.08);">
+              <span class="badge rounded-pill mb-2" style="background: rgba(37, 99, 235, 0.12); color: #1d4ed8;">Flat Rate</span>
+              <h4 class="h6 fw-bold mb-1"><?= sanitize(site_content('accommodations', 'child_4_10_title', 'Children 4-10 years')) ?></h4>
+              <p class="small text-muted mb-0"><?= sanitize(site_content('accommodations', 'child_4_10_copy', 'Pay fixed 20,000 UGX per night regardless of room type')) ?></p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 rounded-4 h-100" style="background: #fffbeb; border: 1px solid rgba(245, 158, 11, 0.2);">
+              <span class="badge rounded-pill mb-2" style="background: rgba(217, 119, 6, 0.15); color: #b45309;">50% Rate</span>
+              <h4 class="h6 fw-bold mb-1"><?= sanitize(site_content('accommodations', 'child_10_14_title', 'Children 10-14 years')) ?></h4>
+              <p class="small text-muted mb-0"><?= sanitize(site_content('accommodations', 'child_10_14_copy', 'Pay 50% of the adult rate for any room type')) ?></p>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="col-lg-5">
+      <div class="accom-policy-bento" style="background: linear-gradient(145deg, #ffffff 0%, #f4f9f6 100%);">
+        <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
+          <span class="d-inline-flex align-items-center justify-content-center rounded-4" style="width: 48px; height: 48px; background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 1.2rem;">
+            <i class="fas fa-calculator"></i>
+          </span>
+          <div>
+            <span class="badge rounded-pill px-2 py-1 mb-1" style="background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 0.7rem;">Transparent Rates</span>
+            <h3 class="h5 fw-bold mb-0"><?= sanitize(site_content('accommodations', 'example_title', 'Example Family Calculations')) ?></h3>
+          </div>
+        </div>
+        <ul class="list-unstyled mb-0 small">
+          <li class="py-2 border-bottom d-flex align-items-start gap-2">
+            <i class="fas fa-check-circle text-success mt-1"></i>
+            <span><?= sanitize(site_content('accommodations', 'example_standard', 'Standard Room (2P): 2 adults + 1 child (10-14) = UGX 180,000 + 90,000 = 270,000')) ?></span>
+          </li>
+          <li class="py-2 border-bottom d-flex align-items-start gap-2">
+            <i class="fas fa-check-circle text-success mt-1"></i>
+            <span><?= sanitize(site_content('accommodations', 'example_deluxe', 'Deluxe Room (2P): 2 adults + 1 child (4-10) = UGX 300,000 + 20,000 = 320,000')) ?></span>
+          </li>
+          <li class="pt-2 d-flex align-items-start gap-2">
+            <i class="fas fa-check-circle text-success mt-1"></i>
+            <span><?= sanitize(site_content('accommodations', 'example_suite', 'Suite (3P): 3 adults + 2 children (4-10) = UGX 450,000 + 40,000 = 490,000')) ?></span>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
+</div>
           
 <script>
 document.querySelectorAll('[data-room-type]').forEach(button => button.addEventListener('click', () => {

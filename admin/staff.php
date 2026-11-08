@@ -198,14 +198,24 @@ include __DIR__ . '/../includes/admin_layout_header.php';
     </div>
   </div>
 
-  <!-- Role Distribution -->
+  <!-- Role Distribution (Pinterest Bento KPI Strip) -->
   <div class="row g-3 mb-4">
-    <?php foreach ($roleCounts as $role => $count): ?>
-      <div class="col-md-2">
-        <div class="card">
-          <div class="card-body text-center">
-            <h4 class="mb-1"><?= $count ?></h4>
-            <p class="text-muted mb-0 small"><?= sanitize($role) ?></p>
+    <?php
+    $roleIcons = ['is-green', 'is-blue', 'is-amber', 'is-rose'];
+    $rIdx = 0;
+    foreach ($roleCounts as $role => $count):
+      $iconTone = $roleIcons[$rIdx % count($roleIcons)];
+      $rIdx++;
+    ?>
+      <div class="col-6 col-md-4 col-xl-2">
+        <div class="bento-kpi-card" style="padding: 1rem 1.15rem;">
+          <div class="bento-kpi-top">
+            <span class="bento-kpi-label" style="font-size: 0.72rem;"><?= sanitize($role) ?></span>
+            <span class="bento-kpi-icon <?= $iconTone ?>" style="width: 32px; height: 32px; font-size: 0.85rem;"><i class="fas fa-user-shield"></i></span>
+          </div>
+          <div class="bento-kpi-bottom">
+            <span class="bento-kpi-value" style="font-size: 1.5rem;"><?= (int)$count ?></span>
+            <span class="bento-kpi-pill is-up">Staff</span>
           </div>
         </div>
       </div>

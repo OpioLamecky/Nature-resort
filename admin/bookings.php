@@ -151,57 +151,53 @@ include __DIR__ . '/../includes/admin_layout_header.php';
     </div>
   </div>
 
-  <!-- Statistics Cards -->
+  <!-- Statistics Cards (Pinterest Bento KPI Strip) -->
   <div class="row g-3 mb-4">
-    <div class="col-md-3">
-      <div class="card bg-light">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div>
-              <p class="text-muted mb-1">Total Bookings</p>
-              <h3 class="mb-0"><?= number_format($stats['total'] ?? 0) ?></h3>
-            </div>
-            <div class="text-primary fs-2"><i class="fas fa-calendar-alt"></i></div>
-          </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <span class="bento-kpi-label">Total Bookings</span>
+          <span class="bento-kpi-icon is-blue"><i class="fas fa-calendar-alt"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <span class="bento-kpi-value"><?= number_format($stats['total'] ?? 0) ?></span>
+          <span class="bento-kpi-pill is-up"><i class="fas fa-layer-group"></i> All Time</span>
         </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card bg-warning bg-opacity-10">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div>
-              <p class="text-muted mb-1">Pending</p>
-              <h3 class="mb-0"><?= number_format($stats['pending'] ?? 0) ?></h3>
-            </div>
-            <div class="text-warning fs-2"><i class="fas fa-clock"></i></div>
-          </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <span class="bento-kpi-label">Pending Approval</span>
+          <span class="bento-kpi-icon is-amber"><i class="fas fa-clock"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <span class="bento-kpi-value"><?= number_format($stats['pending'] ?? 0) ?></span>
+          <span class="bento-kpi-pill is-warn"><i class="fas fa-hourglass-half"></i> Needs Review</span>
         </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card bg-success bg-opacity-10">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div>
-              <p class="text-muted mb-1">Confirmed</p>
-              <h3 class="mb-0"><?= number_format($stats['confirmed'] ?? 0) ?></h3>
-            </div>
-            <div class="text-success fs-2"><i class="fas fa-check-circle"></i></div>
-          </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <span class="bento-kpi-label">Confirmed</span>
+          <span class="bento-kpi-icon is-green"><i class="fas fa-check-circle"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <span class="bento-kpi-value"><?= number_format($stats['confirmed'] ?? 0) ?></span>
+          <span class="bento-kpi-pill is-up"><i class="fas fa-check"></i> Ready</span>
         </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card bg-info bg-opacity-10">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <div>
-              <p class="text-muted mb-1">Checked In</p>
-              <h3 class="mb-0"><?= number_format($stats['checked_in'] ?? 0) ?></h3>
-            </div>
-            <div class="text-info fs-2"><i class="fas fa-door-open"></i></div>
-          </div>
+    <div class="col-sm-6 col-xl-3">
+      <div class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <span class="bento-kpi-label">Checked In</span>
+          <span class="bento-kpi-icon is-rose"><i class="fas fa-door-open"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <span class="bento-kpi-value"><?= number_format($stats['checked_in'] ?? 0) ?></span>
+          <span class="bento-kpi-pill is-up"><i class="fas fa-bed"></i> On Site</span>
         </div>
       </div>
     </div>

@@ -116,6 +116,58 @@ include __DIR__ . '/../includes/admin_layout_header.php';
     </div>
   </div>
 
+  <!-- Top KPI Bento Strip -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+      <a href="<?= base_url('admin/bookings.php') ?>" class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <p class="bento-kpi-label">Today's Bookings</p>
+          <span class="bento-kpi-icon is-green"><i class="fas fa-calendar-check"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <h2 class="bento-kpi-value"><?= number_format($stats['bookings_today']) ?></h2>
+          <span class="bento-kpi-pill"><?= number_format($stats['checkins_today']) ?> arrivals today</span>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      <a href="<?= base_url('admin/bookings.php?status=pending') ?>" class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <p class="bento-kpi-label">Pending Approvals</p>
+          <span class="bento-kpi-icon is-amber"><i class="fas fa-clock"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <h2 class="bento-kpi-value"><?= number_format($stats['bookings_pending']) ?></h2>
+          <span class="bento-kpi-pill"><?= number_format($stats['total_bookings']) ?> total stays</span>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      <a href="<?= base_url('admin/accommodations-manage.php') ?>" class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <p class="bento-kpi-label">Available Rooms</p>
+          <span class="bento-kpi-icon is-blue"><i class="fas fa-bed"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <h2 class="bento-kpi-value"><?= number_format($stats['rooms_available']) ?><small class="text-muted fw-normal fs-6"> / <?= number_format($stats['total_rooms']) ?></small></h2>
+          <span class="bento-kpi-pill"><?= (int)$stats['occupancy_rate'] ?>% occupied</span>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      <a href="<?= base_url('admin/testimonials.php') ?>" class="bento-kpi-card">
+        <div class="bento-kpi-top">
+          <p class="bento-kpi-label">Guest Reviews</p>
+          <span class="bento-kpi-icon is-green"><i class="fas fa-star"></i></span>
+        </div>
+        <div class="bento-kpi-bottom">
+          <h2 class="bento-kpi-value"><?= number_format((float)($topReview['rating'] ?? 5), 1) ?> <small class="text-warning fs-6">★</small></h2>
+          <span class="bento-kpi-pill"><?= number_format($stats['reviews_pending']) ?> pending</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
   <!-- Bento Grid Top Row (3 Columns: Spotlight, Schedule, Donut) -->
   <div class="row g-4 mb-4">
     
@@ -419,7 +471,7 @@ include __DIR__ . '/../includes/admin_layout_header.php';
 
         <div class="bento-satisfaction-footer">
           <div class="bento-satisfaction-score">
-            2<small>/10</small>
+            <?= number_format((float)($topReview['rating'] ?? 5), 1) ?><small>/5.0</small>
             <div class="small text-muted fw-normal" style="font-size: 0.72rem; margin-top: 2px;">Overall resort rating: 9.8 / 10</div>
           </div>
           <div class="bento-avatars-stack" title="Recent reviewers">

@@ -4,26 +4,32 @@ $title = 'Dining & Cuisine | Kalitusi Nature Resort';
 include __DIR__ . '/../includes/layout_header.php';
 ?>
 
-<nav aria-label="breadcrumb" class="mb-3 mt-3">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
-    <li class="breadcrumb-item active">Dining</li>
-  </ol>
-</nav>
+<div class="container mt-3">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="<?= base_url('public/') ?>">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Dining</li>
+    </ol>
+  </nav>
+</div>
 
 <!-- Hero Section -->
 <section class="page-intro-hero bg-soft-mint">
   <div class="container">
     <div class="row align-items-center g-4 g-lg-5">
-      <div class="col-lg-7">
-        <h1 class="display-4 mb-3"><?= sanitize(site_content('dining', 'title', 'Dining & Cuisine')) ?></h1>
-        <p class="lead mb-4"><?= sanitize(site_content('dining', 'intro', 'Experience authentic Ugandan flavors and international cuisine in our scenic restaurant overlooking the mountains.')) ?></p>
-        <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg">Make a Reservation</a>
+      <div class="col-lg-7 text-center text-lg-start">
+        <span class="badge rounded-pill px-3 py-2 mb-2" style="background: rgba(27, 138, 90, 0.12); color: #1b8a5a; font-weight: 600;">
+          <i class="fas fa-utensils me-1"></i> Farm-to-Table Culinary
+        </span>
+        <h1 class="display-5 fw-bold mb-3"><?= sanitize(site_content('dining', 'title', 'Dining & Cuisine')) ?></h1>
+        <p class="lead mb-4 mx-auto mx-lg-0"><?= sanitize(site_content('dining', 'intro', 'Experience authentic Ugandan flavors and international cuisine in our scenic restaurant overlooking the mountains.')) ?></p>
+        <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
+          <a href="<?= base_url('public/booking.php') ?>" class="btn btn-primary btn-lg rounded-pill px-4">Make a Reservation</a>
+          <a href="<?= base_url('public/contact.php') ?>" class="btn btn-outline-primary btn-lg rounded-pill px-4">Inquire for Events</a>
+        </div>
       </div>
       <div class="col-lg-5">
-        <div class="scrim-image-frame scrim-image-frame-intro">
-          <img src="<?= sanitize(site_content_image('dining', 'hero_image', 'images/food1.webp')) ?>" alt="Dining at Kalitusi">
-        </div>
+        <img src="<?= sanitize(site_content_image('dining', 'hero_image', 'images/food1.webp')) ?>" alt="Dining at Kalitusi">
       </div>
     </div>
   </div>
@@ -35,9 +41,7 @@ include __DIR__ . '/../includes/layout_header.php';
   <section class="mb-5">
     <div class="row align-items-center">
       <div class="col-md-6">
-        <div class="scrim-image-frame scrim-image-frame-dining">
-          <img src="<?= sanitize(site_content_image('dining', 'restaurant_image', 'images/food2.webp')) ?>" alt="<?= sanitize(site_content('dining', 'restaurant_title', 'The Mountain View Restaurant')) ?>" class="dining-feature-image">
-        </div>
+        <img src="<?= sanitize(site_content_image('dining', 'restaurant_image', 'images/food2.webp')) ?>" alt="<?= sanitize(site_content('dining', 'restaurant_title', 'The Mountain View Restaurant')) ?>" class="dining-feature-image">
       </div>
       <div class="col-md-6">
         <h2 class="h3 mb-3"><i class="fas fa-utensils text-primary me-2"></i><?= sanitize(site_content('dining', 'restaurant_title', 'The Mountain View Restaurant')) ?></h2>
@@ -60,33 +64,51 @@ include __DIR__ . '/../includes/layout_header.php';
     <div class="row g-4">
       
       <div class="col-md-4">
-        <div class="card h-100 text-center">
-          <div class="card-body">
-            <i class="fas fa-globe fa-3x text-primary mb-3"></i>
-            <h3 class="h5"><?= sanitize(site_content('dining', 'international_title', 'International')) ?></h3>
-            <p class="small"><?= sanitize(site_content('dining', 'international_copy', 'Classic dishes from around the world, expertly prepared to suit every palate.')) ?></p>
+        <article class="scrim-card scrim-card-compact">
+          <img class="scrim-card-bg" src="<?= asset_url('images/food1.webp') ?>" alt="<?= sanitize(site_content('dining', 'international_title', 'International')) ?>" loading="lazy">
+          <div class="scrim-badge-top">
+            <span class="badge-dot"></span>
+            Global Flavors
           </div>
-        </div>
+          <div class="scrim-card-content">
+            <div class="scrim-card-header">
+              <h3 class="scrim-card-title"><i class="fas fa-globe me-2" style="color: var(--scrim-lime);"></i><?= sanitize(site_content('dining', 'international_title', 'International')) ?></h3>
+            </div>
+            <p class="scrim-card-subtitle mb-0"><?= sanitize(site_content('dining', 'international_copy', 'Classic dishes from around the world, expertly prepared to suit every palate.')) ?></p>
+          </div>
+        </article>
       </div>
 
       <div class="col-md-4">
-        <div class="card h-100 text-center">
-          <div class="card-body">
-            <i class="fas fa-drumstick-bite fa-3x text-primary mb-3"></i>
-            <h3 class="h5"><?= sanitize(site_content('dining', 'ugandan_title', 'Traditional Ugandan')) ?></h3>
-            <p class="small"><?= sanitize(site_content('dining', 'ugandan_copy', 'Authentic local dishes including matooke, luwombo, and fresh tilapia from Lake Victoria.')) ?></p>
+        <article class="scrim-card scrim-card-compact">
+          <img class="scrim-card-bg" src="<?= asset_url('images/food4.webp') ?>" alt="<?= sanitize(site_content('dining', 'ugandan_title', 'Traditional Ugandan')) ?>" loading="lazy">
+          <div class="scrim-badge-top is-gold">
+            <span class="badge-dot"></span>
+            Authentic Local
           </div>
-        </div>
+          <div class="scrim-card-content">
+            <div class="scrim-card-header">
+              <h3 class="scrim-card-title"><i class="fas fa-drumstick-bite me-2" style="color: var(--scrim-lime);"></i><?= sanitize(site_content('dining', 'ugandan_title', 'Traditional Ugandan')) ?></h3>
+            </div>
+            <p class="scrim-card-subtitle mb-0"><?= sanitize(site_content('dining', 'ugandan_copy', 'Authentic local dishes including matooke, luwombo, and fresh tilapia from Lake Victoria.')) ?></p>
+          </div>
+        </article>
       </div>
 
       <div class="col-md-4">
-        <div class="card h-100 text-center">
-          <div class="card-body">
-            <i class="fas fa-leaf fa-3x text-primary mb-3"></i>
-            <h3 class="h5"><?= sanitize(site_content('dining', 'vegetarian_title', 'Vegetarian & Vegan')) ?></h3>
-            <p class="small"><?= sanitize(site_content('dining', 'vegetarian_copy', 'Fresh garden-to-table options with organic vegetables from local farms.')) ?></p>
+        <article class="scrim-card scrim-card-compact">
+          <img class="scrim-card-bg" src="<?= asset_url('images/food5.webp') ?>" alt="<?= sanitize(site_content('dining', 'vegetarian_title', 'Vegetarian & Vegan')) ?>" loading="lazy">
+          <div class="scrim-badge-top">
+            <span class="badge-dot"></span>
+            Farm to Table
           </div>
-        </div>
+          <div class="scrim-card-content">
+            <div class="scrim-card-header">
+              <h3 class="scrim-card-title"><i class="fas fa-leaf me-2" style="color: var(--scrim-lime);"></i><?= sanitize(site_content('dining', 'vegetarian_title', 'Vegetarian & Vegan')) ?></h3>
+            </div>
+            <p class="scrim-card-subtitle mb-0"><?= sanitize(site_content('dining', 'vegetarian_copy', 'Fresh garden-to-table options with organic vegetables from local farms.')) ?></p>
+          </div>
+        </article>
       </div>
 
     </div>
@@ -96,15 +118,19 @@ include __DIR__ . '/../includes/layout_header.php';
   <section class="mb-5">
     <h2 class="h3 mb-4 text-center"><?= sanitize(site_content('dining', 'menu_title', 'Sample Menu Highlights')) ?></h2>
     
-    <div class="row">
+    <div class="row g-4 mb-4">
       <div class="col-md-6">
-        <div class="card mb-4">
-          <div class="card-header bg-primary text-white">
-            <h3 class="h6 mb-0"><i class="fas fa-coffee me-2"></i><?= sanitize(site_content('dining', 'menu_breakfast_title', 'Breakfast')) ?></h3>
-          </div>
-          <div class="card-body">
+        <div class="card h-100 border-0 shadow-sm" style="border-radius: 18px;">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+              <h3 class="h5 fw-bold mb-0"><i class="fas fa-coffee text-success me-2"></i><?= sanitize(site_content('dining', 'menu_breakfast_title', 'Breakfast')) ?></h3>
+              <span class="badge rounded-pill text-bg-light border">6:30 – 10:30 AM</span>
+            </div>
             <?php foreach (site_content_rows('dining', 'menu_breakfast', "Full English Breakfast | 25,000 | Eggs, sausage, bacon, beans, toast, mushrooms\nUganda Breakfast | 20,000 | Katogo, cassava, sweet potatoes, tea\nContinental Breakfast | 18,000 | Fresh pastries, fruits, yogurt, juice, coffee") as $dish): if (count($dish) < 3) continue; ?>
-              <div class="d-flex justify-content-between mb-2"><span><strong><?= sanitize($dish[0]) ?></strong></span><span class="text-primary">UGX <?= sanitize($dish[1]) ?></span></div>
+              <div class="d-flex justify-content-between align-items-baseline mb-1">
+                <span class="fw-semibold text-dark"><?= sanitize($dish[0]) ?></span>
+                <span class="badge rounded-pill bg-success-subtle text-success fw-bold">UGX <?= sanitize($dish[1]) ?></span>
+              </div>
               <p class="small text-muted mb-3"><?= sanitize($dish[2]) ?></p>
             <?php endforeach; ?>
           </div>
@@ -112,13 +138,17 @@ include __DIR__ . '/../includes/layout_header.php';
       </div>
 
       <div class="col-md-6">
-        <div class="card mb-4">
-          <div class="card-header bg-primary text-white">
-            <h3 class="h6 mb-0"><i class="fas fa-sun me-2"></i><?= sanitize(site_content('dining', 'menu_lunch_title', 'Lunch')) ?></h3>
-          </div>
-          <div class="card-body">
+        <div class="card h-100 border-0 shadow-sm" style="border-radius: 18px;">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+              <h3 class="h5 fw-bold mb-0"><i class="fas fa-sun text-warning me-2"></i><?= sanitize(site_content('dining', 'menu_lunch_title', 'Lunch')) ?></h3>
+              <span class="badge rounded-pill text-bg-light border">12:00 – 3:00 PM</span>
+            </div>
             <?php foreach (site_content_rows('dining', 'menu_lunch', "Grilled Tilapia | 35,000 | Fresh fish with steamed vegetables and rice\nChicken Luwombo | 32,000 | Traditional steamed chicken with groundnut sauce\nGarden Salad Bowl | 22,000 | Fresh greens, avocado, nuts, house dressing") as $dish): if (count($dish) < 3) continue; ?>
-              <div class="d-flex justify-content-between mb-2"><span><strong><?= sanitize($dish[0]) ?></strong></span><span class="text-primary">UGX <?= sanitize($dish[1]) ?></span></div>
+              <div class="d-flex justify-content-between align-items-baseline mb-1">
+                <span class="fw-semibold text-dark"><?= sanitize($dish[0]) ?></span>
+                <span class="badge rounded-pill bg-success-subtle text-success fw-bold">UGX <?= sanitize($dish[1]) ?></span>
+              </div>
               <p class="small text-muted mb-3"><?= sanitize($dish[2]) ?></p>
             <?php endforeach; ?>
           </div>
@@ -126,13 +156,17 @@ include __DIR__ . '/../includes/layout_header.php';
       </div>
 
       <div class="col-md-6">
-        <div class="card mb-4">
-          <div class="card-header bg-primary text-white">
-            <h3 class="h6 mb-0"><i class="fas fa-moon me-2"></i><?= sanitize(site_content('dining', 'menu_dinner_title', 'Dinner')) ?></h3>
-          </div>
-          <div class="card-body">
+        <div class="card h-100 border-0 shadow-sm" style="border-radius: 18px;">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+              <h3 class="h5 fw-bold mb-0"><i class="fas fa-moon text-primary me-2"></i><?= sanitize(site_content('dining', 'menu_dinner_title', 'Dinner')) ?></h3>
+              <span class="badge rounded-pill text-bg-light border">6:30 – 10:00 PM</span>
+            </div>
             <?php foreach (site_content_rows('dining', 'menu_dinner', "Beef Steak | 45,000 | Prime cut with mashed potatoes and vegetables\nVegetable Curry | 28,000 | Spiced vegetables with rice or chapati\nPasta Primavera | 30,000 | Fresh pasta with seasonal vegetables") as $dish): if (count($dish) < 3) continue; ?>
-              <div class="d-flex justify-content-between mb-2"><span><strong><?= sanitize($dish[0]) ?></strong></span><span class="text-primary">UGX <?= sanitize($dish[1]) ?></span></div>
+              <div class="d-flex justify-content-between align-items-baseline mb-1">
+                <span class="fw-semibold text-dark"><?= sanitize($dish[0]) ?></span>
+                <span class="badge rounded-pill bg-success-subtle text-success fw-bold">UGX <?= sanitize($dish[1]) ?></span>
+              </div>
               <p class="small text-muted mb-3"><?= sanitize($dish[2]) ?></p>
             <?php endforeach; ?>
           </div>
@@ -140,13 +174,17 @@ include __DIR__ . '/../includes/layout_header.php';
       </div>
 
       <div class="col-md-6">
-        <div class="card mb-4">
-          <div class="card-header bg-primary text-white">
-            <h3 class="h6 mb-0"><i class="fas fa-wine-glass me-2"></i><?= sanitize(site_content('dining', 'menu_beverages_title', 'Beverages')) ?></h3>
-          </div>
-          <div class="card-body">
+        <div class="card h-100 border-0 shadow-sm" style="border-radius: 18px;">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+              <h3 class="h5 fw-bold mb-0"><i class="fas fa-wine-glass text-danger me-2"></i><?= sanitize(site_content('dining', 'menu_beverages_title', 'Beverages')) ?></h3>
+              <span class="badge rounded-pill text-bg-light border">All Day</span>
+            </div>
             <?php foreach (site_content_rows('dining', 'menu_beverages', "Fresh Juices | 8,000 | Passion fruit, mango, pineapple, watermelon\nLocal Beers | 6,000 | Nile Special, Bell Lager, Club Pilsner\nHouse Wine | 35,000 | Red or white, per bottle") as $dish): if (count($dish) < 3) continue; ?>
-              <div class="d-flex justify-content-between mb-2"><span><strong><?= sanitize($dish[0]) ?></strong></span><span class="text-primary">UGX <?= sanitize($dish[1]) ?></span></div>
+              <div class="d-flex justify-content-between align-items-baseline mb-1">
+                <span class="fw-semibold text-dark"><?= sanitize($dish[0]) ?></span>
+                <span class="badge rounded-pill bg-success-subtle text-success fw-bold">UGX <?= sanitize($dish[1]) ?></span>
+              </div>
               <p class="small text-muted mb-3"><?= sanitize($dish[2]) ?></p>
             <?php endforeach; ?>
           </div>
@@ -221,9 +259,7 @@ include __DIR__ . '/../includes/layout_header.php';
   <section class="mb-5">
     <div class="row align-items-center">
       <div class="col-md-6 order-md-2">
-        <div class="scrim-image-frame scrim-image-frame-dining">
-          <img src="<?= sanitize(site_content_image('dining', 'bar_image', 'images/food3.webp')) ?>" alt="<?= sanitize(site_content('dining', 'bar_title', 'The Sunset Bar')) ?>" class="dining-feature-image">
-        </div>
+        <img src="<?= sanitize(site_content_image('dining', 'bar_image', 'images/food3.webp')) ?>" alt="<?= sanitize(site_content('dining', 'bar_title', 'The Sunset Bar')) ?>" class="dining-feature-image">
       </div>
       <div class="col-md-6 order-md-1">
         <h2 class="h3 mb-3"><i class="fas fa-glass-martini-alt text-primary me-2"></i><?= sanitize(site_content('dining', 'bar_title', 'The Sunset Bar')) ?></h2>

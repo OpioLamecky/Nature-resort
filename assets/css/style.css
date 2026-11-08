@@ -282,7 +282,6 @@ p {
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    filter: brightness(0.9);
     z-index: 1;
     transition: opacity 0.3s ease;
 }
@@ -324,7 +323,7 @@ p {
 .hero-slide__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(14,23,25,0.78) 0%, rgba(14,23,25,0.78) 48%, rgba(14,23,25,0.35) 70%, rgba(14,23,25,0) 100%);
+    background: linear-gradient(180deg, rgba(14, 23, 25, 0.12) 0%, rgba(14, 23, 25, 0.26) 55%, rgba(14, 23, 25, 0.52) 100%);
     z-index: 2;
 }
 
@@ -401,8 +400,8 @@ p {
 /* Modern Room Cards for Nearby Attractions */
 .modern-room-card {
     background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 14px;
+    box-shadow: 0 8px 26px rgba(24, 32, 27, 0.1);
     transition: all 0.3s ease;
     overflow: hidden;
     height: 100%;

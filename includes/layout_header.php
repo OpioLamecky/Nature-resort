@@ -42,9 +42,9 @@ $title = $title ?? 'Kalitusi Nature Resort | Fort Portal, Uganda';
         </div>
         <div class="col-md-6 text-end">
           <div class="d-flex gap-2 justify-content-end small">
-            <a href="<?= sanitize(site_content('contact', 'facebook_url', '#')) ?>" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="<?= sanitize(site_content('contact', 'instagram_url', '#')) ?>" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="<?= sanitize(site_content('contact', 'twitter_url', '#')) ?>" aria-label="X or Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="<?= sanitize(site_content('contact', 'facebook_url', 'https://www.facebook.com/kalitusinatureresort')) ?>" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="<?= sanitize(site_content('contact', 'instagram_url', 'https://www.instagram.com/kalitusinatureresort')) ?>" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="<?= sanitize(site_content('contact', 'twitter_url', 'https://x.com/kalitusifortportal')) ?>" aria-label="X or Twitter"><i class="fab fa-twitter"></i></a>
           </div>
         </div>
       </div>
